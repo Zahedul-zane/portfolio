@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zahedul | Creative Developer</title>
+    <title>Zahedul | Neon Architect</title>
     
-    <!-- Google Fonts: Inter & Space Grotesk -->
+    <!-- Fonts: Orbitron (Cyber Headings) & Rajdhani (Tech Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,116 +17,180 @@
 </head>
 <body>
 
+    <!-- Cyber Background -->
+    <div class="cyber-grid-bg"></div>
+    <div class="neon-glow glow-1"></div>
+    <div class="neon-glow glow-2"></div>
+    <div class="vignette"></div>
+
     <!-- Custom Cursor -->
     <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
+    <div class="cursor-ring"></div>
 
-    <div class="background-gradient"></div>
-
-    <div class="main-container">
+    <div class="main-wrapper">
         
         <!-- Header -->
         <header>
-            <div class="logo">ZM.</div>
+            <div class="logo">ZAHED<span class="flicker">UL</span>.</div>
             <nav>
-                <a href="#work" class="nav-item">Work</a>
-                <a href="#stack" class="nav-item">Stack</a>
-                <a href="#contact" class="btn-nav">Contact</a>
+                <a href="#work" class="nav-link" data-magnetic>PROJECTS</a>
+                <a href="#stack" class="nav-link" data-magnetic>ARSENAL</a>
+                <a href="#contact" class="nav-btn" data-magnetic>INIT_CHAT</a>
             </nav>
         </header>
 
         <!-- Bento Grid Layout -->
-        <div class="bento-grid">
+        <main class="bento-grid">
             
-            <!-- 1. Hero Card -->
-            <div class="bento-card hero-card">
-                <div class="status-badge"><span class="dot"></span> Online</div>
-                <h1>Architecting <br> <span class="gradient-text">Cyber Reality</span></h1>
-                <p>Full Stack Engineer building high-performance digital systems.</p>
-                <div class="hero-actions">
-                    <button class="btn primary">View Projects</button>
-                    <button class="btn icon-only"><i class="fa-brands fa-github"></i></button>
-                    <button class="btn icon-only"><i class="fa-brands fa-linkedin-in"></i></button>
+            <!-- 1. Hero Section -->
+            <div class="card hero scroll-reveal">
+                <div class="scanline"></div>
+                <div class="badge-status">
+                    <span class="status-dot"></span> SYSTEM ONLINE
                 </div>
-                <!-- Decoration -->
-                <div class="cyber-grid"></div>
+                <h1>ARCHITECTING <br> <span class="neon-text">CYBER REALITY</span></h1>
+                <p>Full-Stack Engineer building high-performance digital infrastructures.</p>
+                <div class="hero-btns">
+                    <button class="btn-cyber" data-magnetic>
+                        <span>VIEW_WORK</span>
+                    </button>
+                    <div class="socials">
+                        <a href="#" class="btn-glitch" data-magnetic><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="btn-glitch" data-magnetic><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
             </div>
 
-            <!-- 2. Profile Card -->
-            <div class="bento-card profile-card">
-                <div class="profile-img">
-                    <i class="fa-solid fa-code"></i>
+            <!-- 2. Profile -->
+            <div class="card profile scroll-reveal">
+                <div class="profile-frame">
+                    <div class="profile-img">
+                        <img src="481993878_1174526074059846_4207271205527578166_n.jpg" alt="Zahedul Profile" />
+                    </div>
                 </div>
-                <h3>Zahedul</h3>
-                <p class="role">Software Engineer</p>
-                <div class="location"><i class="fa-solid fa-location-dot"></i> Dhaka, BD</div>
+                <h3>ZAHEDUL</h3>
+                <span class="role">NET_RUNNER</span>
+                <div class="loc">
+                    <i class="fa-solid fa-location-dot"></i> DHAKA_BD
+                </div>
             </div>
 
             <!-- 3. Tech Stack -->
-            <div id="stack" class="bento-card stack-card">
-                <h3>Arsenal</h3>
-                <div class="stack-icons">
-                    <i class="fa-brands fa-react" title="React"></i>
-                    <i class="fa-brands fa-node-js" title="Node.js"></i>
-                    <i class="fa-brands fa-python" title="Python"></i>
-                    <i class="fa-brands fa-js" title="JavaScript"></i>
-                    <i class="fa-brands fa-docker" title="Docker"></i>
-                    <i class="fa-brands fa-git-alt" title="Git"></i>
-                    <i class="fa-solid fa-database" title="SQL"></i>
-                    <i class="fa-brands fa-aws" title="AWS"></i>
+            <div id="stack" class="card stack scroll-reveal">
+                <h3><i class="fa-solid fa-microchip"></i> CYBER_DECK</h3>
+                <div class="stack-grid">
+                    <div class="tech-item" title="React"><i class="fa-brands fa-react"></i></div>
+                    <div class="tech-item" title="Node.js"><i class="fa-brands fa-node-js"></i></div>
+                    <div class="tech-item" title="Python"><i class="fa-brands fa-python"></i></div>
+                    <div class="tech-item" title="JS"><i class="fa-brands fa-js"></i></div>
+                    <div class="tech-item" title="Docker"><i class="fa-brands fa-docker"></i></div>
+                    <div class="tech-item" title="AWS"><i class="fa-brands fa-aws"></i></div>
                 </div>
             </div>
 
             <!-- 4. Project 1 -->
-            <div id="work" class="bento-card project-card p1">
+            <div id="work" class="card project p1 scroll-reveal">
                 <div class="project-content">
-                    <span class="project-tag">System</span>
-                    <h3>Core API</h3>
-                    <p>High-throughput backend service.</p>
-                    <a href="#" class="arrow-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    <span class="tag">FIN_SYS</span>
+                    <h3>JAVA PROJECT</h3>
+                    <p>Secure transaction layer.</p>
+                    <a href="#" class="cyber-link" data-magnetic><i class="fa-solid fa-arrow-right"></i></a>
                 </div>
-                <div class="project-preview preview-1"></div>
+                <div class="holo-overlay"></div>
             </div>
 
             <!-- 5. Project 2 -->
-            <div class="bento-card project-card p2">
+            <div class="card project p2 scroll-reveal">
                 <div class="project-content">
-                    <span class="project-tag">Web3</span>
-                    <h3>Block explorer</h3>
-                    <p>Real-time blockchain visualizer.</p>
-                    <a href="#" class="arrow-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    <span class="tag">AI_CORE</span>
+                    <h3>C + + PROJECT</h3>
+                    <p>Neural processing unit.</p>
+                    <a href="#" class="cyber-link" data-magnetic><i class="fa-solid fa-arrow-right"></i></a>
                 </div>
-                <div class="project-preview preview-2"></div>
+                <div class="holo-overlay holo-2"></div>
+            </div>
+            <!-- 5. Project 3 -->
+            <div class="card project p2 scroll-reveal">
+                <div class="project-content">
+                    <span class="tag">AI_CORE</span>
+                    <h3>LLM PROJECT</h3>
+                    <p>Neural processing unit.</p>
+                    <a href="#" class="cyber-link" data-magnetic><i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="holo-overlay holo-2"></div>
             </div>
 
             <!-- 6. Stats -->
-            <div class="bento-card stats-card">
-                <div class="stat-item">
-                    <span class="num">20+</span>
-                    <span class="label">Repos</span>
+            <div class="card stats scroll-reveal">
+                <div class="stat-unit">
+                    <span class="num glitch-num" data-val="25">0</span>
+                    <span class="label">MODULES</span>
                 </div>
-                <div class="line"></div>
-                <div class="stat-item">
-                    <span class="num">4</span>
-                    <span class="label">Years</span>
+                <div class="stat-sep"></div>
+                <div class="stat-unit">
+                    <span class="num glitch-num" data-val="100">0</span>
+                    <span class="label">UPTIME</span>
                 </div>
             </div>
 
             <!-- 7. Contact -->
-            <div id="contact" class="bento-card contact-card">
-                <h3>Initialize Connection.</h3>
-                <p>Ready to deploy?</p>
-                <a href="mailto:hello@zahedul.dev" class="email-btn">
-                    <i class="fa-solid fa-terminal"></i> hello@zahedul.dev
+            <div id="contact" class="card contact scroll-reveal">
+                <h3>ESTABLISH_UPLINK</h3>
+                <a href="mailto:hello@zahedul.dev" class="terminal-input" data-magnetic>
+                    <span class="prompt">></span> github@Zahedul-zane<span class="cursor-blink">_</span>
                 </a>
             </div>
 
-        </div>
+            <!-- 8. Certificates -->
+            <div class="card certificates scroll-reveal">
+                <h3><i class="fa-solid fa-award"></i> CERTIFICATIONS</h3>
+                <div class="cert-grid">
+                    <div class="cert-item" data-cert-img="https://placehold.co/800x600/1a1a1a/00f3ff?text=Google+Cloud+Cert">
+                        <div class="cert-icon"><i class="fa-brands fa-google"></i></div>
+                        <div class="cert-info">
+                            <h4>Google Cloud Digital Leader</h4>
+                            <span>Issued 2024</span>
+                        </div>
+                    </div>
+                    <div class="cert-item" data-cert-img="https://placehold.co/800x600/1a1a1a/bc13fe?text=AWS+Developer+Cert">
+                        <div class="cert-icon"><i class="fa-brands fa-aws"></i></div>
+                        <div class="cert-info">
+                            <h4>AWS Certified Developer</h4>
+                            <span>Issued 2023</span>
+                        </div>
+                    </div>
+                    <div class="cert-item" data-cert-img="https://placehold.co/800x600/1a1a1a/0aff00?text=Meta+Frontend+Cert">
+                        <div class="cert-icon"><i class="fa-solid fa-code"></i></div>
+                        <div class="cert-info">
+                            <h4>Meta Front-End Developer</h4>
+                            <span>Issued 2025</span>
+                        </div>
+                    </div>
+                    <div class="cert-item" data-cert-img="https://placehold.co/800x600/1a1a1a/ffffff?text=Cybersecurity+Cert">
+                        <div class="cert-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="cert-info">
+                            <img src="FINXCEL9.0Certificate.jpeg" alt="">
+                            <h4>Cybersecurity Fundamentals</h4>
+                            <span>Issued 2024</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
 
         <footer>
-            <p>&copy; 2026 Zahedul. Engineered with <i class="fa-solid fa-bolt text-accent"></i></p>
+            <p>// ZAHEDUL © 2026</p>
         </footer>
 
+    </div>
+
+    <!-- Image Modal -->
+    <div class="cert-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img src="" alt="Certificate" class="modal-img">
+        </div>
     </div>
 
     <script src="script.js"></script>

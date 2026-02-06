@@ -1,55 +1,121 @@
-// Custom Cursor Logic
+// Neon Core System
+
+// DOM Elements
 const cursorDot = document.querySelector('.cursor-dot');
-const cursorOutline = document.querySelector('.cursor-outline');
+const cursorRing = document.querySelector('.cursor-ring');
+const magneticElems = document.querySelectorAll('[data-magnetic]');
+const scrollElements = document.querySelectorAll('.scroll-reveal');
+const counters = document.querySelectorAll('.num');
 
-window.addEventListener('mousemove', (e) => {
-    const posX = e.clientX;
-    const posY = e.clientY;
-
-    // Dot follows instantly
-    cursorDot.style.left = `${posX}px`;
-    cursorDot.style.top = `${posY}px`;
-
-    // Outline follows with slight delay logic (using animate for smooth trailing)
-    cursorOutline.animate({
-        left: `${posX}px`,
-        top: `${posY}px`
-    }, { duration: 500, fill: "forwards" });
+// 1. Cyber Cursor
+document.addEventListener('mousemove', (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    
+    cursorDot.style.left = `${x}px`;
+    cursorDot.style.top = `${y}px`;
+    
+    // Ring follows with delay
+    cursorRing.animate({
+        left: `${x}px`,
+        top: `${y}px`
+    }, { duration: 400, fill: "forwards" });
 });
 
-// Cursor Interactions
-const interactiveElements = document.querySelectorAll('a, button, .bento-card');
+// Magnetic Force Field
+magneticElems.forEach(elem => {
+    elem.addEventListener('mousemove', (e) => {
+        const rect = elem.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
 
-interactiveElements.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        cursorOutline.style.width = '50px';
-        cursorOutline.style.height = '50px';
-        cursorOutline.style.backgroundColor = 'rgba(0, 242, 255, 0.1)';
-        cursorOutline.style.borderColor = 'transparent';
+        elem.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+        
+        // Active State Indicator
+        cursorRing.style.width = '50px';
+        cursorRing.style.height = '50px';
+        cursorRing.style.borderColor = '#bc13fe'; // Neon Purple on active
     });
 
-    el.addEventListener('mouseleave', () => {
-        cursorOutline.style.width = '30px';
-        cursorOutline.style.height = '30px';
-        cursorOutline.style.backgroundColor = 'transparent';
-        cursorOutline.style.borderColor = 'var(--accent)';
+    elem.addEventListener('mouseleave', () => {
+        elem.style.transform = 'translate(0, 0)';
+        cursorRing.style.width = '40px';
+        cursorRing.style.height = '40px';
+        cursorRing.style.borderColor = '#00f3ff'; // Reset to Neon Cyan
     });
 });
 
-// Tilt Effect for Cards
-const cards = document.querySelectorAll('.bento-card');
-cards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -5;
-        const rotateY = ((x - centerX) / centerX) * 5;
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+// 2. System Boot Animation (Scroll Reveal)
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+            
+            if (entry.target.classList.contains('stats')) {
+                initCounters();
+            }
+        }
     });
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+}, { threshold: 0.15 });
+
+// Init Styles for Scroll
+scrollElements.forEach(el => {
+    el.style.opacity = 0;
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)';
+    observer.observe(el);
+});
+
+// 3. Data Parsing (Counters)
+let counted = false;
+function initCounters() {
+    if (counted) return;
+    counted = true;
+    
+    counters.forEach(counter => {
+        const target = +counter.getAttribute('data-val');
+        const duration = 1500; // ms
+        const increment = target / (duration / 20);
+        
+        let current = 0;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                counter.innerText = target;
+                if(target > 20) counter.innerText += '+';
+                if(target === 100) counter.innerText += '%';
+                clearInterval(timer);
+            } else {
+                counter.innerText = Math.ceil(current);
+            }
+        }, 20);
     });
+}
+// 4. Certificate Modal
+const modal = document.querySelector('.cert-modal');
+const modalImg = document.querySelector('.modal-img');
+const closeModal = document.querySelector('.close-modal');
+const certItems = document.querySelectorAll('.cert-item');
+
+certItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const imgUrl = item.getAttribute('data-cert-img');
+        if (imgUrl) {
+            modalImg.src = imgUrl;
+            modal.classList.add('active');
+            cursorRing.style.borderColor = '#00f3ff'; // Reset cursor
+        }
+    });
+});
+
+closeModal.addEventListener('click', () => {
+    modal.classList.remove('active');
+});
+
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.classList.remove('active');
+    }
 });
