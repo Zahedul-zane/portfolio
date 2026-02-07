@@ -22,6 +22,16 @@ document.addEventListener('mousemove', (e) => {
     }, { duration: 400, fill: "forwards" });
 });
 
+// Click Spark Effect
+document.addEventListener('mousedown', () => {
+    cursorRing.classList.add('click');
+    cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+});
+document.addEventListener('mouseup', () => {
+    cursorRing.classList.remove('click');
+    cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+});
+
 // Magnetic Force Field
 magneticElems.forEach(elem => {
     elem.addEventListener('mousemove', (e) => {
@@ -32,16 +42,12 @@ magneticElems.forEach(elem => {
         elem.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
         
         // Active State Indicator
-        cursorRing.style.width = '50px';
-        cursorRing.style.height = '50px';
-        cursorRing.style.borderColor = '#bc13fe'; // Neon Purple on active
+        cursorRing.classList.add('active');
     });
 
     elem.addEventListener('mouseleave', () => {
         elem.style.transform = 'translate(0, 0)';
-        cursorRing.style.width = '40px';
-        cursorRing.style.height = '40px';
-        cursorRing.style.borderColor = '#00f3ff'; // Reset to Neon Cyan
+        cursorRing.classList.remove('active');
     });
 });
 
