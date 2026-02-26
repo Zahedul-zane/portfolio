@@ -669,6 +669,68 @@ nav {
   }
 }
 
+/* --- Document Explorer --- */
+.explorer {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+}
+.explorer h3 {
+  color: var(--neon-cyan);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.file-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+.file-item {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #fff;
+  transition: 0.3s;
+  font-family: var(--font-code);
+  font-size: 1rem;
+  text-align: center;
+}
+.file-item:hover {
+  background: rgba(0, 243, 255, 0.05);
+  border-color: var(--neon-cyan);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 243, 255, 0.1);
+}
+.file-item i {
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+}
+/* File colored icons */
+.file-item.pdf i {
+  color: #ff4d4d;
+}
+.file-item.doc i {
+  color: #4dabf7;
+}
+.file-item.xls i {
+  color: #40c057;
+}
+.file-item.ppt i {
+  color: #ff922b;
+}
+
 /* --- Modal --- */
 .cert-modal {
   position: fixed;
@@ -710,6 +772,62 @@ nav {
   border: 2px solid var(--neon-cyan);
   box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
   border-radius: 12px;
+}
+
+/* --- File Modal --- */
+.file-modal-content {
+  width: 90vw;
+  height: 90vh;
+  max-width: 1000px;
+  background: #000;
+  padding: 0;
+  border: 2px solid var(--neon-cyan);
+  box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.file-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background: rgba(0, 243, 255, 0.05);
+  border-bottom: 1px solid var(--neon-cyan);
+}
+.file-modal-header h3 {
+  color: var(--neon-cyan);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  margin: 0;
+  letter-spacing: 2px;
+}
+.file-iframe {
+  width: 100%;
+  flex: 1; /* Takes up remaining space below header */
+  border: none;
+  background: #fff;
+}
+
+.close-file-modal {
+  position: relative;
+  color: #fff;
+  z-index: 10;
+  background: transparent;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.close-file-modal:hover {
+  color: var(--neon-purple);
+  text-shadow: 0 0 10px var(--neon-purple);
 }
 
 .close-modal {
@@ -794,8 +912,8 @@ footer {
     order: 1;
   }
   .profile {
-     grid-column: span 1;
-     order: 2;
+    grid-column: span 1;
+    order: 2;
   }
   .stack {
     grid-column: span 1;
@@ -806,8 +924,12 @@ footer {
     order: 4;
   }
   /* Specific order for projects if needed, or let them flow naturally */
-  .p1 { order: 4; }
-  .p2 { order: 5; }
+  .p1 {
+    order: 4;
+  }
+  .p2 {
+    order: 5;
+  }
 
   .stats {
     grid-column: span 2;
@@ -821,10 +943,17 @@ footer {
     grid-column: span 2;
     order: 8;
   }
-  
+  .explorer {
+    grid-column: span 2;
+    order: 9;
+  }
+  .file-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   /* Certificate Grid on Tablet */
   .cert-grid {
-      grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -847,24 +976,45 @@ footer {
     grid-row: auto;
     order: unset; /* Let them flow in HTML order or define specific mobile order */
   }
-  
-  /* Mobile Order adjustment if necessary */
-  .hero { order: 1; }
-  .profile { order: 2; }
-  .stats { order: 3; }
-  .stack { order: 4; }
-  .p1 { order: 5; }
-  .p2 { order: 6; }
-  .certificates { order: 8; }
-  .contact { order: 7; }
 
+  /* Mobile Order adjustment if necessary */
+  .hero {
+    order: 1;
+  }
+  .profile {
+    order: 2;
+  }
+  .stats {
+    order: 3;
+  }
+  .stack {
+    order: 4;
+  }
+  .p1 {
+    order: 5;
+  }
+  .p2 {
+    order: 6;
+  }
+  .contact {
+    order: 7;
+  }
+  .certificates {
+    order: 8;
+  }
+  .explorer {
+    order: 9;
+  }
+  .file-list {
+    grid-template-columns: 1fr;
+  }
 
   .hero {
     min-height: auto;
     padding: 30px 20px;
   }
   .hero h1 {
-      font-size: 2.5rem;
+    font-size: 2.5rem;
   }
 
   /* Project adjustments for mobile */
@@ -873,7 +1023,7 @@ footer {
     min-height: auto;
   }
   .project-content {
-      padding: 20px;
+    padding: 20px;
   }
   .holo-overlay {
     min-height: 200px; /* Give image area height */
@@ -882,21 +1032,21 @@ footer {
     border-bottom: 1px solid rgba(0, 243, 255, 0.2);
     border-radius: 24px 24px 0 0; /* Rounded top */
   }
-  
+
   /* Certificates on Mobile */
   .cert-grid {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
-  
+
   /* Navigation adjustments */
   header {
-      flex-direction: column;
-      gap: 20px;
-      padding: 20px 0;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
   }
   nav {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
   }
 }
