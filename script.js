@@ -1,13 +1,169 @@
 // Neon Core System
 
+// --- Cyber Node Network Background ---
+const canvas = document.getElementById('matrixCanvas');
+if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    
+    // Set canvas to full screen
+    const resizeCanvas = () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const particles = [];
+    const properties = {
+        bgColor: 'rgba(0, 0, 0, 1)',
+        particleColor: 'rgba(0, 243, 255, 0.8)',
+        particleRadius: 2.5,
+        particleCount: Math.floor((window.innerWidth * window.innerHeight) / 12000), // Responsive count
+        particleMaxVelocity: 0.6,
+        lineLength: 150,
+        particleLife: 6
+    };
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.velocityX = Math.random() * (properties.particleMaxVelocity * 2) - properties.particleMaxVelocity;
+            this.velocityY = Math.random() * (properties.particleMaxVelocity * 2) - properties.particleMaxVelocity;
+            this.life = Math.random() * properties.particleLife * 60;
+        }
+        position() {
+            this.x + this.velocityX > width && this.velocityX > 0 || this.x + this.velocityX < 0 && this.velocityX < 0 ? this.velocityX *= -1 : this.velocityX;
+            this.y + this.velocityY > height && this.velocityY > 0 || this.y + this.velocityY < 0 && this.velocityY < 0 ? this.velocityY *= -1 : this.velocityY;
+            this.x += this.velocityX;
+            this.y += this.velocityY;
+        }
+        reDraw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, properties.particleRadius, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fillStyle = properties.particleColor;
+            
+            // Neon glow effect on nodes
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#00f3ff';
+            ctx.fill();
+            
+            // Reset shadow to avoid dragging down performance for lines
+            ctx.shadowBlur = 0;
+        }
+        reCalculateLife(){
+            if(this.life < 1){
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.velocityX = Math.random() * (properties.particleMaxVelocity * 2) - properties.particleMaxVelocity;
+                this.velocityY = Math.random() * (properties.particleMaxVelocity * 2) - properties.particleMaxVelocity;
+                this.life = Math.random() * properties.particleLife * 60;
+            }
+            this.life--;
+        }
+    }
+
+    const reDrawBackground = () => {
+        ctx.fillStyle = properties.bgColor;
+        ctx.fillRect(0, 0, width, height);
+    };
+
+    const drawLines = () => {
+        let x1, y1, x2, y2, length, opacity;
+        for (let i in particles) {
+            for (let j in particles) {
+                x1 = particles[i].x;
+                y1 = particles[i].y;
+                x2 = particles[j].x;
+                y2 = particles[j].y;
+                length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                if (length < properties.lineLength) {
+                    opacity = 1 - length / properties.lineLength;
+                    ctx.lineWidth = 0.5;
+                    ctx.strokeStyle = `rgba(188, 19, 254, ${opacity})`;
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            }
+            
+            // Interaction with mouse cursor
+            if (mouseX !== null && mouseY !== null) {
+                x1 = particles[i].x;
+                y1 = particles[i].y;
+                length = Math.sqrt(Math.pow(mouseX - x1, 2) + Math.pow(mouseY - y1, 2));
+                if (length < properties.lineLength * 1.5) {
+                    opacity = 1 - length / (properties.lineLength * 1.5);
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = `rgba(0, 243, 255, ${opacity})`;
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(mouseX, mouseY);
+                    ctx.closePath();
+                    ctx.stroke();
+                    
+                    // Push particles slightly away from mouse
+                    if (length < 80) {
+                        particles[i].x += (x1 - mouseX) * 0.03;
+                        particles[i].y += (y1 - mouseY) * 0.03;
+                    }
+                }
+            }
+        }
+    };
+
+    const reDrawParticles = () => {
+        for (let i in particles) {
+            particles[i].reCalculateLife();
+            particles[i].position();
+            particles[i].reDraw();
+        }
+    };
+
+    const loop = () => {
+        reDrawBackground();
+        reDrawParticles();
+        drawLines();
+        requestAnimationFrame(loop);
+    };
+
+    const init = () => {
+        for (let i = 0; i < properties.particleCount; i++) {
+            particles.push(new Particle());
+        }
+        loop();
+    };
+    
+    // Mouse coords for network
+    let mouseX = null;
+    let mouseY = null;
+    window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+    window.addEventListener('mouseleave', () => {
+        mouseX = null;
+        mouseY = null;
+    });
+
+    init();
+}
+// --- End Cyber Node Network ---
+
 // DOM Elements
 const cursorDot = document.querySelector('.cursor-dot');
 const cursorRing = document.querySelector('.cursor-ring');
+const cyberGrid = document.querySelector('.cyber-grid-bg');
+const mouseGlow = document.querySelector('.mouse-glow');
 const magneticElems = document.querySelectorAll('[data-magnetic]');
 const scrollElements = document.querySelectorAll('.scroll-reveal');
 const counters = document.querySelectorAll('.num');
 
-// 1. Cyber Cursor
+// 1. Cyber Cursor & Grid Parallax
 document.addEventListener('mousemove', (e) => {
     const x = e.clientX;
     const y = e.clientY;
@@ -20,6 +176,19 @@ document.addEventListener('mousemove', (e) => {
         left: `${x}px`,
         top: `${y}px`
     }, { duration: 400, fill: "forwards" });
+
+    // Parallax Grid
+    if(cyberGrid) {
+        const xOffset = (x / window.innerWidth - 0.5) * 50;
+        const yOffset = (y / window.innerHeight - 0.5) * 50;
+        cyberGrid.style.transform = `perspective(600px) rotateX(70deg) translate(${xOffset}px, ${yOffset}px)`;
+    }
+
+    // Ambient mouse spotlight
+    if(mouseGlow) {
+        mouseGlow.style.left = `${x}px`;
+        mouseGlow.style.top = `${y}px`;
+    }
 });
 
 // Click Spark Effect
