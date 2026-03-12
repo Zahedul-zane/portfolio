@@ -404,16 +404,22 @@ nav {
   text-shadow: 2px 2px 0px rgba(188, 19, 254, 0.5);
 }
 
-/* --- Profile --- */
-.profile {
-  grid-column: span 1;
+/* --- Combined Identity Slide --- */
+.combined-profile {
+  grid-column: span 4; /* Merges the 2-column hero and 1-column profile slots to fill row */
   grid-row: span 2;
-  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 }
+
+.combined-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+
 .profile-frame {
   width: 100px;
   height: 100px;
@@ -422,7 +428,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 0px; /* Overrides the previous profile-frame margin */
   animation: rotate 20s linear infinite;
 }
 .profile-img {
@@ -439,12 +445,13 @@ nav {
   display: block;
 }
 
-.profile h3 {
+.profile-info h1 {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  letter-spacing: 2px;
+  font-size: 3rem;
   margin-bottom: 5px;
+  letter-spacing: 2px;
 }
+
 .role {
   color: var(--neon-purple);
   font-weight: 600;
@@ -452,39 +459,110 @@ nav {
   letter-spacing: 1px;
 }
 
-/* --- Stack --- */
-.stack {
-  grid-column: span 1;
-  grid-row: span 2;
-}
-.stack h3 {
+.profile-info .loc {
+  margin-top: 5px;
   color: #888;
-  font-size: 1rem;
-  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.about-text {
+  margin-bottom: 30px;
+}
+
+.about-text p {
+  color: #aaa;
+  font-size: 1.1rem;
+  max-width: 95%;
+  line-height: 1.5;
+}
+
+/* --- Stack (Horizontal Scroll Bar) --- */
+.stack {
+  grid-column: span 4;
+  grid-row: span 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 10px 0px; 
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: grab;
+  /* Removed card styles */
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 243, 255, 0.2); /* Base line to make it look like a wire */
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* Custom scrollbar to show length */
+.stack::-webkit-scrollbar { 
+  height: 4px; /* Thin neon bar */
+  display: block; 
+}
+.stack::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+.stack::-webkit-scrollbar-thumb {
+  background: var(--neon-cyan);
+  border-radius: 4px;
+  box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.stack:active {
+  cursor: grabbing;
+}
+
+.stack h3 {
+  color: var(--neon-cyan);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  margin-bottom: 0px;
   letter-spacing: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-right: 2px solid var(--neon-purple); /* Neon separator */
+  padding-right: 20px;
+  padding-left: 20px;
+  position: sticky;
+  left: 0;
+  background: var(--bg-black);
+  z-index: 10;
 }
-.stack-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+
+/* Scroll Container */
+.stack-track {
+  display: flex;
+  gap: 40px;
+  width: max-content;
+  padding-right: 40px;
+  padding-bottom: 10px; /* Space for scrollbar */
 }
+
 .tech-item {
-  background: rgba(255, 255, 255, 0.02);
-  height: 60px;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  color: #666;
-  border: 1px solid transparent;
+  font-size: 2.5rem;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.6); /* Default glow */
+  border: none;
   transition: 0.3s;
-  border-radius: 16px; /* Rounded */
+  flex-shrink: 0;
+}
+.tech-item a {
+  color: inherit;
+  text-decoration: none;
 }
 .tech-item:hover {
-  border-color: var(--neon-cyan);
-  color: var(--neon-cyan);
-  box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
-  background: rgba(0, 243, 255, 0.05);
+  color: #fff;
+  transform: scale(1.2);
+  text-shadow: 0 0 20px var(--neon-cyan), 0 0 30px var(--neon-cyan); /* Stronger glow on hover */
+  border-color: transparent;
+  box-shadow: none;
+  background: transparent;
 }
 
 /* --- Projects --- */
@@ -947,16 +1025,12 @@ footer {
   }
 
   /* Spans */
-  .hero {
+  .combined-profile {
     grid-column: span 2;
     order: 1;
   }
-  .profile {
-    grid-column: span 1;
-    order: 2;
-  }
   .stack {
-    grid-column: span 1;
+    grid-column: span 2; /* Span full width on tablet */
     order: 3;
   }
   .project {
@@ -1007,29 +1081,65 @@ footer {
   /* Reset all to span 1 */
   .hero,
   .profile,
+  .combined-profile,
   .stack,
   .project,
   .stats,
   .contact,
-  .certificates {
+  .certificates,
+  .explorer {
     grid-column: span 1;
     grid-row: auto;
     order: unset; /* Let them flow in HTML order or define specific mobile order */
   }
 
-  /* Mobile Order adjustment if necessary */
-  .hero {
-    order: 1;
+  /* Specific mobile adjustments for the new identity block */
+  .combined-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
-  .profile {
-    order: 2;
+  .combined-header {
+    flex-direction: column; /* Stack image and text vertically */
+    gap: 15px;
+  }
+  .hero-btns {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap; /* Keep buttons from overflowing */
+  }
+
+  /* Mobile Order adjustment if necessary */
+  .combined-profile {
+    order: 1;
   }
   .stats {
     order: 3;
   }
   .stack {
     order: 4;
+    padding: 10px 15px; /* Reduce padding on mobile */
+    gap: 15px; /* Reduce gap between title and track */
   }
+
+  .stack h3 {
+    font-size: 1rem;
+    padding-right: 15px;
+    padding-left: 15px;
+    background: transparent; /* Allows track to show through on mobile sometimes, or keep dynamic */
+    border-right-width: 1px;
+  }
+
+  .stack-track {
+    gap: 20px; /* Reduce gap between icons */
+    padding-right: 20px;
+  }
+
+  .tech-item {
+    font-size: 2rem; /* Make icons slightly smaller on mobile */
+  }
+
   .p1 {
     order: 5;
   }

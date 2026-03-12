@@ -201,6 +201,46 @@ document.addEventListener('mouseup', () => {
     cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
 });
 
+// Drag to Scroll For Tech Stack
+const stackTrack = document.getElementById('stack-track');
+if (stackTrack) {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    stackTrack.addEventListener('mousedown', (e) => {
+        isDown = true;
+        stackTrack.classList.add('active');
+        // Pause animation when dragging
+        stackTrack.style.animationPlayState = 'paused';
+        startX = e.pageX - stackTrack.offsetLeft;
+        scrollLeft = stackTrack.parentElement.scrollLeft;
+    });
+
+    stackTrack.addEventListener('mouseleave', () => {
+        isDown = false;
+        stackTrack.classList.remove('active');
+        stackTrack.style.animationPlayState = 'running';
+    });
+
+    stackTrack.addEventListener('mouseup', () => {
+        isDown = false;
+        stackTrack.classList.remove('active');
+        stackTrack.style.animationPlayState = 'running';
+    });
+
+    stackTrack.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - stackTrack.offsetLeft;
+        const walk = (x - startX) * 2; // Scroll-fast
+        // Instead of scrollLeft which depends on overflow, we manually translate 
+        // Or better yet, we can use the parent's overflow scroll if we make the track wide
+        // Let's implement actual CSS scrolling on the parent instead
+        stackTrack.parentElement.scrollLeft = scrollLeft - walk;
+    });
+}
+
 // Magnetic Force Field
 magneticElems.forEach(elem => {
     elem.addEventListener('mousemove', (e) => {

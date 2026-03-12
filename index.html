@@ -35,56 +35,66 @@
         <header>
             <div class="logo">ZAHED<span class="flicker">UL</span>.</div>
             <nav>
+                <a href="#home" class="nav-link" data-magnetic>HOME</a>
+                <a href="#profile" class="nav-link" data-magnetic>ABOUT ME</a>
                 <a href="#work" class="nav-link" data-magnetic>PROJECTS</a>
-                <a href="#stack" class="nav-link" data-magnetic>ARSENAL</a>
-                <a href="#contact" class="nav-btn" data-magnetic>INIT_CHAT</a>
+                <a href="#certificates" class="nav-link" data-magnetic>CERTIFICATE</a>
+                <a href="#explorer" class="nav-link" data-magnetic>FILE</a>
             </nav>
         </header>
 
         <!-- Bento Grid Layout -->
         <main class="bento-grid">
             
-            <!-- 1. Hero Section -->
-            <div class="card hero scroll-reveal">
+            <!-- 1. Combined Identity Slide (Hero & Profile) -->
+            <div id="home" class="card combined-profile scroll-reveal">
                 <div class="scanline"></div>
                 <div class="badge-status">
                     <span class="status-dot"></span> SYSTEM ONLINE
                 </div>
-                <h1>ARCHITECTING <br> <span class="neon-text">CYBER REALITY</span></h1>
-                <p>Full-Stack Engineer building high-performance digital infrastructures.</p>
+
+                <!-- Image & Basic Identity -->
+                <div class="combined-header">
+                    <div class="profile-frame">
+                        <div class="profile-img">
+                            <img src="zahedulDP.jpg" alt="Zahedul Profile" />
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h1>ZAHED<span class="flicker">UL</span></h1>
+                        <span class="role">NET_RUNNER</span>
+                        <div class="loc">
+                            <i class="fa-solid fa-location-dot"></i> DHAKA_BD
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Me Text -->
+                <div class="about-text">
+                    <p>Full-Stack Engineer architecting cyber reality and building high-performance digital infrastructures. I specialize in backend systems, AI engines, and immersive interfaces.</p>
+                </div>
+
+                <!-- Links & Socials -->
                 <div class="hero-btns">
-                    <button class="btn-cyber" data-magnetic>
-                        <span>VIEW_WORK</span>
+                    <a href="https://github.com/Zahedul-zane" class="btn-glitch" data-magnetic target="_blank" title="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/zahedul-islam-153165374/" class="btn-glitch" data-magnetic target="_blank" title="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <button class="btn-cyber" data-magnetic style="margin-left: auto;">
+                         <span>VIEW_WORK</span>
                     </button>
-                    <div class="socials">
-                        <a href="https://github.com/Zahedul-zane" class="btn-glitch" data-magnetic><i class="fa-brands fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/zahedul-islam-153165374/" class="btn-glitch" data-magnetic><i class="fa-brands fa-linkedin-in"></i></a>
-                    </div>
                 </div>
             </div>
 
-            <!-- 2. Profile -->
-            <div class="card profile scroll-reveal">
-                <div class="profile-frame">
-                    <div class="profile-img">
-                        <img src="zahedulDP.jpg" alt="Zahedul Profile" />
-                    </div>
-                </div>
-                <h3>ZAHEDUL</h3>
-                <span class="role">NET_RUNNER</span>
-                <div class="loc">
-                    <i class="fa-solid fa-location-dot"></i> DHAKA_BD
-                </div>
-            </div>
-
-            <!-- 3. Tech Stack -->
-            <div id="stack" class="card stack scroll-reveal">
+            <!-- 3. Tech Stack (Horizontal Bar) -->
+            <div id="stack" class="stack scroll-reveal">
                 <h3><i class="fa-solid fa-microchip"></i> CYBER_DECK</h3>
-                <div class="stack-grid">
-                    
+                <div class="stack-track" id="stack-track">
                     <div class="tech-item" title="Python"><i class="fa-brands fa-python"></i></div>
                     <div class="tech-item" title="C"><i class="fa-sharp fa-solid fa-c"></i></div>
-                    <div class="tech-item" title="C++"><a href="https://github.com/Zahedul-zane/Codeforces"><i class="fa-solid fa-c"></a></i><span>++</span></div>
+                    <div class="tech-item" title="C++"><a href="https://github.com/Zahedul-zane/Codeforces"><i class="fa-solid fa-c"></i></a><span>++</span></div>
                     <div class="tech-item" title="Java"><i class="fa-brands fa-java"></i></div>
                     <div class="tech-item" title="JavaScript"><i class="fa-brands fa-js"></i></div>
                     <div class="tech-item" title="HTML5"><i class="fa-brands fa-html5"></i></div>
@@ -137,7 +147,7 @@
 
 
             <!-- 8. Certificates -->
-            <div class="card certificates scroll-reveal">
+            <div id="certificates" class="card certificates scroll-reveal">
                 <h3><i class="fa-solid fa-award"></i> CERTIFICATIONS</h3>
                 
                 <div class="cert-grid">
@@ -191,7 +201,7 @@
             </div>
 
             <!-- 9. Document Explorer -->
-            <div class="card explorer scroll-reveal">
+            <div id="explorer" class="card explorer scroll-reveal">
                 <h3><i class="fa-regular fa-folder-open"></i> FILE_EXPLORER</h3>
                 <p style="color: #888; font-size: 0.85rem; margin-bottom: 15px; text-align: center;">Click to explore documents inside the terminal</p>
                 <div class="file-list" id="dynamic-file-list">
