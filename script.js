@@ -1,12 +1,11 @@
 // Neon Core System
 
-// --- Cyber Node Network Background ---
+// --- Cyber Quantum Core Background ---
 const canvas = document.getElementById('matrixCanvas');
 if (canvas) {
     const ctx = canvas.getContext('2d');
     let width, height;
     
-    // Set canvas to full screen
     const resizeCanvas = () => {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
@@ -14,145 +13,135 @@ if (canvas) {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    const particles = [];
-    const properties = {
-        bgColor: 'rgba(0, 0, 0, 1)',
-        particleColor: 'rgba(0, 243, 255, 0.8)',
-        particleRadius: 2.5,
-        particleCount: Math.floor((window.innerWidth * window.innerHeight) / 12000), // Responsive count
-        particleMaxVelocity: 0.6,
-        lineLength: 150,
-        particleLife: 6
+    let particles = [];
+    const numParticles = Math.min(2500, Math.floor((width * height) / 400)); 
+    
+    let mouse = { x: -1000, y: -1000, radius: 250, active: false };
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        mouse.active = true;
+    });
+    window.addEventListener('mouseleave', () => {
+        mouse.active = false;
+        mouse.x = -1000;
+        mouse.y = -1000;
+    });
+
+    const init = () => {
+        particles = [];
+        for (let i = 0; i < numParticles; i++) {
+            particles.push(new Particle());
+        }
+    };
+
+    // Fast noise approximation
+    const noise = (x, y, t) => {
+        return Math.sin(x * 0.003 + t) + Math.sin(y * 0.003 - t) + Math.cos((x+y) * 0.002 + t);
     };
 
     class Particle {
         constructor() {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
-            this.velocityX = Math.random() * (properties.particleMaxVelocity * 2) - properties.particleMaxVelocity;
-            this.velocityY = Math.random() * (properties.particleMaxVelocity * 2) - properties.particleMaxVelocity;
-            this.life = Math.random() * properties.particleLife * 60;
+            this.vx = 0;
+            this.vy = 0;
+            this.size = Math.random() * 1.5 + 0.5;
+            this.baseColor = Math.random() > 0.4 ? [0, 243, 255] : [188, 19, 254]; // Cyan & Purple
+            this.color = `rgba(${this.baseColor[0]}, ${this.baseColor[1]}, ${this.baseColor[2]}, ${Math.random() * 0.6 + 0.2})`;
+            this.angle = Math.random() * Math.PI * 2;
+            this.speed = Math.random() * 1.2 + 0.3;
         }
-        position() {
-            this.x + this.velocityX > width && this.velocityX > 0 || this.x + this.velocityX < 0 && this.velocityX < 0 ? this.velocityX *= -1 : this.velocityX;
-            this.y + this.velocityY > height && this.velocityY > 0 || this.y + this.velocityY < 0 && this.velocityY < 0 ? this.velocityY *= -1 : this.velocityY;
-            this.x += this.velocityX;
-            this.y += this.velocityY;
-        }
-        reDraw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, properties.particleRadius, 0, Math.PI * 2);
-            ctx.closePath();
-            ctx.fillStyle = properties.particleColor;
+
+        update(time) {
+            // Flow field calculation
+            let n = noise(this.x, this.y, time * 0.3);
+            this.angle = n * Math.PI * 2;
             
-            // Neon glow effect on nodes
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = '#00f3ff';
-            ctx.fill();
-            
-            // Reset shadow to avoid dragging down performance for lines
-            ctx.shadowBlur = 0;
-        }
-        reCalculateLife(){
-            if(this.life < 1){
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.velocityX = Math.random() * (properties.particleMaxVelocity * 2) - properties.particleMaxVelocity;
-                this.velocityY = Math.random() * (properties.particleMaxVelocity * 2) - properties.particleMaxVelocity;
-                this.life = Math.random() * properties.particleLife * 60;
+            // Apply base movement along the flow field
+            let targetVx = Math.cos(this.angle) * this.speed;
+            let targetVy = Math.sin(this.angle) * this.speed;
+
+            // Interpolate for smooth turning
+            this.vx += (targetVx - this.vx) * 0.1;
+            this.vy += (targetVy - this.vy) * 0.1;
+
+            // Mouse repulsion (Gravity/Vortex effect)
+            if (mouse.active) {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < mouse.radius) {
+                    let force = (mouse.radius - dist) / mouse.radius;
+                    // Ease out
+                    force = force * force * force;
+                    
+                    let angleToMouse = Math.atan2(dy, dx);
+                    
+                    // Repel outward
+                    this.vx -= Math.cos(angleToMouse) * force * 12;
+                    this.vy -= Math.sin(angleToMouse) * force * 12;
+                    
+                    // Add tangent spin to create a vortex around the mouse
+                    this.vx += Math.sin(angleToMouse) * force * 5;
+                    this.vy -= Math.cos(angleToMouse) * force * 5;
+                    
+                    this.color = `rgba(${this.baseColor[0]}, ${this.baseColor[1]}, ${this.baseColor[2]}, 1)`;
+                    this.size = Math.random() * 1.5 + 1.0;
+                } else {
+                    this.color = `rgba(${this.baseColor[0]}, ${this.baseColor[1]}, ${this.baseColor[2]}, 0.5)`;
+                    this.size = Math.max(0.5, this.size - 0.1);
+                }
             }
-            this.life--;
+
+            // Move
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Screen wrapping
+            if (this.x < -10) this.x = width + 10;
+            if (this.x > width + 10) this.x = -10;
+            if (this.y < -10) this.y = height + 10;
+            if (this.y > height + 10) this.y = -10;
+        }
+
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
         }
     }
 
-    const reDrawBackground = () => {
-        ctx.fillStyle = properties.bgColor;
+    let time = 0;
+    const animate = () => {
+        // Transparent trail effect: fade existing canvas pixels out rather than drawing black
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
         ctx.fillRect(0, 0, width, height);
-    };
+        
+        // Draw the new particles on top additively
+        ctx.globalCompositeOperation = 'lighter';
 
-    const drawLines = () => {
-        let x1, y1, x2, y2, length, opacity;
-        for (let i in particles) {
-            for (let j in particles) {
-                x1 = particles[i].x;
-                y1 = particles[i].y;
-                x2 = particles[j].x;
-                y2 = particles[j].y;
-                length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-                if (length < properties.lineLength) {
-                    opacity = 1 - length / properties.lineLength;
-                    ctx.lineWidth = 0.5;
-                    ctx.strokeStyle = `rgba(188, 19, 254, ${opacity})`;
-                    ctx.beginPath();
-                    ctx.moveTo(x1, y1);
-                    ctx.lineTo(x2, y2);
-                    ctx.closePath();
-                    ctx.stroke();
-                }
-            }
-            
-            // Interaction with mouse cursor
-            if (mouseX !== null && mouseY !== null) {
-                x1 = particles[i].x;
-                y1 = particles[i].y;
-                length = Math.sqrt(Math.pow(mouseX - x1, 2) + Math.pow(mouseY - y1, 2));
-                if (length < properties.lineLength * 1.5) {
-                    opacity = 1 - length / (properties.lineLength * 1.5);
-                    ctx.lineWidth = 1;
-                    ctx.strokeStyle = `rgba(0, 243, 255, ${opacity})`;
-                    ctx.beginPath();
-                    ctx.moveTo(x1, y1);
-                    ctx.lineTo(mouseX, mouseY);
-                    ctx.closePath();
-                    ctx.stroke();
-                    
-                    // Push particles slightly away from mouse
-                    if (length < 80) {
-                        particles[i].x += (x1 - mouseX) * 0.03;
-                        particles[i].y += (y1 - mouseY) * 0.03;
-                    }
-                }
-            }
-        }
-    };
+        time += 0.003;
 
-    const reDrawParticles = () => {
-        for (let i in particles) {
-            particles[i].reCalculateLife();
-            particles[i].position();
-            particles[i].reDraw();
-        }
-    };
+        particles.forEach(p => {
+            p.update(time);
+            p.draw();
+        });
+        
+        // Reset composite operation for the next frame
+        ctx.globalCompositeOperation = 'source-over';
 
-    const loop = () => {
-        reDrawBackground();
-        reDrawParticles();
-        drawLines();
-        requestAnimationFrame(loop);
+        requestAnimationFrame(animate);
     };
-
-    const init = () => {
-        for (let i = 0; i < properties.particleCount; i++) {
-            particles.push(new Particle());
-        }
-        loop();
-    };
-    
-    // Mouse coords for network
-    let mouseX = null;
-    let mouseY = null;
-    window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-    window.addEventListener('mouseleave', () => {
-        mouseX = null;
-        mouseY = null;
-    });
 
     init();
+    animate();
 }
-// --- End Cyber Node Network ---
+// --- End Cyber Quantum Core Background ---
 
 // DOM Elements
 const cursorDot = document.querySelector('.cursor-dot');
@@ -179,9 +168,8 @@ document.addEventListener('mousemove', (e) => {
 
     // Parallax Grid
     if(cyberGrid) {
-        const xOffset = (x / window.innerWidth - 0.5) * 50;
-        const yOffset = (y / window.innerHeight - 0.5) * 50;
-        cyberGrid.style.transform = `perspective(600px) rotateX(70deg) translate(${xOffset}px, ${yOffset}px)`;
+        // CSS handles the infinite synthwave moving animation now.
+        // JS parallax removed to prevent transform property frame overwrites.
     }
 
     // Ambient mouse spotlight
