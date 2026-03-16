@@ -307,6 +307,12 @@ nav {
   -webkit-overflow-scrolling: auto;
   overscroll-behavior: auto;
   touch-action: auto;
+  grid-column: span 2;
+}
+
+#explorer {
+  grid-column: 1 / -1;
+  grid-row: auto;
 }
 
 .membership-sidebar h3 {
