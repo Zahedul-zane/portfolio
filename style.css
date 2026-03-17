@@ -1,14 +1,14 @@
 :root {
   /* Neon Cyber Palette */
-  --bg-black: #000000;
-  --bg-dark: #050505;
+  --bg-black: #050815;
+  --bg-dark: #0c1220;
 
   --neon-cyan: #00f3ff;
   --neon-purple: #bc13fe;
   --neon-green: #0aff00;
 
-  --glass-panel: rgba(10, 10, 10, 0.8);
-  --border-glow: rgba(0, 243, 255, 0.3);
+  --glass-panel: rgba(20, 25, 35, 0.18);
+  --border-glow: rgba(0, 243, 255, 0.4);
 
   --font-display: "Orbitron", sans-serif;
   --font-code: "Rajdhani", sans-serif;
@@ -22,11 +22,22 @@
 }
 
 body {
-  background-color: var(--bg-black);
-  color: #fff;
+  background: linear-gradient(135deg, #071122, #0f1a2e 35%, #080f1e 75%);
+  color: #ebf5ff;
   font-family: var(--font-code);
   overflow-x: hidden;
   min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(0, 243, 255, 0.08), transparent 35%),
+              radial-gradient(circle at 80% 80%, rgba(188, 19, 254, 0.1), transparent 40%),
+              linear-gradient(180deg, rgba(6, 13, 26, 0.3), rgba(3, 7, 16, 0.65));
+  pointer-events: none;
+  z-index: -5;
 }
 
 /* --- Cyber Background Effects --- */
@@ -205,9 +216,14 @@ body {
 .main-wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 22px;
   z-index: 1;
   position: relative;
+  background: rgba(15, 21, 33, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 26px;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
 }
 
 /* --- Header --- */
@@ -215,7 +231,19 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 40px 0;
+  padding: 20px 40px;
+  background: rgba(25, 30, 45, 0.15);
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border-radius: 24px;
+  margin-bottom: 40px;
+  position: sticky;
+  top: 20px;
+  z-index: 1000;
 }
 .logo {
   font-family: var(--font-display);
@@ -234,18 +262,28 @@ nav {
   display: flex;
   align-items: center;
   gap: 30px;
+  background: rgba(15, 20, 30, 0.24);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 .nav-link {
   text-decoration: none;
-  color: #888;
+  color: #b2c8e2;
   font-family: var(--font-display);
   font-size: 0.9rem;
   letter-spacing: 1px;
-  transition: 0.3s;
+  transition: all 0.25s ease;
+  padding: 10px 12px;
+  border-radius: 12px;
 }
 .nav-link:hover {
-  color: var(--neon-cyan);
-  text-shadow: 0 0 8px var(--neon-cyan);
+  color: #e0f8ff;
+  text-shadow: 0 0 14px rgba(0, 243, 255, 0.5);
+  background: rgba(0, 243, 255, 0.08);
+  border: 1px solid rgba(0, 243, 255, 0.4);
 }
 
 .nav-btn {
@@ -274,33 +312,43 @@ nav {
 }
 
 .card {
-  background: var(--glass-panel);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(12, 18, 28, 0.14); /* More transparent glass effect */
+  border: 1px solid rgba(180, 220, 255, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 12px 40px 0 rgba(10, 15, 25, 0.35), inset 0 0 1px rgba(255, 255, 255, 0.04);
   padding: 30px;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(5px);
-  transition: 0.3s;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  transform: translateZ(0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   border-radius: 24px; /* Rounded Corners */
 }
 
 .card:hover {
-  border-color: var(--neon-cyan);
+  border-color: rgba(0, 243, 255, 0.6);
   box-shadow:
-    0 0 20px rgba(0, 243, 255, 0.1),
-    inset 0 0 20px rgba(0, 243, 255, 0.05);
+    0 0 30px rgba(0, 243, 255, 0.32),
+    inset 0 0 30px rgba(0, 243, 255, 0.12);
+  transform: translateY(-3px);
 }
 
 .membership-sidebar {
   position: relative;
   top: auto;
   width: 100%;
-  padding: 20px;
+  padding: 22px;
   z-index: 1;
-  border: 1px solid rgba(76, 255, 0, 0.4);
-  box-shadow: 0 0 25px rgba(0, 243, 255, 0.2);
-  backdrop-filter: blur(8px);
-  background: rgba(5, 5, 10, 0.85);
+  border: 1px solid rgba(170, 225, 255, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.32), inset 0 0 10px rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  background: rgba(12, 18, 28, 0.14);
+
   overflow: visible;
   max-height: none;
   scroll-behavior: auto;
@@ -822,9 +870,14 @@ nav {
   font-size: 1.5rem;
   color: #fff;
   text-decoration: none;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(10, 10, 10, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 10px 20px;
-  border: 1px solid #333;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   transition: 0.3s;
   border-radius: 12px; /* Rounded */
 }
@@ -1022,10 +1075,14 @@ nav {
   width: 90vw;
   height: 90vh;
   max-width: 1000px;
-  background: #000;
+  background: rgba(10, 10, 10, 0.2);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   padding: 0;
-  border: 2px solid var(--neon-cyan);
-  box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
