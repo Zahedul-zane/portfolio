@@ -386,24 +386,6 @@ nav {
   }
 }
 
-@media (max-width: 768px) {
-  .membership-sidebar {
-    position: relative;
-    width: 100%;
-    margin-bottom: 20px;
-    max-height: none;
-    overflow: visible;
-  }
-}
-
-@media (max-width: 768px) {
-  .membership-sidebar {
-    position: relative;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-}
-
 .card::before {
   content: "";
   position: absolute;
@@ -1217,6 +1199,7 @@ footer {
   .stats,
   .contact,
   .certificates,
+  .membership-sidebar,
   .explorer {
     grid-column: span 1;
     grid-row: auto;
@@ -1242,6 +1225,9 @@ footer {
     width: 100%;
     justify-content: center;
     flex-wrap: wrap; /* Keep buttons from overflowing */
+  }
+  .hero-btns .btn-cyber {
+    margin-left: 0 !important;
   }
 
   /* Mobile Order adjustment if necessary */
@@ -1283,6 +1269,11 @@ footer {
   .contact {
     order: 7;
   }
+  .terminal-input {
+    font-size: 1rem;
+    padding: 10px;
+    word-break: break-all;
+  }
   .certificates {
     order: 8;
   }
@@ -1323,7 +1314,7 @@ footer {
   header {
     flex-direction: column;
     gap: 20px;
-    padding: 20px 0;
+    padding: 20px;
   }
   nav {
     flex-wrap: wrap;
