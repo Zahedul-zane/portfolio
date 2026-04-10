@@ -735,6 +735,63 @@ nav {
   transform: translateX(5px);
 }
 
+/* Project action row: GitHub icon + Visit Site button */
+.project-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 25px;
+}
+
+.btn-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: rgba(0, 229, 255, 0.05);
+  border: 1px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.08);
+  white-space: nowrap;
+}
+
+.btn-visit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--neon-cyan);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+  z-index: -1;
+  border-radius: 100px;
+}
+
+.btn-visit:hover {
+  color: #02040A;
+  border-color: transparent;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.45);
+  transform: translateY(-2px);
+}
+
+.btn-visit:hover::before {
+  transform: scaleX(1);
+}
+
+.btn-visit i {
+  font-size: 0.75rem;
+}
+
 .holo-overlay {
   position: absolute;
   top: 0;
