@@ -290,15 +290,22 @@ nav {
   opacity: 1;
 }
 
-/* Membership Sidebar Matches Premium Cards */
+/* Membership Sidebar Inside Wrapper */
 .membership-sidebar {
   position: relative;
   top: auto;
   width: 100%;
   z-index: 1;
-  grid-column: span 2;
   overflow: visible;
 }
+
+.memberships-wrapper {
+  grid-column: span 4;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
 
 #explorer {
   grid-column: 1 / -1;
@@ -921,9 +928,10 @@ nav {
 
 .cert-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
 }
+
 
 .cert-item {
   background: transparent;
@@ -1200,11 +1208,12 @@ footer {
 
   .combined-profile { grid-column: span 2; order: 1; }
   .stack { grid-column: span 2; order: 3; }
-  .projects-wrapper { 
+  .projects-wrapper, .memberships-wrapper { 
     grid-column: span 2; 
     order: 4;
     grid-template-columns: repeat(2, 1fr);
   }
+
   .p1 { order: 4; }
   .p2 { order: 5; }
   .stats { grid-column: span 2; order: 6; }
@@ -1233,17 +1242,19 @@ footer {
     gap: 20px;
   }
 
-  .combined-profile, .stack, .projects-wrapper, .stats, .contact, .certificates, .membership-sidebar, .explorer {
+  .combined-profile, .stack, .projects-wrapper, .memberships-wrapper, .stats, .contact, .certificates, .membership-sidebar, .explorer {
     grid-column: span 1;
   }
+
 
   .cert-grid {
     grid-template-columns: 1fr;
   }
 
-  .projects-wrapper {
+  .projects-wrapper, .memberships-wrapper {
     grid-template-columns: 1fr;
   }
+
 
   .combined-profile {
     align-items: center;
