@@ -3,6 +3,11 @@
 // --- Cyber Quantum Core Background (Disabled: Using Video) ---
 // Canvas logic removed to optimize performance.
 
+// Initialize PDF.js worker
+if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+}
+
 
 // DOM Elements
 const cursorDot = document.querySelector('.cursor-dot');
@@ -268,6 +273,32 @@ function openFile(doc) {
     }
 }
 
+// PDF Thumbnail Generator
+async function renderPDFThumbnail(url, canvas) {
+    try {
+        const loadingTask = pdfjsLib.getDocument(url);
+        const pdf = await loadingTask.promise;
+        const page = await pdf.getPage(1);
+        
+        // Scale for thumbnail - Adjust as needed
+        const viewport = page.getViewport({ scale: 0.4 });
+        const context = canvas.getContext('2d');
+        
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        
+        const renderContext = {
+            canvasContext: context,
+            viewport: viewport
+        };
+        await page.render(renderContext).promise;
+        return true;
+    } catch (error) {
+        console.error("Error rendering PDF thumbnail:", error);
+        return false;
+    }
+}
+
 if(typeof documents !== 'undefined') {
     if(sidebarFileList) sidebarFileList.innerHTML = '';
     if(mainFileGrid) mainFileGrid.innerHTML = '';
@@ -295,12 +326,19 @@ if(typeof documents !== 'undefined') {
 
         // Main Grid Card
         if(mainFileGrid) {
+            const cardId = `file-${Math.random().toString(36).substr(2, 9)}`;
             const card = document.createElement('div');
             card.className = 'card mini-project'; 
+            card.id = cardId;
             card.style.textAlign = 'center';
+            
+            const thumbContainerId = `thumb-${cardId}`;
+            
             card.innerHTML = `
                 <div style="cursor:pointer; margin-bottom: 20px;">
-                    <i class="fa-solid ${icon}" style="font-size: 2.5rem; color: var(--accent-primary); margin-bottom: 15px;"></i>
+                    <div id="${thumbContainerId}" class="file-thumb-container" style="height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; overflow: hidden; border-radius: 8px; background: rgba(0,0,0,0.2);">
+                        <i class="fa-solid ${icon}" style="font-size: 2.5rem; color: var(--accent-primary);"></i>
+                    </div>
                     <h3 style="font-size: 1rem; color: #fff; margin-bottom: 5px;">${doc.title}</h3>
                     <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">${doc.type}_DOCUMENT</p>
                 </div>
@@ -311,6 +349,25 @@ if(typeof documents !== 'undefined') {
                 </div>
             `;
             
+            // Async PDF Thumbnail Rendering
+            if (doc.type === 'pdf') {
+                const canvas = document.createElement('canvas');
+                canvas.style.maxWidth = '100%';
+                canvas.style.maxHeight = '100%';
+                canvas.style.boxShadow = '0 4px 15px rgba(0,0,0,0.5)';
+                canvas.style.border = '1px solid rgba(255,255,255,0.1)';
+                
+                renderPDFThumbnail(doc.file, canvas).then(success => {
+                    if (success) {
+                        const container = card.querySelector(`#${thumbContainerId}`);
+                        if (container) {
+                            container.innerHTML = '';
+                            container.appendChild(canvas);
+                        }
+                    }
+                });
+            }
+
             // Add click to the whole top area
             card.querySelector('div:first-child').addEventListener('click', () => {
                 openFile(doc);

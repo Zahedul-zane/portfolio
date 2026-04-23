@@ -75,10 +75,7 @@
                             <li class="tree-item" data-target="project-4">
                                 <i class="fa-solid fa-database"></i> <span>DATA_STRUCTURE</span>
                             </li>
-                         
-                            <li class="tree-item" data-target="project-6">
-                                <i class="fa-solid fa-book"></i> <span>LIBRARY_SYSTEM</span>
-                            </li>
+
                         </ul>
                     </li>
 
@@ -167,7 +164,7 @@
                         <!-- Quick cards for each project -->
                         <div class="card mini-project">
                             <div onclick="document.querySelector('[data-target=\'project-1\']').click()" style="cursor:pointer;">
-                                <h3 style="color:var(--accent-secondary); margin-bottom:10px;">JAVA_PROJ</h3>
+                                <h3 style="color:var(--accent-secondary); margin-bottom:10px;">JAVA_PROJECT</h3>
                                 <p style="font-size:0.9rem; color:var(--text-muted);">Student Management System</p>
                             </div>
                             <div class="project-actions" style="margin-top: 20px; justify-content: center;">
@@ -193,7 +190,7 @@
 
                         <div class="card mini-project">
                             <div onclick="document.querySelector('[data-target=\'project-3\']').click()" style="cursor:pointer;">
-                                <h3 style="color:var(--accent-secondary); margin-bottom:10px;">COURSE_SEL</h3>
+                                <h3 style="color:var(--accent-secondary); margin-bottom:10px;">COURSE_SELECTION</h3>
                                 <p style="font-size:0.9rem; color:var(--text-muted);">Platform for students</p>
                             </div>
                             <div class="project-actions" style="margin-top: 20px; justify-content: center;">
@@ -217,17 +214,6 @@
                             </div>
                         </div>
 
-                        <div class="card mini-project">
-                            <div onclick="document.querySelector('[data-target=\'project-6\']').click()" style="cursor:pointer;">
-                                <h3 style="color:var(--accent-secondary); margin-bottom:10px;">LIBRARY_SYSTEM</h3>
-                                <p style="font-size:0.9rem; color:var(--text-muted);">Data Structures for Library System</p>
-                            </div>
-                            <div class="project-actions" style="margin-top: 20px; justify-content: center;">
-                                <div class="btn-visit" onclick="openFile({title: 'Library Data Structures for Library System', file: 'File_PDF/Library Data Structures for Library System.pdf', type: 'pdf'})" style="padding: 6px 14px; font-size: 0.6rem; cursor:pointer;">
-                                    <i class="fa-solid fa-file-pdf"></i> VIEW_DOC
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -318,20 +304,6 @@
 
 
 
-                <div id="project-6" class="content-section">
-                    <div class="btn-back" onclick="document.querySelector('[data-target=\'projects-overview\']').click()">
-                        <i class="fa-solid fa-arrow-left"></i> BACK_TO_HUB
-                    </div>
-                    <h2 class="view-title"><i class="fa-solid fa-book"></i> LIBRARY_SYSTEM</h2>
-                    <div class="project-details">
-                        <p class="project-desc">Data Structures and Logic for Library Management System</p>
-                        <div class="project-actions" style="margin-top: 30px;">
-                            <div class="btn-visit" onclick="openFile({title: 'Library Data Structures for Library System', file: 'File_PDF/Library Data Structures for Library System.pdf', type: 'pdf'})" style="cursor:pointer;">
-                                <i class="fa-solid fa-file-pdf"></i> VIEW_DOCUMENTATION
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
 
 
@@ -347,6 +319,7 @@
                     </div>
                 </div>
 
+
                 <div id="cert-2" class="content-section">
                     <div class="btn-back" onclick="document.querySelector('[data-target=\'certs-overview\']').click()">
                         <i class="fa-solid fa-arrow-left"></i> BACK_TO_GALLERY
@@ -357,6 +330,7 @@
                         <p>Intra-University Programming Contest - Issued 2025</p>
                     </div>
                 </div>
+
 
                 <div id="cert-3" class="content-section">
                     <div class="btn-back" onclick="document.querySelector('[data-target=\'certs-overview\']').click()">
@@ -369,6 +343,7 @@
                     </div>
                 </div>
 
+
                 <div id="cert-4" class="content-section">
                     <div class="btn-back" onclick="document.querySelector('[data-target=\'certs-overview\']').click()">
                         <i class="fa-solid fa-arrow-left"></i> BACK_TO_GALLERY
@@ -379,6 +354,7 @@
                         <p>AI Agent for beginners - Issued 2026</p>
                     </div>
                 </div>
+
 
                 <div id="cert-5" class="content-section">
                     <div class="btn-back" onclick="document.querySelector('[data-target=\'certs-overview\']').click()">
@@ -395,11 +371,13 @@
 
             <!-- Right Sidebar: Stats & Contact -->
             <aside class="rightSide">
+
                 <div class="card stats scroll-reveal">
                     <div class="stat-unit">
                         <span class="num glitch-num" data-val="25">0</span>
                         <span class="label">MODULES</span>
                     </div>
+
                     <div class="stat-sep" style="height: 1px; width: 60px; margin: 20px 0;"></div>
                     <div class="stat-unit">
                         <span class="num glitch-num" data-val="100">0</span>
@@ -411,24 +389,28 @@
                 <div class="card scroll-reveal" style="margin-top: 24px;">
                     <h3 class="section-title" style="font-size: 1.1rem; margin-top: 0;"><i class="fa-solid fa-network-wired"></i> MEMBERSHIPS</h3>
                     <div class="memberships-grid" style="grid-template-columns: 1fr; gap: 15px;">
+                        
                         <aside class="membership-sidebar">
                             <a href="https://www.facebook.com/groups/1562102301221122" target="_blank" rel="noopener noreferrer" class="membership-img-link">
                                 <img src="Membership image/EWUCoPC.jpg" alt="EWU CoPC" class="membership-img" />
                             </a>
                             <h4 style="color:var(--neon-green); font-family:var(--font-display); font-size:0.9rem; margin: 10px 0;">EWU CoPC</h4>
                         </aside>
+
                         <aside class="membership-sidebar">
                             <a href="https://www.facebook.com/EWUCSC" target="_blank" rel="noopener noreferrer" class="membership-img-link">
                                 <img src="Membership image/EWUCSC.jpg" alt="EWU CSC" class="membership-img" />
                             </a>
                             <h4 style="color:var(--neon-green); font-family:var(--font-display); font-size:0.9rem; margin: 10px 0;">EWU CSC</h4>
                         </aside>
+
                         <aside class="membership-sidebar">
                             <a href="https://www.facebook.com/EWURoboticsClub" target="_blank" rel="noopener noreferrer" class="membership-img-link">
                                 <img src="Membership image/EWURC.png" alt="EWU RC" class="membership-img" />
                             </a>
                             <h4 style="color:var(--neon-green); font-family:var(--font-display); font-size:0.9rem; margin: 10px 0;">EWU RC</h4>
                         </aside>
+
                         <aside class="membership-sidebar">
                             <a href="https://www.facebook.com/EWUNRF" target="_blank" rel="noopener noreferrer" class="membership-img-link">
                                 <img src="Membership image/EWUNRF.png" alt="EWU NRF" class="membership-img" />
@@ -453,6 +435,9 @@
 
     </div>
 
+
+
+
     <!-- Image Modal -->
     <div class="cert-modal">
         <div class="modal-content">
@@ -460,6 +445,10 @@
             <img src="" alt="Certificate" class="modal-img">
         </div>
     </div>
+
+
+
+
 
     <!-- Document Modal -->
     <div class="cert-modal file-modal">
@@ -473,6 +462,7 @@
     </div>
 
     <!-- Data & Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
     <script src="files.js"></script>
     <script src="script.js"></script>
 </body>

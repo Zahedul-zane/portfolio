@@ -1704,3 +1704,28 @@ footer {
     transform: translateX(-3px);
 }
 
+
+/* --- PDF Thumbnail Styling --- */
+.file-thumb-container {
+    transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mini-project:hover .file-thumb-container {
+    transform: scale(1.05);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.file-thumb-container canvas {
+    display: block;
+    max-width: 90% !important;
+    max-height: 90% !important;
+    border-radius: 4px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+.mini-project:hover .file-thumb-container canvas {
+    box-shadow: 0 12px 35px rgba(99, 102, 241, 0.3);
+}
