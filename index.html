@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zahedul.com</title>
     
-    <!-- Fonts: Outfit (Headings) & Inter (Body) -->
+    <!-- Fonts: Comfortaa (Body) & Playfair Display (Serif Headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -22,6 +22,9 @@
         <source src="background/silent-hill-2.3840x2160.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
+    <div class="galaxy-bg">
+        <div class="spiral-container"></div>
+    </div>
     <div class="video-overlay"></div>
     <div class="mouse-glow"></div>
 
@@ -31,402 +34,523 @@
 
     <div class="main-wrapper">
         
-        <!-- Header -->
-        <header>
+        <!-- Header / Navigation -->
+        <header class="main-header">
             <div class="logo">ZAHED<span class="flicker">UL</span>.</div>
-            <nav>
-                <a href="#home" class="nav-link" data-magnetic>HOME</a>
-                <a href="#profile" class="nav-link" data-magnetic>ABOUT ME</a>
-                <a href="#work" class="nav-link" data-magnetic>PROJECTS</a>
-                <a href="#certificates" class="nav-link" data-magnetic>CERTIFICATE</a>
-                <a href="#explorer" class="nav-link" data-magnetic>FILE</a>
+            <nav class="top-nav">
+                <a href="#home" class="nav-link active" data-magnetic>HOME</a>
+                <a href="#persona" class="nav-link" data-magnetic>PERSONA</a>
+                <a href="#projects" class="nav-link" data-magnetic>PROJECTS</a>
+                <a href="#experience" class="nav-link" data-magnetic>CREDENTIALS</a>
+                <a href="#expertise" class="nav-link" data-magnetic>FORGE</a>
+                <a href="#explorer" class="nav-link" data-magnetic>FILES</a>
+                <a href="#contact" class="nav-link" data-magnetic>CONTACT</a>
             </nav>
         </header>
 
-        <!-- Layout Grid -->
-        <main class="layout-container">
+        <!-- Layout Container (Single Column for Main Site look) -->
+        <main class="content-wrapper">
             
-            <!-- Left Sidebar: Navigation & Directory -->
-            <aside class="leftSide card scroll-reveal">
-                <div class="sidebar-header">
-                    <h3><i class="fa-solid fa-terminal"></i> DIRECTORY</h3>
-                </div>
-                
-                <ul class="directory-tree">
-                    <li class="tree-item active" data-target="home-view">
-                        <i class="fa-solid fa-house"></i> <span>HOME / DASHBOARD</span>
-                    </li>
-                    
-                    <li class="tree-folder">
-                        <div class="folder-header" data-target="projects-overview">
-                            <i class="fa-solid fa-folder-open"></i> <span>PROJECTS</span>
-                            <i class="fa-solid fa-chevron-down toggle-icon"></i>
-                        </div>
-                        <ul class="folder-contents">
-                            <li class="tree-item" data-target="project-1">
-                                <i class="fa-brands fa-java"></i> <span>JAVA PROJECT</span>
-                            </li>
-                            <li class="tree-item" data-target="project-2">
-                                <i class="fa-solid fa-code"></i> <span>LLM PROJECT</span>
-                            </li>
-                            <li class="tree-item" data-target="project-3">
-                                <i class="fa-solid fa-code"></i> <span>COURSE_SELECTION</span>
-                            </li>
-                            <li class="tree-item" data-target="project-4">
-                                <i class="fa-solid fa-database"></i> <span>DATA_STRUCTURE</span>
-                            </li>
-
-                        </ul>
-                    </li>
-
-                    <li class="tree-folder">
-                        <div class="folder-header" data-target="certs-overview">
-                            <i class="fa-solid fa-folder-open"></i> <span>CERTIFICATES</span>
-                            <i class="fa-solid fa-chevron-down toggle-icon"></i>
-                        </div>
-                        <ul class="folder-contents">
-                            <li class="tree-item" data-target="cert-1">
-                                <i class="fa-solid fa-award"></i> <span>FINXCEL 9.0</span>
-                            </li>
-                            <li class="tree-item" data-target="cert-2">
-                                <i class="fa-solid fa-award"></i> <span>INTRA-UNI CONTEST</span>
-                            </li>
-                            <li class="tree-item" data-target="cert-3">
-                                <i class="fa-solid fa-award"></i> <span>LLM AI AGENT</span>
-                            </li>
-                            <li class="tree-item" data-target="cert-4">
-                                <i class="fa-solid fa-award"></i> <span>AI AGENT BEGINNER</span>
-                            </li>
-                            <li class="tree-item" data-target="cert-5">
-                                <i class="fa-solid fa-award"></i> <span>CTF 2026</span>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="tree-folder">
-                        <div class="folder-header" data-target="files-view">
-                            <i class="fa-solid fa-folder-open"></i> <span>FILES</span>
-                            <i class="fa-solid fa-chevron-down toggle-icon"></i>
-                        </div>
-                        <ul class="folder-contents" id="sidebar-file-list">
-                            <!-- Files auto-generated by script.js -->
-                        </ul>
-                    </li>
-                </ul>
-            </aside>
-
-            <!-- Main Body: Dynamic Content Area -->
-            <section class="body card main-content-area scroll-reveal">
-                
-                <!-- HOME VIEW -->
-                <div id="home-view" class="content-section active">
-                    <!-- Identity Slide -->
-                    <div class="combined-profile">
-                        <div class="scanline"></div>
-                        <div class="badge-status">
-                            <span class="status-dot"></span> SYSTEM ONLINE
-                        </div>
-
-                        <div class="combined-header">
-                            <div class="profile-frame">
-                                <div class="profile-img">
-                                    <img src="zahedulDP.jpg" alt="Zahedul Profile" />
-                                </div>
-                            </div>
-                            <div class="profile-info">
-                                <h1>ZAHED<span class="flicker">UL</span></h1>
-                                <span class="role">NET_RUNNER</span>
-                                <div class="loc">
-                                    <i class="fa-solid fa-location-dot"></i> DHAKA_BD
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="about-text">
-                            <p>Full-Stack Engineer architecting cyber reality and building high-performance digital infrastructures. I specialize in backend systems, AI engines, and immersive interfaces.</p>
-                        </div>
-
-                        <div class="hero-btns">
-                            <a href="https://github.com/Zahedul-zane" class="btn-glitch" data-magnetic target="_blank" title="GitHub">
-                                <i class="fa-brands fa-github"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/in/zahedul-islam-153165374/" class="btn-glitch" data-magnetic target="_blank" title="LinkedIn">
-                                <i class="fa-brands fa-linkedin-in"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PROJECTS OVERVIEW -->
-                <div id="projects-overview" class="content-section">
-                    <h2 class="view-title"><i class="fa-solid fa-layer-group"></i> PROJECTS_HUB</h2>
-                    <div class="projects-grid-hub" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                        <!-- Quick cards for each project -->
-                        <div class="card mini-project">
-                            <div onclick="document.querySelector('[data-target=\'project-1\']').click()" style="cursor:pointer;">
-                                <h3 style="color:var(--accent-secondary); margin-bottom:10px;">JAVA_PROJECT</h3>
-                                <p style="font-size:0.9rem; color:var(--text-muted);">Student Management System</p>
-                            </div>
-                            <div class="project-actions" style="margin-top: 20px; justify-content: center;">
-                                <a href="https://github.com/Zahedul-zane/StudentManagementSystem" class="cyber-link" target="_blank" style="margin-top:0; width:36px; height:36px; font-size:0.9rem;"><i class="fa-brands fa-github"></i></a>
-                                <a href="https://zahedul-zane.github.io/StudentManagementSystem" target="_blank" class="btn-visit" style="padding: 6px 14px; font-size: 0.6rem;">
-                                    <i class="fa-solid fa-link"></i> VISIT
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="card mini-project">
-                            <div onclick="document.querySelector('[data-target=\'project-2\']').click()" style="cursor:pointer;">
-                                <h3 style="color:var(--accent-secondary); margin-bottom:10px;">LLM_ENGINE</h3>
-                                <p style="font-size:0.9rem; color:var(--text-muted);">AI Engine Development</p>
-                            </div>
-                            <div class="project-actions" style="margin-top: 20px; justify-content: center;">
-                                <a href="https://github.com/Zahedul-zane/LLM-Based-AI-Engine-Development-EWU-Agent-RAG-" class="cyber-link" target="_blank" style="margin-top:0; width:36px; height:36px; font-size:0.9rem;"><i class="fa-brands fa-github"></i></a>
-                                <a href="https://zahedul-zane.github.io/LLM-Based-AI-Engine-Development-EWU-Agent-RAG-" target="_blank" class="btn-visit" style="padding: 6px 14px; font-size: 0.6rem;">
-                                    <i class="fa-solid fa-link"></i> VISIT
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="card mini-project">
-                            <div onclick="document.querySelector('[data-target=\'project-3\']').click()" style="cursor:pointer;">
-                                <h3 style="color:var(--accent-secondary); margin-bottom:10px;">COURSE_SELECTION</h3>
-                                <p style="font-size:0.9rem; color:var(--text-muted);">Platform for students</p>
-                            </div>
-                            <div class="project-actions" style="margin-top: 20px; justify-content: center;">
-                                <a href="https://github.com/Zahedul-zane/CourseSelection" class="cyber-link" target="_blank" style="margin-top:0; width:36px; height:36px; font-size:0.9rem;"><i class="fa-brands fa-github"></i></a>
-                                <a href="https://zahedul-zane.github.io/CourseSelection" target="_blank" class="btn-visit" style="padding: 6px 14px; font-size: 0.6rem;">
-                                    <i class="fa-solid fa-link"></i> VISIT
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="card mini-project">
-                            <div onclick="document.querySelector('[data-target=\'project-4\']').click()" style="cursor:pointer;">
-                                <h3 style="color:var(--accent-secondary); margin-bottom:10px;">DATA-STRUCTURE-PROJECT</h3>
-                                <p style="font-size:0.9rem; color:var(--text-muted);">Implementation of Data Structure</p>
-                            </div>
-                            <div class="project-actions" style="margin-top: 20px; justify-content: center;">
-                                <a href="https://github.com/Zahedul-zane/Data-Structure-Project" class="cyber-link" target="_blank" style="margin-top:0; width:36px; height:36px; font-size:0.9rem;"><i class="fa-brands fa-github"></i></a>
-                                <a href="https://zahedul-zane.github.io/Data-Structure-Project" target="_blank" class="btn-visit" style="padding: 6px 14px; font-size: 0.6rem;">
-                                    <i class="fa-solid fa-link"></i> VISIT
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- CERTS OVERVIEW -->
-                <div id="certs-overview" class="content-section">
-                    <h2 class="view-title"><i class="fa-solid fa-medal"></i> ARCHIVE_GALLERY</h2>
-                    <div class="certs-grid-hub" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                        <img src="CertificateImage/FINXCEL9.0Certificate.jpeg" class="mini-cert" onclick="document.querySelector('[data-target=\'cert-1\']').click()" style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius:12px; cursor:pointer; border: 1px solid var(--glass-border);">
-                        <img src="CertificateImage/Intra-uni-Prog-Contest.jpeg" class="mini-cert" onclick="document.querySelector('[data-target=\'cert-2\']').click()" style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius:12px; cursor:pointer; border: 1px solid var(--glass-border);">
-                        <img src="CertificateImage/LLM AI AGENT.jpeg" class="mini-cert" onclick="document.querySelector('[data-target=\'cert-3\']').click()" style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius:12px; cursor:pointer; border: 1px solid var(--glass-border);">
-                        <img src="CertificateImage/AI Agent for beginners.jpg" class="mini-cert" onclick="document.querySelector('[data-target=\'cert-4\']').click()" style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius:12px; cursor:pointer; border: 1px solid var(--glass-border);">
-                        <img src="CertificateImage/CaptureTheFlag.jpg" class="mini-cert" onclick="document.querySelector('[data-target=\'cert-5\']').click()" style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius:12px; cursor:pointer; border: 1px solid var(--glass-border);">
-                    </div>
-                </div>
-
-                <!-- FILES VIEW -->
-                <div id="files-view" class="content-section">
-                    <h2 class="view-title"><i class="fa-solid fa-server"></i> EXPLORER_HUB</h2>
-                    <div id="main-file-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                        <!-- Populated by script.js -->
-                    </div>
-                </div>
-
-                <!-- PROJECT VIEWS -->
-                <div id="project-1" class="content-section">
-                    <div class="btn-back" onclick="document.querySelector('[data-target=\'projects-overview\']').click()">
-                        <i class="fa-solid fa-arrow-left"></i> BACK_TO_HUB
-                    </div>
-                    <h2 class="view-title"><i class="fa-brands fa-java"></i> JAVA PROJECT</h2>
-                    <div class="project-details">
-                        <p class="project-desc">Student Management System</p>
-                        <div class="project-actions" style="margin-top: 30px;">
-                            <a href="https://github.com/Zahedul-zane/StudentManagementSystem" class="cyber-link" target="_blank" title="View on GitHub"><i class="fa-brands fa-github"></i></a>
-                            <a href="https://zahedul-zane.github.io/StudentManagementSystem" target="_blank" rel="noopener noreferrer" class="btn-visit">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i> VISIT_SITE
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="project-2" class="content-section">
-                    <div class="btn-back" onclick="document.querySelector('[data-target=\'projects-overview\']').click()">
-                        <i class="fa-solid fa-arrow-left"></i> BACK_TO_HUB
-                    </div>
-                    <h2 class="view-title"><i class="fa-solid fa-code"></i> LLM PROJECT</h2>
-                    <div class="project-details">
-                        <p class="project-desc">LLM-based AI engine development</p>
-                        <div class="project-actions" style="margin-top: 30px;">
-                            <a href="https://github.com/Zahedul-zane/LLM-Based-AI-Engine-Development-EWU-Agent-RAG-" class="cyber-link" target="_blank" title="View on GitHub"><i class="fa-brands fa-github"></i></a>
-                            <a href="https://zahedul-zane.github.io/LLM-Based-AI-Engine-Development-EWU-Agent-RAG-" target="_blank" rel="noopener noreferrer" class="btn-visit">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i> VISIT_SITE
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="project-3" class="content-section">
-                    <div class="btn-back" onclick="document.querySelector('[data-target=\'projects-overview\']').click()">
-                        <i class="fa-solid fa-arrow-left"></i> BACK_TO_HUB
-                    </div>
-                    <h2 class="view-title"><i class="fa-solid fa-code"></i> Course_Selection</h2>
-                    <div class="project-details">
-                        <p class="project-desc">Course Selection Platform</p>
-                        <div class="project-actions" style="margin-top: 30px;">
-                            <a href="https://github.com/Zahedul-zane/CourseSelection" class="cyber-link" target="_blank" title="View on GitHub"><i class="fa-brands fa-github"></i></a>
-                            <a href="https://zahedul-zane.github.io/CourseSelection" target="_blank" rel="noopener noreferrer" class="btn-visit">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i> VISIT_SITE
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="project-4" class="content-section">
-                    <div class="btn-back" onclick="document.querySelector('[data-target=\'projects-overview\']').click()">
-                        <i class="fa-solid fa-arrow-left"></i> BACK_TO_HUB
-                    </div>
-                    <h2 class="view-title"><i class="fa-solid fa-database"></i> DATA STRUCTURE PROJECT</h2>
-                    <div class="project-details">
-                        <p class="project-desc">Implementation of Data Structure</p>
-                        <div class="project-actions" style="margin-top: 30px;">
-                            <a href="https://github.com/Zahedul-zane/Data-Structure-Project" class="cyber-link" target="_blank" title="View on GitHub"><i class="fa-brands fa-github"></i></a>
-                            <a href="https://zahedul-zane.github.io/Data-Structure-Project" target="_blank" rel="noopener noreferrer" class="btn-visit">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i> VISIT_SITE
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-
-
-                <!-- CERTIFICATE VIEWS -->
-                <div id="cert-1" class="content-section">
-                    <div class="btn-back" onclick="document.querySelector('[data-target=\'certs-overview\']').click()">
-                        <i class="fa-solid fa-arrow-left"></i> BACK_TO_GALLERY
-                    </div>
-                    <h2 class="view-title"><i class="fa-solid fa-award"></i> FINXCEL 9.0</h2>
-                    <div class="cert-detail-view">
-                        <img src="CertificateImage/FINXCEL9.0Certificate.jpeg" alt="Business Analytics" class="large-cert-img view-cert-btn" data-cert-img="CertificateImage/FINXCEL9.0Certificate.jpeg">
-                        <p>Inter university Excel based training compitition - Issued 2025</p>
-                    </div>
-                </div>
-
-
-                <div id="cert-2" class="content-section">
-                    <div class="btn-back" onclick="document.querySelector('[data-target=\'certs-overview\']').click()">
-                        <i class="fa-solid fa-arrow-left"></i> BACK_TO_GALLERY
-                    </div>
-                    <h2 class="view-title"><i class="fa-solid fa-award"></i> Intra-uni Contest</h2>
-                    <div class="cert-detail-view">
-                        <img src="CertificateImage/Intra-uni-Prog-Contest.jpeg" alt="Programming Contest Cert" class="large-cert-img view-cert-btn" data-cert-img="CertificateImage/Intra-uni-Prog-Contest.jpeg">
-                        <p>Intra-University Programming Contest - Issued 2025</p>
-                    </div>
-                </div>
-
-
-                <div id="cert-3" class="content-section">
-                    <div class="btn-back" onclick="document.querySelector('[data-target=\'certs-overview\']').click()">
-                        <i class="fa-solid fa-arrow-left"></i> BACK_TO_GALLERY
-                    </div>
-                    <h2 class="view-title"><i class="fa-solid fa-award"></i> LLM AI Agent</h2>
-                    <div class="cert-detail-view">
-                        <img src="CertificateImage/LLM AI AGENT.jpeg" alt="LLM AI AGENT" class="large-cert-img view-cert-btn" data-cert-img="CertificateImage/LLM AI AGENT.jpeg">
-                        <p>LLM-based AI engine development - Issued 2026</p>
-                    </div>
-                </div>
-
-
-                <div id="cert-4" class="content-section">
-                    <div class="btn-back" onclick="document.querySelector('[data-target=\'certs-overview\']').click()">
-                        <i class="fa-solid fa-arrow-left"></i> BACK_TO_GALLERY
-                    </div>
-                    <h2 class="view-title"><i class="fa-solid fa-award"></i> AI Agent for beginners</h2>
-                    <div class="cert-detail-view">
-                        <img src="CertificateImage/AI Agent for beginners.jpg" alt="AI Agent for beginners" class="large-cert-img view-cert-btn" data-cert-img="CertificateImage/AI Agent for beginners.jpg">
-                        <p>AI Agent for beginners - Issued 2026</p>
-                    </div>
-                </div>
-
-
-                <div id="cert-5" class="content-section">
-                    <div class="btn-back" onclick="document.querySelector('[data-target=\'certs-overview\']').click()">
-                        <i class="fa-solid fa-arrow-left"></i> BACK_TO_GALLERY
-                    </div>
-                    <h2 class="view-title"><i class="fa-solid fa-award"></i> Capture The Flag</h2>
-                    <div class="cert-detail-view">
-                        <img src="CertificateImage/CaptureTheFlag.jpg" alt="CaptureTheFlag" class="large-cert-img view-cert-btn" data-cert-img="CertificateImage/CaptureTheFlag.jpg">
-                        <p>Capture The Flag - Issued 2026</p>
-                    </div>
-                </div>
-
-            </section>
-
-            <!-- Right Sidebar: Stats & Contact -->
-            <aside class="rightSide">
-
-                <div class="card stats scroll-reveal">
-                    <div class="stat-unit">
-                        <span class="num glitch-num" data-val="25">0</span>
-                        <span class="label">MODULES</span>
-                    </div>
-
-                    <div class="stat-sep" style="height: 1px; width: 60px; margin: 20px 0;"></div>
-                    <div class="stat-unit">
-                        <span class="num glitch-num" data-val="100">0</span>
-                        <span class="label">UPTIME</span>
-                    </div>
-                </div>
-
-                <!-- Memberships -->
-                <div class="card scroll-reveal" style="margin-top: 24px;">
-                    <h3 class="section-title" style="font-size: 1.1rem; margin-top: 0;"><i class="fa-solid fa-network-wired"></i> MEMBERSHIPS</h3>
-                    <div class="memberships-grid" style="grid-template-columns: 1fr; gap: 15px;">
+                <!-- HOME / IDENTITY -->
+                <div class="hero-content">
+                    <div class="orbit-container">
+                        <!-- Concentric Orbits -->
+                        <div class="orbit orbit-1"></div>
+                        <div class="orbit orbit-2"></div>
+                        <div class="orbit orbit-3"></div>
                         
-                        <aside class="membership-sidebar">
-                            <a href="https://www.facebook.com/groups/1562102301221122" target="_blank" rel="noopener noreferrer" class="membership-img-link">
-                                <img src="Membership image/EWUCoPC.jpg" alt="EWU CoPC" class="membership-img" />
-                            </a>
-                            <h4 style="color:var(--neon-green); font-family:var(--font-display); font-size:0.9rem; margin: 10px 0;">EWU CoPC</h4>
-                        </aside>
+                        <!-- Tech Icons (Floating/Orbiting) -->
+                        <div class="tech-icon" style="--d: 0s; --r: 20vh; --c: #06b6d4;"><i class="fa-brands fa-react"></i><span>React</span></div>
+                        <div class="tech-icon" style="--d: -4s; --r: 32vh; --c: #ffffff;"><i class="fa-solid fa-n"></i><span>Next.js</span></div>
+                        <div class="tech-icon" style="--d: -8s; --r: 45vh; --c: #3178c6;"><i class="fa-brands fa-square-js"></i><span>TypeScript</span></div>
+                        <div class="tech-icon" style="--d: -12s; --r: 32vh; --c: #3776ab;"><i class="fa-brands fa-python"></i><span>Python</span></div>
+                        <div class="tech-icon" style="--d: -16s; --r: 20vh; --c: #2496ed;"><i class="fa-brands fa-docker"></i><span>Docker</span></div>
+                        <div class="tech-icon" style="--d: -20s; --r: 45vh; --c: #f05032;"><i class="fa-brands fa-git-alt"></i><span>Git</span></div>
+                        <div class="tech-icon" style="--d: -24s; --r: 32vh; --c: #05998b;"><i class="fa-solid fa-bolt"></i><span>FastAPI</span></div>
+                        <div class="tech-icon" style="--d: -28s; --r: 20vh; --c: #339933;"><i class="fa-brands fa-node-js"></i><span>Node.js</span></div>
+                        <div class="tech-icon" style="--d: -32s; --r: 32vh; --c: #06b6d4;"><i class="fa-solid fa-wind"></i><span>Tailwind</span></div>
+                        <div class="tech-icon" style="--d: -36s; --r: 45vh; --c: #00a67e;"><i class="fa-solid fa-link"></i><span>LangChain</span></div>
+                    </div>
 
-                        <aside class="membership-sidebar">
-                            <a href="https://www.facebook.com/EWUCSC" target="_blank" rel="noopener noreferrer" class="membership-img-link">
-                                <img src="Membership image/EWUCSC.jpg" alt="EWU CSC" class="membership-img" />
-                            </a>
-                            <h4 style="color:var(--neon-green); font-family:var(--font-display); font-size:0.9rem; margin: 10px 0;">EWU CSC</h4>
-                        </aside>
+                    <div class="combined-profile">
+                        <div class="hero-intro reveal-text">HELLO! I'M</div>
+                        <h1 class="hero-name reveal-text" id="hero-name-target">
+                            <span>ZAHEDUL</span> <span>ISLAM</span>
+                        </h1>
+                        <p class="hero-subtitle reveal-text">A passionate Full-Stack & ML Developer</p>
+                        
+                        <div class="hero-main-title">
+                            <div class="hero-name-bar">ZAHEDUL ISLAM</div>
+                            <span class="builder-text" data-scroll-speed="0.2">Programmer</span>
+                            <div class="dot-nav">
+                                <span></span><span></span><span class="active"></span><span></span>
+                            </div>
+                        </div>
 
-                        <aside class="membership-sidebar">
-                            <a href="https://www.facebook.com/EWURoboticsClub" target="_blank" rel="noopener noreferrer" class="membership-img-link">
-                                <img src="Membership image/EWURC.png" alt="EWU RC" class="membership-img" />
-                            </a>
-                            <h4 style="color:var(--neon-green); font-family:var(--font-display); font-size:0.9rem; margin: 10px 0;">EWU RC</h4>
-                        </aside>
+                        <div class="about-text reveal-text">
+                            <p>Building intelligent systems at the intersection of full-stack development and machine learning.</p>
+                        </div>
 
-                        <aside class="membership-sidebar">
-                            <a href="https://www.facebook.com/EWUNRF" target="_blank" rel="noopener noreferrer" class="membership-img-link">
-                                <img src="Membership image/EWUNRF.png" alt="EWU NRF" class="membership-img" />
+                        <div class="hero-btns-row">
+                            <a href="#contact" class="btn-lounge" data-magnetic>
+                                <i class="fa-solid fa-door-open"></i> Lounge
                             </a>
-                            <h4 style="color:var(--neon-green); font-family:var(--font-display); font-size:0.9rem; margin: 10px 0;">EWU NRF</h4>
-                        </aside>
+                            <a href="#" class="btn-resume" data-magnetic>
+                                <i class="fa-solid fa-file-pdf"></i> Resume & CV
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <div id="contact" class="card contact scroll-reveal" style="margin-top: 24px;">
-                    <h3>ESTABLISH_UPLINK</h3>
-                    <a href="mailto:hello@zahedul.dev" class="terminal-input" data-magnetic style="font-size: 1rem; padding: 12px 15px;">
-                        <span class="prompt">></span> github@Zahedul<span class="cursor-blink">_</span>
+            <!-- PERSONA SECTION -->
+            <section id="persona" class="section persona-section scroll-reveal">
+                <div class="section-label">WHO I AM</div>
+                <h2 class="large-title">Persona</h2>
+                
+                <div class="persona-grid">
+                    <div class="persona-bio">
+                        <h3>Hi, I'm Zahedul</h3>
+                        <p>Undergraduate student building at the intersection of full-stack engineering and applied ML. I specialize in high-performance digital infrastructures and immersive interfaces.</p>
+                        <div class="persona-pills">
+                            <span class="pill">Dhaka, Bangladesh</span>
+                            <span class="pill">EWU · 2026</span>
+                        </div>
+                    </div>
+                    
+                    <div class="persona-education">
+                        <div class="edu-card card">
+                            <div class="edu-icon">EWU</div>
+                            <div class="edu-info">
+                                <h4 class="uni-name">East West University</h4>
+                                <p class="degree">Bachelors of Science in Computer Science</p>
+                                <div class="edu-meta">
+                                    <span class="year">2022 — 2026</span>
+                                    <span class="tag-status">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="persona-stats">
+                    <div class="stat-box card">
+                        <span class="stat-num">10+</span>
+                        <span class="stat-label">Projects Built</span>
+                    </div>
+                    <div class="stat-box card">
+                        <span class="stat-num">20+</span>
+                        <span class="stat-label">GitHub Stars</span>
+                    </div>
+                    <div class="stat-box card">
+                        <span class="stat-num">50+</span>
+                        <span class="stat-label">Problem Solved</span>
+                    </div>
+                    <div class="stat-box card">
+                        <span class="stat-num">5+</span>
+                        <span class="stat-label">Certificates</span>
+                    </div>
+                </div>
+
+                <div class="contributions-graph card">
+                    <div class="graph-header">
+                        <span><i class="fa-brands fa-github"></i> GITHUB CONTRIBUTIONS</span>
+                    </div>
+                    <div class="graph-placeholder">
+                        <div class="github-grid"></div>
+                    </div>
+                </div>
+
+                <div class="find-me-grid">
+                    <a href="https://github.com/Zahedul-zane" class="social-mini-card card" target="_blank">
+                        <i class="fa-brands fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://linkedin.com/in/zahedul-islam-153165374/" class="social-mini-card card" target="_blank">
+                        <i class="fa-brands fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="#" class="social-mini-card card" target="_blank">
+                        <i class="fa-solid fa-code"></i>
+                        <span>LeetCode</span>
                     </a>
                 </div>
-            </aside>
+            </section>
+
+            <!-- PROJECTS SECTION -->
+            <section id="projects" class="section projects-section scroll-reveal">
+                <div class="section-label">PORTFOLIO</div>
+                <h2 class="large-title">Selected Works</h2>
+                
+                <div class="projects-grid-high">
+                    <!-- Project 1 -->
+                    <div class="project-card-premium">
+                        <div class="project-image">
+                            <img src="background/silent-hill-2.3840x2160.mp4" alt="JAVA_PROJECT" style="background: #111; object-fit: cover; width: 100%; height: 100%;">
+                        </div>
+                        <div class="project-info">
+                            <h3>Student Management System</h3>
+                            <p>Real-time student intelligence platform with integrated database management, automated reporting, and interactive dashboard for academic monitoring.</p>
+                            <div class="project-tags">
+                                <span class="tag-chip">JAVA</span>
+                                <span class="tag-chip">SQL</span>
+                                <span class="tag-chip">UI/UX</span>
+                            </div>
+                            <div class="project-footer">
+                                <a href="https://github.com/Zahedul-zane/StudentManagementSystem" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+                                <a href="https://zahedul-zane.github.io/StudentManagementSystem" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="project-card-premium">
+                        <div class="project-image">
+                            <div style="background: linear-gradient(45deg, #06b6d4, #a855f7); width: 100%; height: 100%;"></div>
+                        </div>
+                        <div class="project-info">
+                            <h3>LLM AI Agent</h3>
+                            <p>ML-driven AI engine development using RAG systems and LangGraph for automated, context-aware interactions and intelligent system management.</p>
+                            <div class="project-tags">
+                                <span class="tag-chip">PYTHON</span>
+                                <span class="tag-chip">LLM</span>
+                                <span class="tag-chip">RAG</span>
+                            </div>
+                            <div class="project-footer">
+                                <a href="https://github.com/Zahedul-zane/LLM-Based-AI-Engine-Development-EWU-Agent-RAG-" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+                                <a href="https://zahedul-zane.github.io/LLM-Based-AI-Engine-Development-EWU-Agent-RAG-" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="project-card-premium">
+                        <div class="project-image">
+                            <div style="background: linear-gradient(45deg, #f97316, #ef4444); width: 100%; height: 100%;"></div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Course Selection</h3>
+                            <p>Full-stack educational platform built for streamlined academic registration, course discovery, and student enrollment management.</p>
+                            <div class="project-tags">
+                                <span class="tag-chip">WEB</span>
+                                <span class="tag-chip">NODE</span>
+                            </div>
+                            <div class="project-footer">
+                                <a href="https://github.com/Zahedul-zane/CourseSelection" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+                                <a href="https://zahedul-zane.github.io/CourseSelection" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="project-card-premium">
+                        <div class="project-image">
+                            <div style="background: linear-gradient(45deg, #3b82f6, #10b981); width: 100%; height: 100%;"></div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Data Structure Project</h3>
+                            <p>Comprehensive implementation and visualization of core data structures, optimized for performance and educational demonstration.</p>
+                            <div class="project-tags">
+                                <span class="tag-chip">C++</span>
+                                <span class="tag-chip">ALGO</span>
+                            </div>
+                            <div class="project-footer">
+                                <a href="https://github.com/Zahedul-zane/Data-Structure-Project" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+                                <a href="https://zahedul-zane.github.io/Data-Structure-Project" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EXPERTISE / FORGE -->
+            <section id="expertise" class="section forge-section scroll-reveal">
+                <div class="section-label">EXPERTISE</div>
+                <h2 class="large-title">Technical Expertise</h2>
+                
+                <div class="forge-container">
+                    <div class="tech-galaxy">
+                        <!-- Central Core -->
+                        <div class="galaxy-center"></div>
+
+                        <!-- Orbit Rings & Nodes -->
+                        <div class="orbit-ring" style="width: 25vh; height: 25vh;">
+                            <div class="tech-node-orbit" style="--speed: 25s; --delay: 0s;">
+                                <div class="tech-node" style="--c: #06b6d4;"><span>React</span></div>
+                            </div>
+                        </div>
+
+                        <div class="orbit-ring" style="width: 45vh; height: 45vh;">
+                            <div class="tech-node-orbit" style="--speed: 35s; --delay: -5s;">
+                                <div class="tech-node" style="--c: #a855f7;"><span>Python</span></div>
+                            </div>
+                        </div>
+
+                        <div class="orbit-ring" style="width: 65vh; height: 65vh;">
+                            <div class="tech-node-orbit" style="--speed: 50s; --delay: -10s;">
+                                <div class="tech-node" style="--c: #f97316;"><span>Node.js</span></div>
+                            </div>
+                        </div>
+
+                        <div class="orbit-ring" style="width: 85vh; height: 85vh;">
+                            <div class="tech-node-orbit" style="--speed: 60s; --delay: -15s;">
+                                <div class="tech-node" style="--c: #10b981;"><span>SQL</span></div>
+                            </div>
+                        </div>
+
+                        <div class="orbit-ring" style="width: 35vh; height: 35vh;">
+                            <div class="tech-node-orbit" style="--speed: 30s; --delay: -7s;">
+                                <div class="tech-node" style="--c: #ef4444;"><span>Docker</span></div>
+                            </div>
+                        </div>
+
+                        <div class="orbit-ring" style="width: 55vh; height: 55vh;">
+                            <div class="tech-node-orbit" style="--speed: 45s; --delay: -12s;">
+                                <div class="tech-node" style="--c: #00d9ff;"><span>Next.js</span></div>
+                            </div>
+                        </div>
+
+                        <div class="orbit-ring" style="width: 75vh; height: 75vh;">
+                            <div class="tech-node-orbit" style="--speed: 55s; --delay: -20s;">
+                                <div class="tech-node" style="--c: #fbbf24;"><span>FastAPI</span></div>
+                            </div>
+                        </div>
+
+                        <div class="orbit-ring" style="width: 95vh; height: 95vh;">
+                            <div class="tech-node-orbit" style="--speed: 70s; --delay: -2s;">
+                                <div class="tech-node" style="--c: #ffffff;"><span>Three.js</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABOUT / PERSONA SECTION -->
+
+
+            <!-- EXPERIENCE / CREDENTIALS -->
+            <section id="experience" class="section experience-section scroll-reveal">
+                <div class="section-label">ACHIEVEMENTS</div>
+                <h2 class="large-title">My Credentials</h2>
+                <div class="archive-header">
+                    <span class="year-badge">2025 - 2026</span>
+                    <span class="cert-count">5 certs</span>
+                </div>
+                
+                <div class="credentials-timeline">
+                    <!-- Vertical Line -->
+                    <div class="timeline-line"></div>
+
+                    <!-- Credential 1 -->
+                    <div class="cred-item stagger-item" style="--c: #10b981; --delay: 0.1s;">
+                        <div class="cred-dot"></div>
+                        <div class="cred-card view-cert-btn" 
+                             data-cert-img="CertificateImage/FINXCEL9.0Certificate.jpeg"
+                             data-title="FINXCEL 9.0 (Business Analytics)"
+                             data-issuer="Business Analytics Competition"
+                             data-date="JAN 24, 2025"
+                             data-tags="EXCEL,DATA,ANALYTICS"
+                             data-desc="Successfully analyzed multi-dimensional business datasets to identify growth opportunities and optimize operational efficiency during the FINXCEL 9.0 national competition."
+                             data-verify="j277hu5az82y">
+                            <div class="cred-thumb">
+                                <img src="CertificateImage/FINXCEL9.0Certificate.jpeg" alt="FINXCEL">
+                            </div>
+                            <div class="cred-main">
+                                <div class="cred-header">
+                                    <h3>FINXCEL 9.0 (Business Analytics)</h3>
+                                    <span class="cred-date">JAN 24, 2025</span>
+                                </div>
+                                <span class="issuer">Business Analytics Competition</span>
+                                <div class="cred-tags">
+                                    <span class="tag-mini">EXCEL</span>
+                                    <span class="tag-mini">DATA</span>
+                                    <span class="tag-mini">ANALYTICS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cred-item stagger-item" style="--c: #06b6d4; --delay: 0.2s;">
+                        <div class="cred-dot"></div>
+                        <div class="cred-card view-cert-btn" 
+                             data-cert-img="CertificateImage/Intra-uni-Prog-Contest.jpeg"
+                             data-title="Intra-University Programming Contest"
+                             data-issuer="EWU CoPC"
+                             data-date="MAR 28, 2025"
+                             data-tags="ALGO,CONTEST,C++"
+                             data-desc="Achieved high ranking in the East West University Intra-University Programming Contest, demonstrating advanced problem-solving skills in C++ and algorithmic logic."
+                             data-verify="v882ks1la93z">
+                            <div class="cred-thumb">
+                                <img src="CertificateImage/Intra-uni-Prog-Contest.jpeg" alt="Contest">
+                            </div>
+                            <div class="cred-main">
+                                <div class="cred-header">
+                                    <h3>Intra-University Programming Contest</h3>
+                                    <span class="cred-date">MAR 28, 2025</span>
+                                </div>
+                                <span class="issuer" style="color: #06b6d4;">EWU CoPC</span>
+                                <div class="cred-tags">
+                                    <span class="tag-mini">ALGO</span>
+                                    <span class="tag-mini">CONTEST</span>
+                                    <span class="tag-mini">C++</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cred-item stagger-item" style="--c: #a855f7; --delay: 0.3s;">
+                        <div class="cred-dot"></div>
+                        <div class="cred-card view-cert-btn" 
+                             data-cert-img="CertificateImage/LLM AI AGENT.jpeg"
+                             data-title="LLM AI Agent Development"
+                             data-issuer="DeepLearning.AI"
+                             data-date="FEB 15, 2026"
+                             data-tags="AI,LLM,PYTHON"
+                             data-desc="Completed advanced training on building autonomous AI agents using Large Language Models, RAG systems, and LangGraph for complex task automation."
+                             data-verify="a991mx3bc77x">
+                            <div class="cred-thumb">
+                                <img src="CertificateImage/LLM AI AGENT.jpeg" alt="LLM AI">
+                            </div>
+                            <div class="cred-main">
+                                <div class="cred-header">
+                                    <h3>LLM AI Agent Development</h3>
+                                    <span class="cred-date">FEB 15, 2026</span>
+                                </div>
+                                <span class="issuer" style="color: #a855f7;">DeepLearning.AI</span>
+                                <div class="cred-tags">
+                                    <span class="tag-mini">AI</span>
+                                    <span class="tag-mini">LLM</span>
+                                    <span class="tag-mini">PYTHON</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cred-item stagger-item" style="--c: #fbbf24; --delay: 0.4s;">
+                        <div class="cred-dot"></div>
+                        <div class="cred-card view-cert-btn" 
+                             data-cert-img="CertificateImage/AI Agent for beginners.jpg"
+                             data-title="AI Agent for Beginners"
+                             data-issuer="Amazon Web Services"
+                             data-date="DEC 10, 2025"
+                             data-tags="AI,CLOUD,TRAINED"
+                             data-desc="Fundamentals of AI Agent orchestration within the AWS ecosystem, focusing on Bedrock and automated cloud-based intelligence workflows."
+                             data-verify="b662qt1op44v">
+                            <div class="cred-thumb">
+                                <img src="CertificateImage/AI Agent for beginners.jpg" alt="AI Agent">
+                            </div>
+                            <div class="cred-main">
+                                <div class="cred-header">
+                                    <h3>AI Agent for Beginners</h3>
+                                    <span class="cred-date">DEC 10, 2025</span>
+                                </div>
+                                <span class="issuer" style="color: #fbbf24;">Amazon Web Services</span>
+                                <div class="cred-tags">
+                                    <span class="tag-mini">AI</span>
+                                    <span class="tag-mini">CLOUD</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cred-item stagger-item" style="--c: #ef4444; --delay: 0.5s;">
+                        <div class="cred-dot"></div>
+                        <div class="cred-card view-cert-btn" 
+                             data-cert-img="CertificateImage/CaptureTheFlag.jpg"
+                             data-title="Capture The Flag (CyberSecurity)"
+                             data-issuer="CyberSecurity Contest"
+                             data-date="NOV 05, 2025"
+                             data-tags="SEC,CTF,CONTEST"
+                             data-desc="Demonstrated technical proficiency in penetration testing, cryptography, and network security during the Capture The Flag cybersecurity challenge."
+                             data-verify="s338lp0wa55q">
+                            <div class="cred-thumb">
+                                <img src="CertificateImage/CaptureTheFlag.jpg" alt="CTF">
+                            </div>
+                            <div class="cred-main">
+                                <div class="cred-header">
+                                    <h3>Capture The Flag (CyberSecurity)</h3>
+                                    <span class="cred-date">NOV 05, 2025</span>
+                                </div>
+                                <span class="issuer" style="color: #ef4444;">CyberSecurity Contest</span>
+                                <div class="cred-tags">
+                                    <span class="tag-mini">SEC</span>
+                                    <span class="tag-mini">CTF</span>
+                                    <span class="tag-mini">CONTEST</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FILES EXPLORER SECTION -->
+            <section id="explorer" class="section explorer-section scroll-reveal">
+                <div class="section-label">SYSTEM_RESOURCES</div>
+                <h2 class="large-title">Modules Hub</h2>
+                <div id="main-file-grid" class="projects-grid-high">
+                    <!-- Populated by script.js -->
+                </div>
+            </section>
+
+            <!-- REACH OUT SECTION -->
+            <section id="contact" class="section contact-section scroll-reveal">
+                <div class="section-label">SKILLS · WORKFLOW · IDENTITY</div>
+                <h2 class="large-title">Reach Out</h2>
+                
+                <div class="workflow-container">
+                    <div class="workflow-step" style="--c: #fbbf24;">
+                        <div class="step-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                        <span class="step-label">IDEA</span>
+                    </div>
+                    <div class="workflow-line"></div>
+                    <div class="workflow-step" style="--c: #f97316;">
+                        <div class="step-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                        <span class="step-label">PLAN</span>
+                    </div>
+                    <div class="workflow-line"></div>
+                    <div class="workflow-step" style="--c: #a855f7;">
+                        <div class="step-icon"><i class="fa-solid fa-brain"></i></div>
+                        <span class="step-label">AI HELP</span>
+                    </div>
+                    <div class="workflow-line"></div>
+                    <div class="workflow-step" style="--c: #06b6d4;">
+                        <div class="step-icon"><i class="fa-solid fa-code"></i></div>
+                        <span class="step-label">CODE</span>
+                    </div>
+                    <div class="workflow-line"></div>
+                    <div class="workflow-step" style="--c: #ec4899;">
+                        <div class="step-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                        <span class="step-label">REVIEW</span>
+                    </div>
+                    <div class="workflow-line"></div>
+                    <div class="workflow-step" style="--c: #ef4444;">
+                        <div class="step-icon"><i class="fa-solid fa-flask"></i></div>
+                        <span class="step-label">TEST</span>
+                    </div>
+                    <div class="workflow-line"></div>
+                    <div class="workflow-step" style="--c: #10b981;">
+                        <div class="step-icon"><i class="fa-solid fa-book-open"></i></div>
+                        <span class="step-label">LEARN</span>
+                    </div>
+                </div>
+
+                <div class="contact-grid">
+                    <div class="contact-card card">
+                        <h3>ESTABLISH_UPLINK</h3>
+                        <div class="contact-btns">
+                            <a href="mailto:hello@zahedul.dev" class="btn-resume" data-magnetic>
+                                <i class="fa-solid fa-envelope"></i> Mail
+                            </a>
+                            <a href="https://github.com/Zahedul-zane" class="btn-lounge" data-magnetic target="_blank">
+                                <i class="fa-brands fa-github"></i> GitHub
+                            </a>
+                            <a href="https://linkedin.com/in/zahedul-islam-153165374/" class="btn-lounge" data-magnetic target="_blank">
+                                <i class="fa-brands fa-linkedin"></i> LinkedIn
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </main>
 
         <footer>
@@ -438,11 +562,39 @@
 
 
 
-    <!-- Image Modal -->
-    <div class="cert-modal">
-        <div class="modal-content">
+    <!-- Image Modal (Detailed Preview) -->
+    <div class="cert-modal" id="cert-detail-modal">
+        <div class="modal-content cert-detail-content">
             <span class="close-modal">&times;</span>
-            <img src="" alt="Certificate" class="modal-img">
+            <div class="cert-detail-grid">
+                <div class="cert-preview">
+                    <img src="" alt="Certificate" class="modal-img">
+                </div>
+                <div class="cert-info-panel">
+                    <div class="detail-tags" id="modal-tags"></div>
+                    <h2 id="modal-title">TITLE_LOADING</h2>
+                    <div class="detail-meta">
+                        <span id="modal-issuer" class="highlight-issuer">ISSUER</span> — <span id="modal-date">DATE</span>
+                    </div>
+                    <p id="modal-description" class="detail-desc">
+                        Successfully completed the official certification...
+                    </p>
+                    <div class="detail-footer">
+                        <div class="verify-code">
+                            <i class="fa-solid fa-shield-check"></i>
+                            <span id="modal-verify-code">CODE_NULL</span>
+                        </div>
+                        <a href="#" target="_blank" class="btn-verify" id="modal-verify-link">
+                             Verify <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-nav">
+                <div class="nav-prev"><i class="fa-solid fa-chevron-left"></i> Previous</div>
+                <div class="nav-count"><span id="current-idx">1</span> / <span id="total-idx">5</span> · <i class="fa-solid fa-keyboard"></i> Esc</div>
+                <div class="nav-next">Next <i class="fa-solid fa-chevron-right"></i></div>
+            </div>
         </div>
     </div>
 

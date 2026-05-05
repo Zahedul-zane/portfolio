@@ -1,115 +1,169 @@
 // Neon Core System
 
-// --- Cyber Quantum Core Background (Disabled: Using Video) ---
-// Canvas logic removed to optimize performance.
-
 // Initialize PDF.js worker
 if (typeof pdfjsLib !== 'undefined') {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 }
 
-
 // DOM Elements
 const cursorDot = document.querySelector('.cursor-dot');
 const cursorRing = document.querySelector('.cursor-ring');
-const cyberGrid = document.querySelector('.cyber-grid-bg');
 const mouseGlow = document.querySelector('.mouse-glow');
 const magneticElems = document.querySelectorAll('[data-magnetic]');
 const scrollElements = document.querySelectorAll('.scroll-reveal');
 const counters = document.querySelectorAll('.num');
+const headerLinks = document.querySelectorAll('.nav-link');
+const allSections = document.querySelectorAll('section[id]');
+
+// 0. Reveal Text Pre-processing
+document.querySelectorAll('.reveal-text').forEach(el => {
+    // Skip if already has spans (manually defined)
+    if (el.children.length > 0) return;
+    
+    const text = el.innerText;
+    el.innerHTML = '';
+    text.split(' ').forEach((word, i) => {
+        const span = document.createElement('span');
+        span.innerText = word + (i < text.split(' ').length - 1 ? '\u00A0' : '');
+        el.appendChild(span);
+    });
+});
 
 // 1. Cyber Cursor & Grid Parallax
 document.addEventListener('mousemove', (e) => {
     const x = e.clientX;
     const y = e.clientY;
     
-    cursorDot.style.left = `${x}px`;
-    cursorDot.style.top = `${y}px`;
+    if (cursorDot) {
+        cursorDot.style.left = `${x}px`;
+        cursorDot.style.top = `${y}px`;
+    }
     
-    // Ring follows with delay
-    cursorRing.animate({
-        left: `${x}px`,
-        top: `${y}px`
-    }, { duration: 400, fill: "forwards" });
+    if (cursorRing) {
+        cursorRing.animate({
+            left: `${x}px`,
+            top: `${y}px`
+        }, { duration: 400, fill: "forwards" });
+    }
 
-    // Ambient mouse spotlight
     if(mouseGlow) {
         mouseGlow.style.left = `${x}px`;
         mouseGlow.style.top = `${y}px`;
     }
 
-    // Dynamic Magnetic Force Field (Event Delegation)
     const mag = e.target.closest('[data-magnetic]');
     if(mag) {
         const rect = mag.getBoundingClientRect();
         const mx = e.clientX - rect.left - rect.width / 2;
         const my = e.clientY - rect.top - rect.height / 2;
-        mag.style.transform = `translate(${mx * 0.3}px, ${my * 0.3}px)`;
-        cursorRing.classList.add('active');
+        
+        // Smoother, more responsive magnetic pull
+        mag.style.transition = 'transform 0.1s cubic-bezier(0.23, 1, 0.32, 1)';
+        mag.style.transform = `translate(${mx * 0.4}px, ${my * 0.4}px)`;
+        if (cursorRing) cursorRing.classList.add('active');
     }
 });
 
-// Reset Magnetic on mouseout
 document.addEventListener('mouseout', (e) => {
     const mag = e.target.closest('[data-magnetic]');
     if(mag) {
+        mag.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
         mag.style.transform = 'translate(0, 0)';
-        cursorRing.classList.remove('active');
+        if (cursorRing) cursorRing.classList.remove('active');
     }
 });
 
-// Click Spark Effect
 document.addEventListener('mousedown', () => {
-    cursorRing.classList.add('click');
-    cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+    if (cursorRing) cursorRing.classList.add('click');
+    if (cursorDot) cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
 });
 document.addEventListener('mouseup', () => {
-    cursorRing.classList.remove('click');
-    cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+    if (cursorRing) cursorRing.classList.remove('click');
+    if (cursorDot) cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
 });
 
-// Header Navigation Mapping
-const headerLinks = document.querySelectorAll('.nav-link');
-headerLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const href = link.getAttribute('href');
-        let targetId = '';
-        
-        if (href === '#home') targetId = 'home-view';
-        else if (href === '#profile') targetId = 'home-view'; // Scroll to profile part?
-        else if (href === '#work') targetId = 'projects-overview';
-        else if (href === '#certificates') targetId = 'certs-overview';
-        else if (href === '#explorer') targetId = 'files-view';
-        
-        if (targetId) {
-            const sidebarItem = document.querySelector(`[data-target="${targetId}"]`);
-            if (sidebarItem) sidebarItem.click();
+// 1.5 Header Scroll Tracking
+window.addEventListener('scroll', () => {
+    let current = '';
+    allSections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.pageYOffset >= (sectionTop - 200)) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    headerLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) {
+            link.classList.add('active');
         }
     });
 });
 
-// 2. System Boot Animation (Scroll Reveal)
+headerLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});
+
+// 2. System Boot Animation (Unique Scroll Reveal)
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = 'translateY(0)';
-            
-            if (entry.target.classList.contains('stats')) {
+            if (entry.target.id === 'contact' || entry.target.classList.contains('persona-stats')) {
                 initCounters();
             }
         }
     });
 }, { threshold: 0.15 });
 
-// Init Styles for Scroll
-scrollElements.forEach(el => {
-    el.style.opacity = 0;
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)';
-    observer.observe(el);
+scrollElements.forEach(el => observer.observe(el));
+
+// 2.5 3D Tilt Effect for Interactive Cards
+function initTilt() {
+    const cards = document.querySelectorAll('.card:not(.contributions-graph), .cred-card, .mini-project');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 12;
+            const rotateY = (centerX - x) / 12;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+    });
+}
+initTilt();
+
+// 2.6 Galactic Parallax Depth & Scroll Parallax
+window.addEventListener('scroll', () => {
+    const spiral = document.querySelector('.spiral-container');
+    const scrolled = window.pageYOffset;
+
+    if (spiral) {
+        spiral.style.transform = `translate(-50%, -50%) rotate(${scrolled * 0.02}deg) scale(${1 + scrolled * 0.0002})`;
+    }
+
+    // Scroll Parallax for specific elements (like BUILDER text)
+    document.querySelectorAll('[data-scroll-speed]').forEach(el => {
+        const speed = el.getAttribute('data-scroll-speed');
+        el.style.transform = `translateY(${scrolled * speed}px)`;
+    });
 });
 
 // 3. Data Parsing (Counters)
@@ -120,7 +174,7 @@ function initCounters() {
     
     counters.forEach(counter => {
         const target = +counter.getAttribute('data-val');
-        const duration = 1500; // ms
+        const duration = 1500;
         const increment = target / (duration / 20);
         
         let current = 0;
@@ -137,115 +191,121 @@ function initCounters() {
         }, 20);
     });
 }
-// 5. Certificate Modal Logic (Updated for Layout)
-const modal = document.querySelector('.cert-modal');
-const modalImg = document.querySelector('.modal-img');
-const closeModal = document.querySelector('.close-modal');
-const certBtns = document.querySelectorAll('.view-cert-btn');
 
-certBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const imgUrl = btn.getAttribute('data-cert-img');
-        if (imgUrl) {
-            modalImg.src = imgUrl;
-            modal.classList.add('active');
-            cursorRing.style.borderColor = '#00f3ff'; // Reset cursor
-        }
-    });
-});
-
-closeModal.addEventListener('click', () => {
-    modal.classList.remove('active');
-});
-
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        modal.classList.remove('active');
-    }
-});
-
-// 6. Sidebar Logic & Dynamic Content Switching
-const folderHeaders = document.querySelectorAll('.folder-header');
-const contentSections = document.querySelectorAll('.content-section');
-
-// Central Switch Function
-function switchView(targetId, activeElement) {
-    if(!targetId) return;
-    
-    // Clear all active states
-    document.querySelectorAll('.tree-item, .folder-header, .side-nav-btn, .nav-link').forEach(el => {
-        el.classList.remove('active');
-    });
-    contentSections.forEach(s => s.classList.remove('active'));
-
-    // Set new active state
-    if(activeElement) {
-        activeElement.classList.add('active');
-        
-        // If it's a child of a folder, make sure the folder is open
-        const parentFolder = activeElement.closest('.tree-folder');
-        if(parentFolder) {
-            parentFolder.classList.add('open');
-        }
-    } else {
-        // Try to find the element based on targetId to set it active
-        const sidebarItem = document.querySelector(`[data-target="${targetId}"]`);
-        if(sidebarItem) {
-            sidebarItem.classList.add('active');
-            const parentFolder = sidebarItem.closest('.tree-folder');
-            if(parentFolder) parentFolder.classList.add('open');
-        }
-    }
-
-    // Sync Header Nav Link
-    let headerLinkTarget = '';
-    if (targetId === 'home-view') headerLinkTarget = '#home';
-    else if (targetId === 'projects-overview' || targetId.startsWith('project-')) headerLinkTarget = '#work';
-    else if (targetId === 'certs-overview' || targetId.startsWith('cert-')) headerLinkTarget = '#certificates';
-    else if (targetId === 'files-view') headerLinkTarget = '#explorer';
-
-    if (headerLinkTarget) {
-        const hLink = document.querySelector(`.nav-link[href="${headerLinkTarget}"]`);
-        if (hLink) hLink.classList.add('active');
-    }
-    
-    const targetSection = document.getElementById(targetId);
-    if(targetSection) {
-        targetSection.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+// 4. GitHub Contributions Mock Grid
+const githubGrid = document.querySelector('.github-grid');
+if (githubGrid) {
+    for (let i = 0; i < 350; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'grid-dot';
+        if (Math.random() > 0.8) dot.classList.add('active');
+        githubGrid.appendChild(dot);
     }
 }
 
-// Toggle Folders
-folderHeaders.forEach(header => {
-    header.addEventListener('click', () => {
-        const folder = header.parentElement;
-        folder.classList.toggle('open');
-        
-        // If folder-header has a target, switch to it
-        const targetId = header.getAttribute('data-target');
-        if(targetId) switchView(targetId, header);
-    });
-});
+// 5. Certificate Modal Logic (Advanced Detailed Overlay)
+const modal = document.querySelector('#cert-detail-modal');
+const modalImg = modal ? modal.querySelector('.modal-img') : null;
+const closeModal = modal ? modal.querySelector('.close-modal') : null;
+const certBtns = document.querySelectorAll('.view-cert-btn');
 
-// Switch Views for Tree Items
-document.querySelectorAll('.tree-item[data-target]').forEach(item => {
-    item.addEventListener('click', () => {
-        const targetId = item.getAttribute('data-target');
-        switchView(targetId, item);
+let currentCertIdx = 0;
+const certData = [];
+
+if (modal) {
+    certBtns.forEach((btn, idx) => {
+        certData.push({
+            img: btn.getAttribute('data-cert-img'),
+            title: btn.getAttribute('data-title'),
+            issuer: btn.getAttribute('data-issuer'),
+            date: btn.getAttribute('data-date'),
+            tags: btn.getAttribute('data-tags'),
+            desc: btn.getAttribute('data-desc'),
+            verify: btn.getAttribute('data-verify'),
+            color: btn.closest('.cred-item') ? btn.closest('.cred-item').style.getPropertyValue('--c') : '#f97316'
+        });
+        
+        btn.addEventListener('click', () => {
+            currentCertIdx = idx;
+            updateCertModal();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
     });
-});
+
+    function updateCertModal() {
+        const data = certData[currentCertIdx];
+        if (!data) return;
+        
+        modalImg.src = data.img;
+        document.getElementById('modal-title').innerText = data.title;
+        document.getElementById('modal-issuer').innerText = data.issuer;
+        document.getElementById('modal-issuer').style.color = data.color || '#f97316';
+        document.getElementById('modal-date').innerText = data.date;
+        document.getElementById('modal-description').innerText = data.desc;
+        document.getElementById('modal-verify-code').innerText = data.verify;
+        
+        const verifyLink = document.getElementById('modal-verify-link');
+        if (verifyLink) {
+            verifyLink.href = `https://certificates.zahedul.dev/verify/${data.verify}`;
+        }
+        
+        const tagsContainer = document.getElementById('modal-tags');
+        tagsContainer.innerHTML = '';
+        if (data.tags) {
+            data.tags.split(',').forEach(tag => {
+                const span = document.createElement('span');
+                span.innerText = tag.trim();
+                tagsContainer.appendChild(span);
+            });
+        }
+        
+        document.getElementById('current-idx').innerText = currentCertIdx + 1;
+        document.getElementById('total-idx').innerText = certData.length;
+    }
+
+    modal.querySelector('.nav-prev').addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentCertIdx = (currentCertIdx - 1 + certData.length) % certData.length;
+        updateCertModal();
+    });
+
+    modal.querySelector('.nav-next').addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentCertIdx = (currentCertIdx + 1) % certData.length;
+        updateCertModal();
+    });
+
+    closeModal.addEventListener('click', () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (!modal.classList.contains('active')) return;
+        if (e.key === 'Escape') closeModal.click();
+        if (e.key === 'ArrowLeft') modal.querySelector('.nav-prev').click();
+        if (e.key === 'ArrowRight') modal.querySelector('.nav-next').click();
+    });
+}
 
 // 7. Document Explorer & File Hub
-const sidebarFileList = document.getElementById('sidebar-file-list');
 const mainFileGrid = document.getElementById('main-file-grid');
 const fileModal = document.querySelector('.file-modal');
-const fileIframe = document.querySelector('.file-iframe');
-const closeFileModal = document.querySelector('.close-file-modal');
+const fileIframe = fileModal ? fileModal.querySelector('.file-iframe') : null;
+const closeFileModal = fileModal ? fileModal.querySelector('.close-file-modal') : null;
 
 function openFile(doc) {
+    if (!fileModal) return;
     fileModal.classList.add('active');
-    cursorRing.style.borderColor = 'var(--accent-secondary)';
+    if (cursorRing) cursorRing.style.borderColor = 'var(--accent-secondary)';
     
     const titleElem = document.getElementById('active-file-title');
     if(titleElem) titleElem.innerText = doc.title;
@@ -273,14 +333,11 @@ function openFile(doc) {
     }
 }
 
-// PDF Thumbnail Generator
 async function renderPDFThumbnail(url, canvas) {
     try {
         const loadingTask = pdfjsLib.getDocument(url);
         const pdf = await loadingTask.promise;
         const page = await pdf.getPage(1);
-        
-        // Scale for thumbnail - Adjust as needed
         const viewport = page.getViewport({ scale: 0.4 });
         const context = canvas.getContext('2d');
         
@@ -299,87 +356,42 @@ async function renderPDFThumbnail(url, canvas) {
     }
 }
 
-if(typeof documents !== 'undefined') {
-    if(sidebarFileList) sidebarFileList.innerHTML = '';
-    if(mainFileGrid) mainFileGrid.innerHTML = '';
-
+if(typeof documents !== 'undefined' && mainFileGrid) {
+    mainFileGrid.innerHTML = '';
     documents.forEach(doc => {
-        let icon = '';
-        if(doc.type === 'pdf') icon = 'fa-file-pdf';
-        else if(doc.type === 'doc') icon = 'fa-file-word';
-        else if(doc.type === 'xls') icon = 'fa-file-excel';
-        else if(doc.type === 'ppt') icon = 'fa-file-powerpoint';
-        else icon = 'fa-file';
-
-        // Sidebar Item
-        if(sidebarFileList) {
-            const li = document.createElement('li');
-            li.className = 'tree-item';
-            li.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${doc.title}</span>`;
-            li.addEventListener('click', (e) => {
-                e.preventDefault();
-                switchView('files-view', li);
-                openFile(doc);
+        let icon = doc.type === 'pdf' ? 'fa-file-pdf' : 'fa-file';
+        const card = document.createElement('div');
+        card.className = 'card mini-project'; 
+        const thumbContainerId = `thumb-${Math.random().toString(36).substr(2, 9)}`;
+        
+        card.innerHTML = `
+            <div style="cursor:pointer; margin-bottom: 20px;">
+                <div id="${thumbContainerId}" class="file-thumb-container" style="height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; overflow: hidden; border-radius: 8px; background: rgba(0,0,0,0.2);">
+                    <i class="fa-solid ${icon}" style="font-size: 2.5rem; color: var(--accent-primary);"></i>
+                </div>
+                <h3 style="font-size: 1rem; color: #fff; margin-bottom: 5px;">${doc.title}</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">${doc.type}_DOCUMENT</p>
+            </div>
+            <div class="project-actions" style="justify-content: center;">
+                <button class="btn-visit" style="padding: 8px 20px; font-size: 0.75rem; border:none; cursor:pointer; width: 100%;">
+                    <i class="fa-solid fa-eye"></i> OPEN_FILE
+                </button>
+            </div>
+        `;
+        
+        if (doc.type === 'pdf') {
+            const canvas = document.createElement('canvas');
+            renderPDFThumbnail(doc.file, canvas).then(success => {
+                if (success) {
+                    const container = card.querySelector(`#${thumbContainerId}`);
+                    if (container) { container.innerHTML = ''; container.appendChild(canvas); }
+                }
             });
-            sidebarFileList.appendChild(li);
         }
 
-        // Main Grid Card
-        if(mainFileGrid) {
-            const cardId = `file-${Math.random().toString(36).substr(2, 9)}`;
-            const card = document.createElement('div');
-            card.className = 'card mini-project'; 
-            card.id = cardId;
-            card.style.textAlign = 'center';
-            
-            const thumbContainerId = `thumb-${cardId}`;
-            
-            card.innerHTML = `
-                <div style="cursor:pointer; margin-bottom: 20px;">
-                    <div id="${thumbContainerId}" class="file-thumb-container" style="height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; overflow: hidden; border-radius: 8px; background: rgba(0,0,0,0.2);">
-                        <i class="fa-solid ${icon}" style="font-size: 2.5rem; color: var(--accent-primary);"></i>
-                    </div>
-                    <h3 style="font-size: 1rem; color: #fff; margin-bottom: 5px;">${doc.title}</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">${doc.type}_DOCUMENT</p>
-                </div>
-                <div class="project-actions" style="justify-content: center;">
-                    <button class="btn-visit" style="padding: 8px 20px; font-size: 0.75rem; border:none; cursor:pointer; width: 100%;">
-                        <i class="fa-solid fa-eye"></i> OPEN_FILE
-                    </button>
-                </div>
-            `;
-            
-            // Async PDF Thumbnail Rendering
-            if (doc.type === 'pdf') {
-                const canvas = document.createElement('canvas');
-                canvas.style.maxWidth = '100%';
-                canvas.style.maxHeight = '100%';
-                canvas.style.boxShadow = '0 4px 15px rgba(0,0,0,0.5)';
-                canvas.style.border = '1px solid rgba(255,255,255,0.1)';
-                
-                renderPDFThumbnail(doc.file, canvas).then(success => {
-                    if (success) {
-                        const container = card.querySelector(`#${thumbContainerId}`);
-                        if (container) {
-                            container.innerHTML = '';
-                            container.appendChild(canvas);
-                        }
-                    }
-                });
-            }
-
-            // Add click to the whole top area
-            card.querySelector('div:first-child').addEventListener('click', () => {
-                openFile(doc);
-            });
-            
-            // Add click to the button
-            card.querySelector('.btn-visit').addEventListener('click', () => {
-                openFile(doc);
-            });
-
-            mainFileGrid.appendChild(card);
-        }
+        card.querySelector('div:first-child').addEventListener('click', () => openFile(doc));
+        card.querySelector('.btn-visit').addEventListener('click', () => openFile(doc));
+        mainFileGrid.appendChild(card);
     });
 }
 
@@ -395,4 +407,3 @@ if(closeFileModal) {
         }
     });
 }
-
