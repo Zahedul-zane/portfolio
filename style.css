@@ -2405,8 +2405,8 @@ footer {
 
 /* --- Detailed Certificate Overlay --- */
 .cert-detail-content {
-  width: 90%;
-  max-width: 1200px;
+  width: 95%;
+  max-width: 1400px;
   height: auto;
   background: #0d0d0d;
   border-radius: 24px;
@@ -2417,7 +2417,7 @@ footer {
 
 .cert-detail-grid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: 1.4fr 1fr;
   min-height: 500px;
 }
 
@@ -2431,8 +2431,8 @@ footer {
 }
 
 .cert-preview .modal-img {
-  max-width: 70%;
-  max-height: 65%;
+  max-width: 100%;
+  max-height: 80vh;
   object-fit: contain;
   box-shadow: 0 20px 60px rgba(0,0,0,0.8);
   border-radius: 4px;
@@ -2470,7 +2470,7 @@ footer {
 
 #modal-title {
   font-family: var(--font-display);
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: #fff;
   line-height: 1.2;
   margin-bottom: 20px;
@@ -2488,7 +2488,7 @@ footer {
 }
 
 .detail-desc {
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.6);
   margin-bottom: 40px;
