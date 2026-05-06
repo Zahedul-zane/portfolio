@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Files Hub - Zahedul.com</title>
+    
+    <!-- Fonts: Comfortaa (Body) & Playfair Display (Serif Headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Video Background -->
+    <video autoplay loop muted playsinline id="bg-video">
+        <source src="background/silent-hill-2.3840x2160.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="galaxy-bg">
+        <div class="spiral-container"></div>
+    </div>
+    <div class="video-overlay"></div>
+    <div class="mouse-glow"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <div class="main-wrapper">
+        
+        <!-- Header / Navigation -->
+        <header class="main-header">
+            <div class="logo">ZAHED<span class="flicker">UL</span>.</div>
+            <nav class="top-nav">
+                <a href="index.html#home" class="nav-link" data-magnetic>HOME</a>
+                <a href="index.html#persona" class="nav-link" data-magnetic>PERSONA</a>
+                <a href="projects.html" class="nav-link" data-magnetic>PROJECTS</a>
+                <a href="credentials.html" class="nav-link" data-magnetic>CREDENTIALS</a>
+                <a href="index.html#expertise" class="nav-link" data-magnetic>FORGE</a>
+                <a href="files.html" class="nav-link active" data-magnetic>FILES</a>
+                <a href="index.html#contact" class="nav-link" data-magnetic>CONTACT</a>
+            </nav>
+        </header>
+
+        <!-- Layout Container -->
+        <main class="content-wrapper">
+            
+            <!-- FILES EXPLORER SECTION -->
+            <section id="explorer" class="section explorer-section visible">
+                <div class="section-label">SYSTEM_RESOURCES</div>
+                <h2 class="large-title">Modules Hub</h2>
+                <div id="main-file-grid" class="projects-grid-high">
+                    <!-- Populated by script.js -->
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>// ZAHEDUL © 2026</p>
+        </footer>
+
+    </div>
+
+    <!-- Document Modal -->
+    <div class="cert-modal file-modal">
+        <div class="modal-content file-modal-content">
+            <div class="file-modal-header">
+                <h3 id="active-file-title">LOADING...</h3>
+                <span class="close-modal close-file-modal">&times;</span>
+            </div>
+            <iframe src="" class="file-iframe"></iframe>
+        </div>
+    </div>
+
+    <!-- Data & Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="files.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

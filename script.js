@@ -103,11 +103,26 @@ window.addEventListener('scroll', () => {
 
 headerLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        if (targetSection) {
-            targetSection.scrollIntoView({ behavior: 'smooth' });
+        const href = link.getAttribute('href');
+        
+        // If it's a local anchor on the same page
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            const targetSection = document.querySelector(href);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        } 
+        // If it's an anchor to index.html from another page
+        else if (href.includes('index.html#')) {
+            const anchor = href.split('#')[1];
+            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || !window.location.pathname.includes('.html')) {
+                e.preventDefault();
+                const targetSection = document.querySelector('#' + anchor);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
         }
     });
 });
