@@ -1,6 +1,6 @@
 :root {
-  /* Premium Spectrum Palette */
-  --bg-deep: #050505;
+  /* Premium Velvet Theme Spectrum */
+  --bg-deep: #030108;
   --bg-card: rgba(255, 255, 255, 0.02);
   
   --accent-primary: #00d9ff; /* Electric Cyan */
@@ -355,62 +355,67 @@ nav {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90vh;
-  height: 90vh;
-  pointer-events: none;
+  width: 600px;
+  height: 600px;
+  pointer-events: auto;
+  transform-style: preserve-3d;
+  perspective: 1200px;
 }
 
 .orbit {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border: 1px dashed rgba(255, 255, 255, 0.05);
   border-radius: 50%;
+  transform-style: preserve-3d;
+  pointer-events: none;
 }
 
-.orbit-1 { width: 40vh; height: 40vh; }
-.orbit-2 { width: 65vh; height: 65vh; }
-.orbit-3 { width: 90vh; height: 90vh; }
+.orbit-1 { width: 300px; height: 300px; transform: translate(-50%, -50%) rotateX(70deg) rotateY(15deg); }
+.orbit-2 { width: 460px; height: 460px; transform: translate(-50%, -50%) rotateX(-55deg) rotateY(-25deg); }
+.orbit-3 { width: 620px; height: 620px; transform: translate(-50%, -50%) rotateX(80deg) rotateY(-10deg); }
 
 .tech-icon {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 50% !important;
+  left: 50% !important;
   width: 45px;
   height: 45px;
-  background: rgba(15, 15, 15, 0.4);
+  margin-left: -22.5px;
+  margin-top: -22.5px;
+  background: rgba(15, 15, 15, 0.65);
   backdrop-filter: blur(12px);
-  border: 1px solid var(--c, rgba(255, 255, 255, 0.1));
+  border: 1.5px solid var(--c, rgba(255, 255, 255, 0.15));
   border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.4rem;
   color: var(--c, #fff);
-  animation: orbitMove 120s linear infinite;
-  animation-delay: var(--d);
-  transform-origin: calc(-1 * var(--r)) 0;
-  left: calc(50% + var(--r));
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  animation: none !important;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease;
+  pointer-events: auto;
 }
 
 .tech-icon i {
-  animation: counter-orbit-hero 120s linear infinite, float 6s ease-in-out infinite;
-  animation-delay: var(--d);
+  animation: float 6s ease-in-out infinite !important;
+  animation-delay: var(--d) !important;
 }
 
 .tech-icon span {
   position: absolute;
   bottom: -25px;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--c, #fff);
   text-transform: capitalize;
   white-space: nowrap;
-  animation: counter-orbit-hero 120s linear infinite, float 6s ease-in-out infinite;
-  animation-delay: var(--d);
   opacity: 0.8;
+  animation: float 6s ease-in-out infinite !important;
+  animation-delay: var(--d) !important;
 }
 
 @keyframes counter-orbit-hero {
@@ -720,29 +725,46 @@ nav {
   box-shadow: 0 10px 30px rgba(6, 182, 212, 0.2);
 }
 
-/* Spectrum Bento Card */
+/* Spectrum Bento Card with 3D Depth and Glare Support */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--glass-border);
   padding: 30px;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 16px;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 0.15s ease-out, border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .card:hover {
   border-color: var(--accent-primary);
-  background: rgba(0, 217, 255, 0.05);
-  box-shadow: 0 0 30px rgba(0, 217, 255, 0.15);
-  transform: translateY(-4px);
+  background: rgba(0, 240, 255, 0.04);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45), 0 0 25px rgba(0, 240, 255, 0.12);
 }
 
-/* Remove the old animated border and glow effects that don't fit Spectrum */
-.card::after, .card::before {
-  display: none;
+.card-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.card:hover .card-glare {
+  opacity: 1;
+}
+
+.card > * {
+  transform: translateZ(25px);
 }
 
 /* Membership Sidebar Inside Wrapper */
@@ -1573,21 +1595,34 @@ nav {
 
 .galaxy-center {
   position: absolute;
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   background: #fff;
   border-radius: 50%;
-  box-shadow: 0 0 40px #00d9ff, 0 0 80px #00d9ff, 0 0 120px rgba(0, 217, 255, 0.5);
-  filter: blur(1px);
+  box-shadow: 0 0 40px var(--accent-primary), 0 0 80px var(--accent-secondary);
+  filter: blur(0.5px);
   z-index: 10;
+  transform: translateZ(20px);
 }
 
 .orbit-ring {
   position: absolute;
-  border: 1px dashed rgba(0, 217, 255, 0.12);
+  border: 1px dashed rgba(0, 240, 255, 0.12);
   border-radius: 50%;
   pointer-events: none;
+  transform-style: preserve-3d;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.02);
 }
+
+/* 3D Inclinations for Atomic Gyroscope Rings */
+.orbit-ring:nth-of-type(1) { transform: rotateX(65deg) rotateY(15deg); }
+.orbit-ring:nth-of-type(2) { transform: rotateX(-50deg) rotateY(35deg); }
+.orbit-ring:nth-of-type(3) { transform: rotateX(55deg) rotateY(-25deg); }
+.orbit-ring:nth-of-type(4) { transform: rotateX(-35deg) rotateY(-45deg); }
+.orbit-ring:nth-of-type(5) { transform: rotateX(75deg) rotateY(-12deg); }
+.orbit-ring:nth-of-type(6) { transform: rotateX(-60deg) rotateY(20deg); }
+.orbit-ring:nth-of-type(7) { transform: rotateX(45deg) rotateY(40deg); }
+.orbit-ring:nth-of-type(8) { transform: rotateX(-70deg) rotateY(-20deg); }
 
 .tech-node-orbit {
   position: absolute;
@@ -2662,4 +2697,60 @@ footer {
 .close-file-modal {
   position: static;
   font-size: 1.5rem;
+}
+
+/* Staggered card child depths on hover (Holographic effect) */
+.card h3, .project-card-premium h3, .cred-card h3 {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.card:hover h3, .project-card-premium:hover h3, .cred-card:hover h3 {
+  transform: translateZ(32px);
+}
+
+.card p, .project-card-premium p, .cred-card p {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.card:hover p, .project-card-premium:hover p, .cred-card:hover p {
+  transform: translateZ(18px);
+}
+
+.project-tags, .cred-tags, .persona-pills {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.card:hover .project-tags, .project-card-premium:hover .project-tags, .cred-card:hover .cred-tags, .card:hover .persona-pills {
+  transform: translateZ(28px);
+}
+
+.project-image, .cred-thumb, .edu-icon, .stat-num, .step-icon {
+  transition: transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.project-card-premium:hover .project-image {
+  transform: translateZ(42px) scale(1.04);
+}
+.cred-card:hover .cred-thumb {
+  transform: translateZ(38px) scale(1.05);
+}
+.card:hover .edu-icon, .card:hover .step-icon {
+  transform: translateZ(40px) scale(1.06);
+}
+.card:hover .stat-num {
+  transform: translateZ(45px);
+  text-shadow: 0 0 15px var(--accent-primary);
+}
+.project-footer, .detail-footer {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.project-card-premium:hover .project-footer, .cred-card:hover .detail-footer {
+  transform: translateZ(22px);
+}
+
+/* Staggered 3D Cascading Entry Animation */
+.animate-3d-entry {
+  opacity: 0 !important;
+  transform: perspective(1000px) rotateX(-25deg) translateZ(-150px) translateY(50px) !important;
+  transition: opacity 1.0s cubic-bezier(0.16, 1, 0.3, 1), transform 1.0s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.animate-3d-entry.loaded {
+  opacity: 1 !important;
+  transform: perspective(1000px) rotateX(0deg) translateZ(0px) translateY(0px) !important;
 }

@@ -141,10 +141,22 @@ const observer = new IntersectionObserver((entries) => {
 
 scrollElements.forEach(el => observer.observe(el));
 
-// 2.5 3D Tilt Effect for Interactive Cards
+// 2.5 3D Tilt Effect for Interactive Cards with Glare (Integrated with Pitch Physics)
 function initTilt() {
-    const cards = document.querySelectorAll('.card:not(.contributions-graph), .cred-card, .mini-project');
+    const cards = document.querySelectorAll('.card:not(.contributions-graph), .cred-card, .mini-project, .project-card-premium');
     cards.forEach(card => {
+        // Create glare element dynamically if not present
+        if (!card.querySelector('.card-glare')) {
+            const glare = document.createElement('div');
+            glare.className = 'card-glare';
+            card.appendChild(glare);
+        }
+
+        // Initialize tilt datasets for the physics loop
+        card.dataset.hoverX = "0";
+        card.dataset.hoverY = "0";
+        card.dataset.activeScale = "1";
+
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -152,18 +164,260 @@ function initTilt() {
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             
-            const rotateX = (y - centerY) / 12;
-            const rotateY = (centerX - x) / 12;
+            const rotateX = (y - centerY) / 15;
+            const rotateY = (centerX - x) / 15;
             
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            const xPercent = (x / rect.width) * 100;
+            const yPercent = (y / rect.height) * 100;
+            card.style.setProperty('--x', `${xPercent}%`);
+            card.style.setProperty('--y', `${yPercent}%`);
+            
+            // Set datasets for unified physics pipeline
+            card.dataset.hoverX = rotateX.toString();
+            card.dataset.hoverY = rotateY.toString();
+            card.dataset.activeScale = "1.02";
         });
         
         card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            // Reset datasets
+            card.dataset.hoverX = "0";
+            card.dataset.hoverY = "0";
+            card.dataset.activeScale = "1";
         });
     });
 }
 initTilt();
+
+// 2.52 Scroll Velocity 3D Pitch Physics with Layout Caching
+let cachedPitchItems = [];
+function cachePitchItems() {
+    cachedPitchItems = Array.from(document.querySelectorAll('.card:not(.contributions-graph), .cred-card, .mini-project, .project-card-premium'));
+}
+
+let lastScrollY = window.scrollY;
+let scrollVelocity = 0;
+let targetPitch = 0;
+let currentPitch = 0;
+let isScrolling = false;
+let scrollTimeout;
+
+window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+    scrollVelocity = currentScrollY - lastScrollY;
+    lastScrollY = currentScrollY;
+
+    // Pitch bends X-axis based on scroll speed (capped at [-10, 10] degrees)
+    targetPitch = Math.min(Math.max(scrollVelocity * 0.06, -10), 10);
+    isScrolling = true;
+
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        targetPitch = 0;
+        isScrolling = false;
+    }, 70);
+});
+
+function updateScrollPitch() {
+    requestAnimationFrame(updateScrollPitch);
+    
+    // Smooth damp towards target
+    currentPitch += (targetPitch - currentPitch) * 0.12;
+
+    if (Math.abs(currentPitch) > 0.01 || isScrolling) {
+        const len = cachedPitchItems.length;
+        for (let i = 0; i < len; i++) {
+            const item = cachedPitchItems[i];
+            const rect = item.getBoundingClientRect();
+            // Optimize: only apply transform to items in viewport
+            if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                const hoverX = parseFloat(item.dataset.hoverX) || 0;
+                const hoverY = parseFloat(item.dataset.hoverY) || 0;
+                const activeScale = parseFloat(item.dataset.activeScale) || 1;
+
+                const totalRotX = hoverX + currentPitch;
+                item.style.transform = `perspective(1000px) rotateX(${totalRotX}deg) rotateY(${hoverY}deg) scale3d(${activeScale}, ${activeScale}, ${activeScale})`;
+            }
+        }
+    }
+}
+updateScrollPitch();
+
+// 2.53 Staggered 3D Cascading Entry Loader
+function init3DEntry() {
+    const elements = document.querySelectorAll('.card:not(.contributions-graph), .project-card-premium, .cred-item');
+    elements.forEach(el => {
+        el.classList.add('animate-3d-entry');
+    });
+
+    setTimeout(() => {
+        elements.forEach((el, idx) => {
+            setTimeout(() => {
+                el.classList.add('loaded');
+            }, idx * 60);
+        });
+    }, 150);
+}
+
+// 2.55 3D Tech Icons Sphere
+function init3DSphere() {
+    const container = document.querySelector('.orbit-container');
+    if (!container) return;
+    const icons = container.querySelectorAll('.tech-icon');
+    if (!icons.length) return;
+
+    let radius = 240;
+    let count = icons.length;
+    let angleX = 0.003;
+    let angleY = 0.003;
+    let elements = [];
+
+    // Distribute icons over the sphere coordinates
+    icons.forEach((icon, i) => {
+        const phi = Math.acos(-1 + (2 * i) / count);
+        const theta = Math.sqrt(count * Math.PI) * phi;
+
+        const x = radius * Math.sin(phi) * Math.cos(theta);
+        const y = radius * Math.sin(phi) * Math.sin(theta);
+        const z = radius * Math.cos(phi);
+
+        elements.push({
+            el: icon,
+            x: x,
+            y: y,
+            z: z
+        });
+    });
+
+    function rotateSphere() {
+        const cosX = Math.cos(angleX);
+        const sinX = Math.sin(angleX);
+        const cosY = Math.cos(angleY);
+        const sinY = Math.sin(angleY);
+
+        elements.forEach(item => {
+            // Rotate around Y-axis
+            let x1 = item.x * cosY - item.z * sinY;
+            let z1 = item.z * cosY + item.x * sinY;
+            
+            // Rotate around X-axis
+            let y2 = item.y * cosX - z1 * sinX;
+            let z2 = z1 * cosX + item.y * sinX;
+
+            item.x = x1;
+            item.y = y2;
+            item.z = z2;
+
+            // Scale based on Z depth
+            const scale = (item.z + radius * 1.5) / (radius * 2.5);
+            const opacity = 0.2 + 0.8 * scale;
+
+            item.el.style.transform = `translate3d(${item.x}px, ${item.y}px, ${item.z}px) scale(${scale})`;
+            item.el.style.opacity = opacity;
+            item.el.style.zIndex = Math.round(item.z + 100).toString();
+        });
+    }
+
+    let animId;
+    function render() {
+        rotateSphere();
+        animId = requestAnimationFrame(render);
+    }
+    render();
+
+    // Mouse drag controls to rotate/spin
+    let isDragging = false;
+    let prevMouseX = 0;
+    let prevMouseY = 0;
+
+    container.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        prevMouseX = e.clientX;
+        prevMouseY = e.clientY;
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) {
+            // Hover parallax influence
+            const rect = container.getBoundingClientRect();
+            const mx = (e.clientX - rect.left - rect.width/2) / (rect.width/2);
+            const my = (e.clientY - rect.top - rect.height/2) / (rect.height/2);
+            angleX = my * 0.003;
+            angleY = -mx * 0.003;
+            return;
+        }
+
+        const deltaX = e.clientX - prevMouseX;
+        const deltaY = e.clientY - prevMouseY;
+
+        angleY = deltaX * 0.004;
+        angleX = -deltaY * 0.004;
+
+        prevMouseX = e.clientX;
+        prevMouseY = e.clientY;
+    });
+
+    // Touch support for mobile devices
+    container.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        prevMouseX = e.touches[0].clientX;
+        prevMouseY = e.touches[0].clientY;
+    });
+
+    document.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+
+    document.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const deltaX = e.touches[0].clientX - prevMouseX;
+        const deltaY = e.touches[0].clientY - prevMouseY;
+
+        angleY = deltaX * 0.006;
+        angleX = -deltaY * 0.006;
+
+        prevMouseX = e.touches[0].clientX;
+        prevMouseY = e.touches[0].clientY;
+    });
+}
+init3DSphere();
+
+// 2.56 3D Gyroscopic Forge Galaxy Interaction
+function initForge3D() {
+    const forge = document.querySelector('.forge-container');
+    const galaxy = document.querySelector('.tech-galaxy');
+    if (!forge || !galaxy) return;
+
+    forge.addEventListener('mousemove', (e) => {
+        const rect = forge.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        // Incline the galaxy based on cursor coordinates
+        const rotateX = -y / 18;
+        const rotateY = x / 18;
+
+        galaxy.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    forge.addEventListener('mouseleave', () => {
+        galaxy.style.transform = `rotateX(0deg) rotateY(0deg)`;
+    });
+}
+initForge3D();
+
+// Run cache and staggering entries on load
+document.addEventListener('DOMContentLoaded', () => {
+    cachePitchItems();
+    init3DEntry();
+});
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    cachePitchItems();
+    init3DEntry();
+}
 
 // 2.6 Galactic Parallax Depth & Scroll Parallax
 window.addEventListener('scroll', () => {
