@@ -1,10 +1,5 @@
-// Interactive Three.js Space Background - Upgraded High-Level Visuals
+// Interactive 2D Canvas Space Background - Upgraded High-Level Visuals (No Three.js)
 (function() {
-    if (typeof THREE === 'undefined') {
-        console.warn('Three.js is not loaded. Falling back.');
-        return;
-    }
-
     const container = document.querySelector('.galaxy-bg');
     if (!container) return;
 
@@ -12,7 +7,7 @@
     const spiral = container.querySelector('.spiral-container');
     if (spiral) spiral.remove();
 
-    // Create WebGL Canvas
+    // Create Canvas
     const canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
     canvas.style.top = '0';
@@ -23,388 +18,344 @@
     canvas.style.zIndex = '-1';
     container.appendChild(canvas);
 
-    // Three.js Scene Setup
-    const scene = new THREE.Scene();
-    
-    // Camera
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5.2;
+    const ctx = canvas.getContext('2d');
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({
-        canvas: canvas,
-        alpha: true,
-        antialias: true,
-        powerPreference: "high-performance"
+    // Resize Handling
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    window.addEventListener('resize', () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        initStars();
+        initCrystals();
     });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    // Particle Galaxy configuration
-    const count = 3500;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3);
 
     // Color definitions
-    const colorCyan = new THREE.Color('#00d9ff');
-    const colorPurple = new THREE.Color('#7000ff');
-    const colorPink = new THREE.Color('#ff00bb');
+    const colors = [
+        'rgba(0, 217, 255, ',  // Cyan
+        'rgba(112, 0, 255, ',  // Purple
+        'rgba(255, 0, 187, '   // Pink
+    ];
 
-    for (let i = 0; i < count; i++) {
-        const i3 = i * 3;
-        
-        // Spherical distribution with spiral branch influence
-        const r = Math.pow(Math.random(), 2.2) * 14; 
-        const branches = 3;
-        const branchAngle = ((i % branches) / branches) * Math.PI * 2;
-        const spinAngle = r * 0.45;
+    // Star configuration
+    const starCount = 200;
+    let stars = [];
 
-        // Position coordinates
-        const x = Math.cos(branchAngle + spinAngle) * r + (Math.random() - 0.5) * 0.45 * r;
-        const y = (Math.random() - 0.5) * 0.25 * (14 - r) + (Math.random() - 0.5) * 0.15;
-        const z = Math.sin(branchAngle + spinAngle) * r + (Math.random() - 0.5) * 0.45 * r;
-
-        positions[i3] = x;
-        positions[i3 + 1] = y;
-        positions[i3 + 2] = z;
-
-        // Color interpolation
-        const mixedColor = colorCyan.clone();
-        if (r < 3) {
-            mixedColor.lerp(colorPink, r / 3);
-        } else {
-            mixedColor.lerp(colorPurple, (r - 3) / 11);
+    function initStars() {
+        stars = [];
+        for (let i = 0; i < starCount; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const r = Math.random() * 1.8 + 0.5;
+            const alpha = Math.random() * 0.6 + 0.2;
+            const colorPrefix = colors[Math.floor(Math.random() * colors.length)];
+            
+            stars.push({
+                x: x,
+                y: y,
+                origX: x,
+                origY: y,
+                r: r,
+                alpha: alpha,
+                pulseSpeed: 0.01 + Math.random() * 0.02,
+                pulsePhase: Math.random() * Math.PI * 2,
+                colorPrefix: colorPrefix,
+                driftX: (Math.random() - 0.5) * 0.15,
+                driftY: (Math.random() - 0.5) * 0.15
+            });
         }
-
-        colors[i3] = mixedColor.r;
-        colors[i3 + 1] = mixedColor.g;
-        colors[i3 + 2] = mixedColor.b;
     }
 
-    // Keep a record of the original positions for elastic restoring force
-    const originalPositions = new Float32Array(positions);
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    // Circular particle texture
-    const particleCanvas = document.createElement('canvas');
-    particleCanvas.width = 16;
-    particleCanvas.height = 16;
-    const ctx = particleCanvas.getContext('2d');
-    const grad = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
-    grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-    grad.addColorStop(0.2, 'rgba(255, 255, 255, 0.8)');
-    grad.addColorStop(0.5, 'rgba(0, 217, 255, 0.3)');
-    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 16, 16);
-    
-    const texture = new THREE.CanvasTexture(particleCanvas);
-
-    const material = new THREE.PointsMaterial({
-        size: 0.09,
-        sizeAttenuation: true,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-        vertexColors: true,
-        map: texture,
-        transparent: true
-    });
-
-    const points = new THREE.Points(geometry, material);
-    scene.add(points);
-
-    // Dynamic Spark Particles (Cursor Trail)
-    const sparkCount = 200;
-    const sparkGeometry = new THREE.BufferGeometry();
-    const sparkPositions = new Float32Array(sparkCount * 3);
-    const sparkColors = new Float32Array(sparkCount * 3);
-
-    for(let i=0; i<sparkCount; i++) {
-        sparkPositions[i*3] = 9999;
-        sparkPositions[i*3+1] = 9999;
-        sparkPositions[i*3+2] = 9999;
-    }
-
-    sparkGeometry.setAttribute('position', new THREE.BufferAttribute(sparkPositions, 3));
-    sparkGeometry.setAttribute('color', new THREE.BufferAttribute(sparkColors, 3));
-
-    const sparkMaterial = new THREE.PointsMaterial({
-        size: 0.12,
-        sizeAttenuation: true,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-        vertexColors: true,
-        map: texture,
-        transparent: true
-    });
-
-    const sparksPoints = new THREE.Points(sparkGeometry, sparkMaterial);
-    scene.add(sparksPoints);
-
-    // Sparks data tracking
+    // Spark Particles (Cursor Trail)
     const sparks = [];
-    for(let i=0; i<sparkCount; i++) {
-        sparks.push({
-            active: false,
-            age: 0,
-            maxAge: 40 + Math.random() * 30,
-            x: 0, y: 0, z: 0,
-            vx: 0, vy: 0, vz: 0,
-            r: 1, g: 1, b: 1
-        });
-    }
-    let lastSparkIdx = 0;
+    const maxSparks = 60;
 
-    function spawnSpark(x, y, z, color) {
-        const s = sparks[lastSparkIdx];
-        s.active = true;
-        s.age = 0;
-        s.x = x;
-        s.y = y;
-        s.z = z;
-        s.vx = (Math.random() - 0.5) * 0.035;
-        s.vy = (Math.random() - 0.5) * 0.035;
-        s.vz = (Math.random() - 0.5) * 0.035;
-        s.r = color.r;
-        s.g = color.g;
-        s.b = color.b;
-
-        lastSparkIdx = (lastSparkIdx + 1) % sparkCount;
-    }
-
-    // Floating Glass Crystals
-    const crystalsGroup = new THREE.Group();
-    scene.add(crystalsGroup);
-
-    const crystalColors = [new THREE.Color('#00d9ff'), new THREE.Color('#7000ff')];
-    const crystalObjects = [];
-
-    const geo1 = new THREE.IcosahedronGeometry(0.4, 0);
-    const geo2 = new THREE.OctahedronGeometry(0.35, 0);
-    const geos = [geo1, geo2];
-
-    for (let i = 0; i < 2; i++) {
-        const wireMat = new THREE.MeshBasicMaterial({
-            color: crystalColors[i],
-            wireframe: true,
-            transparent: true,
-            opacity: 0.75
-        });
-        const faceMat = new THREE.MeshBasicMaterial({
-            color: crystalColors[i],
-            transparent: true,
-            opacity: 0.08,
-            blending: THREE.AdditiveBlending
-        });
-
-        const meshWire = new THREE.Mesh(geos[i], wireMat);
-        const meshFace = new THREE.Mesh(geos[i], faceMat);
-        meshFace.scale.setScalar(0.97);
-
-        const crystal = new THREE.Group();
-        crystal.add(meshWire);
-        crystal.add(meshFace);
-
-        // Position coordinates
-        if (i === 0) {
-            crystal.position.set(-2.2, 1.2, 1);
-        } else {
-            crystal.position.set(2.2, -1.2, 0.5);
+    function spawnSpark(x, y, colorPrefix) {
+        if (sparks.length >= maxSparks) {
+            sparks.shift();
         }
-
-        crystalsGroup.add(crystal);
-        crystalObjects.push({
-            group: crystal,
-            basePos: crystal.position.clone(),
-            rotSpeedX: 0.008 + Math.random() * 0.008,
-            rotSpeedY: 0.008 + Math.random() * 0.008,
-            hoverSpin: 0
+        sparks.push({
+            x: x,
+            y: y,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: (Math.random() - 0.5) * 1.5,
+            size: Math.random() * 3 + 2,
+            age: 0,
+            maxAge: 30 + Math.random() * 20,
+            colorPrefix: colorPrefix
         });
     }
 
-    // Interaction Parameters
-    let mouseX = 0, mouseY = 0;
-    let targetMouseX = 0, targetMouseY = 0;
-    let mouse3D = new THREE.Vector3(0, 0, 0);
+    // Floating 2D Wireframe Crystals
+    let crystals = [];
+    function initCrystals() {
+        crystals = [
+            {
+                baseX: width * 0.15,
+                baseY: height * 0.3,
+                x: width * 0.15,
+                y: height * 0.3,
+                size: 32,
+                sides: 8,
+                rotation: 0,
+                rotSpeed: 0.006,
+                color: '#00d9ff',
+                hoverSpin: 0,
+                phase: 0
+            },
+            {
+                baseX: width * 0.85,
+                baseY: height * 0.7,
+                x: width * 0.85,
+                y: height * 0.7,
+                size: 26,
+                sides: 6,
+                rotation: Math.PI / 4,
+                rotSpeed: -0.008,
+                color: '#7000ff',
+                hoverSpin: 0,
+                phase: Math.PI
+            }
+        ];
+    }
 
-    // Click gravity wave displacement parameters
-    let rippleCenter = new THREE.Vector3(0, 0, 0);
+    // Interactive Parameters
+    let mouseX = width / 2;
+    let mouseY = height / 2;
+    let targetMouseX = width / 2;
+    let targetMouseY = height / 2;
+
+    // Click Ripple Parameter
+    let rippleCenter = { x: 0, y: 0 };
     let rippleRadius = 0;
     let rippleActive = false;
-    let rippleMaxRadius = 16;
-    let rippleStrength = 0.55;
+    const rippleMaxRadius = 400;
+    const rippleSpeed = 12;
 
-    // Track cursor movement & project into 3D world space
-    document.addEventListener('mousemove', (event) => {
-        targetMouseX = (event.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
-        targetMouseY = (event.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+    // Listeners
+    document.addEventListener('mousemove', (e) => {
+        targetMouseX = e.clientX;
+        targetMouseY = e.clientY;
 
-        // Project onto 3D plane
-        const vector = new THREE.Vector3(targetMouseX, -targetMouseY, 0.5);
-        vector.unproject(camera);
-        const dir = vector.sub(camera.position).normalize();
-        const distance = -camera.position.z / dir.z; 
-        mouse3D.copy(camera.position).add(dir.multiplyScalar(distance));
-
-        // Spawn spark trail particles
+        // Spawn spark cursor trail
         if (Math.random() > 0.4) {
-            const sparkColor = Math.random() > 0.5 ? colorCyan : colorPink;
-            spawnSpark(mouse3D.x + (Math.random() - 0.5) * 0.05, mouse3D.y + (Math.random() - 0.5) * 0.05, mouse3D.z, sparkColor);
+            const colorPrefix = Math.random() > 0.5 ? 'rgba(0, 217, 255, ' : 'rgba(255, 0, 187, ';
+            spawnSpark(targetMouseX, targetMouseY, colorPrefix);
         }
     });
 
-    // Spawn click gravity wave on click
-    document.addEventListener('mousedown', () => {
-        rippleCenter.copy(mouse3D);
+    document.addEventListener('mousedown', (e) => {
+        rippleCenter.x = e.clientX;
+        rippleCenter.y = e.clientY;
         rippleRadius = 0;
         rippleActive = true;
     });
 
-    // Scroll tracking
+    // Scroll parallax depth factor
     let scrollY = window.scrollY;
     let targetScrollY = window.scrollY;
     window.addEventListener('scroll', () => {
         targetScrollY = window.scrollY;
     });
 
-    const clock = new THREE.Clock();
+    // Draw 2D Gem Crystal Wireframe function
+    function drawCrystal(ctx, x, y, size, sides, rotation, color) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rotation);
+        
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.2;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 12;
 
+        // Draw outer polygon outline
+        ctx.beginPath();
+        for (let i = 0; i < sides; i++) {
+            const angle = (i * 2 * Math.PI) / sides;
+            const px = size * Math.cos(angle);
+            const py = size * Math.sin(angle);
+            if (i === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.stroke();
+
+        // Draw inner concentric crystal facets
+        ctx.strokeStyle = color + '44'; // semi-transparent
+        ctx.shadowBlur = 0;
+        ctx.beginPath();
+        const innerSize = size * 0.45;
+        for (let i = 0; i < sides; i++) {
+            const angle = (i * 2 * Math.PI) / sides;
+            const px = innerSize * Math.cos(angle);
+            const py = innerSize * Math.sin(angle);
+            if (i === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.stroke();
+
+        // Draw facet connection lines from center to outer vertices
+        ctx.beginPath();
+        for (let i = 0; i < sides; i++) {
+            const angle = (i * 2 * Math.PI) / sides;
+            const outerX = size * Math.cos(angle);
+            const outerY = size * Math.sin(angle);
+            const innerX = innerSize * Math.cos(angle);
+            const innerY = innerSize * Math.sin(angle);
+            
+            ctx.moveTo(outerX, outerY);
+            ctx.lineTo(innerX, innerY);
+            
+            ctx.moveTo(innerX, innerY);
+            ctx.lineTo(0, 0);
+        }
+        ctx.stroke();
+
+        ctx.restore();
+    }
+
+    // Initialize
+    initStars();
+    initCrystals();
+
+    // Main animation loop
     function animate() {
         requestAnimationFrame(animate);
 
-        const elapsedTime = clock.getElapsedTime();
+        // Clear canvas
+        ctx.clearRect(0, 0, width, height);
 
-        // Smooth cursor drift (inertia)
-        mouseX += (targetMouseX - mouseX) * 0.045;
-        mouseY += (targetMouseY - mouseY) * 0.045;
+        // Smooth Mouse drift
+        mouseX += (targetMouseX - mouseX) * 0.08;
+        mouseY += (targetMouseY - mouseY) * 0.08;
         
-        points.rotation.y = elapsedTime * 0.03 + mouseX * 0.15;
-        points.rotation.x = elapsedTime * 0.01 + mouseY * 0.08;
+        // Smooth Scroll drift
+        scrollY += (targetScrollY - scrollY) * 0.08;
 
-        // Ripple displacement logic and original state restoration (Spring-back physics)
+        // Render & Update Click Ripple
         if (rippleActive) {
-            rippleRadius += 0.28;
+            rippleRadius += rippleSpeed;
             if (rippleRadius > rippleMaxRadius) {
                 rippleActive = false;
-            }
-        }
-
-        const posArray = points.geometry.attributes.position.array;
-        for (let i = 0; i < count; i++) {
-            const i3 = i * 3;
-            
-            const origX = originalPositions[i3];
-            const origY = originalPositions[i3 + 1];
-            const origZ = originalPositions[i3 + 2];
-            
-            let curX = posArray[i3];
-            let curY = posArray[i3 + 1];
-            let curZ = posArray[i3 + 2];
-            
-            // Restoring spring force towards base position
-            curX += (origX - curX) * 0.07;
-            curY += (origY - curY) * 0.07;
-            curZ += (origZ - curZ) * 0.07;
-
-            // Apply gravity wave displacement
-            if (rippleActive) {
-                const dx = curX - rippleCenter.x;
-                const dy = curY - rippleCenter.y;
-                const dz = curZ - rippleCenter.z;
-                const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
-                
-                if (dist > 0.1) {
-                    if (dist < rippleRadius && dist > rippleRadius - 1.8) {
-                        const strength = (1.0 - (rippleRadius - dist) / 1.8) * rippleStrength;
-                        curX += (dx / dist) * strength;
-                        curY += (dy / dist) * strength;
-                        curZ += (dz / dist) * strength;
-                    }
-                }
-            }
-
-            posArray[i3] = curX;
-            posArray[i3 + 1] = curY;
-            posArray[i3 + 2] = curZ;
-        }
-        points.geometry.attributes.position.needsUpdate = true;
-
-        // Update active sparks
-        const sparkPosArr = sparksPoints.geometry.attributes.position.array;
-        const sparkColArr = sparksPoints.geometry.attributes.color.array;
-
-        for (let i = 0; i < sparkCount; i++) {
-            const s = sparks[i];
-            const i3 = i * 3;
-            if (s.active) {
-                s.age++;
-                s.x += s.vx;
-                s.y += s.vy;
-                s.z += s.vz;
-                
-                s.vx *= 0.95;
-                s.vy *= 0.95;
-                s.vz *= 0.95;
-
-                if (s.age >= s.maxAge) {
-                    s.active = false;
-                    sparkPosArr[i3] = 9999;
-                    sparkPosArr[i3 + 1] = 9999;
-                    sparkPosArr[i3 + 2] = 9999;
-                } else {
-                    sparkPosArr[i3] = s.x;
-                    sparkPosArr[i3 + 1] = s.y;
-                    sparkPosArr[i3 + 2] = s.z;
-                    
-                    const ratio = 1 - (s.age / s.maxAge);
-                    sparkColArr[i3] = s.r * ratio;
-                    sparkColArr[i3 + 1] = s.g * ratio;
-                    sparkColArr[i3 + 2] = s.b * ratio;
-                }
             } else {
-                sparkPosArr[i3] = 9999;
-                sparkPosArr[i3 + 1] = 9999;
-                sparkPosArr[i3 + 2] = 9999;
+                ctx.save();
+                ctx.strokeStyle = 'rgba(0, 217, 255, ' + (1.0 - rippleRadius / rippleMaxRadius) * 0.3 + ')';
+                ctx.lineWidth = 2;
+                ctx.shadowColor = 'rgba(0, 217, 255, 0.4)';
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.arc(rippleCenter.x, rippleCenter.y, rippleRadius, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
             }
         }
-        sparksPoints.geometry.attributes.position.needsUpdate = true;
-        sparksPoints.geometry.attributes.color.needsUpdate = true;
 
-        // Hover spinning proximity for Glass Crystals
-        crystalObjects.forEach(c => {
-            const dist = c.group.position.distanceTo(mouse3D);
-            if (dist < 1.6) {
-                c.hoverSpin += (1.6 - dist) * 0.008;
+        // Mouse Parallax factor
+        const parallaxX = (mouseX - width / 2) * 0.035;
+        const parallaxY = (mouseY - height / 2) * 0.035;
+
+        // Update and Render Stars
+        stars.forEach(star => {
+            // Pulse opacity
+            star.pulsePhase += star.pulseSpeed;
+            const currentAlpha = Math.max(0.05, star.alpha + Math.sin(star.pulsePhase) * 0.15);
+
+            // Apply drift animation
+            star.origX += star.driftX;
+            star.origY += star.driftY;
+
+            // Screen wrap around for drift
+            if (star.origX < 0) star.origX = width;
+            if (star.origX > width) star.origX = 0;
+            if (star.origY < 0) star.origY = height;
+            if (star.origY > height) star.origY = 0;
+
+            // Restoring spring physics
+            let targetX = star.origX;
+            let targetY = star.origY;
+
+            // Push stars if clicked ripple is active
+            if (rippleActive) {
+                const dx = star.origX - rippleCenter.x;
+                const dy = star.origY - rippleCenter.y;
+                const d = Math.sqrt(dx * dx + dy * dy);
+
+                if (d > 10 && d < rippleRadius && d > rippleRadius - 80) {
+                    const factor = (1.0 - (rippleRadius - d) / 80);
+                    const pushForce = factor * 45;
+                    star.x += (dx / d) * pushForce;
+                    star.y += (dy / d) * pushForce;
+                }
             }
-            
-            c.group.rotation.x += c.rotSpeedX + c.hoverSpin;
-            c.group.rotation.y += c.rotSpeedY + c.hoverSpin;
-            c.hoverSpin *= 0.93; // damp spin rate
 
-            // Floating drift motion
-            c.group.position.x = c.basePos.x + Math.sin(elapsedTime * 0.4 + c.basePos.x) * 0.12 + mouseX * 0.25;
-            c.group.position.y = c.basePos.y + Math.cos(elapsedTime * 0.4 + c.basePos.y) * 0.12 - mouseY * 0.25;
+            // Interpolate back to original place
+            star.x += (targetX - star.x) * 0.08;
+            star.y += (targetY - star.y) * 0.08;
+
+            // Parallax offset applied dynamically
+            const drawX = star.x + parallaxX * (star.r * 0.6);
+            const drawY = star.y + parallaxY * (star.r * 0.6) - scrollY * (star.r * 0.05);
+
+            // Draw star
+            ctx.fillStyle = star.colorPrefix + currentAlpha + ')';
+            ctx.beginPath();
+            ctx.arc(drawX, drawY, star.r, 0, Math.PI * 2);
+            ctx.fill();
         });
 
-        // Smooth camera scroll depth translation
-        scrollY += (targetScrollY - scrollY) * 0.055;
-        camera.position.z = 5.2 + (scrollY * 0.0025);
-        camera.position.x = mouseX * 0.5;
-        camera.position.y = -mouseY * 0.5 - (scrollY * 0.0003);
-        camera.lookAt(scene.position);
+        // Update and Render Spark Trail
+        for (let i = sparks.length - 1; i >= 0; i--) {
+            const s = sparks[i];
+            s.age++;
+            if (s.age >= s.maxAge) {
+                sparks.splice(i, 1);
+                continue;
+            }
 
-        renderer.render(scene, camera);
+            s.x += s.vx;
+            s.y += s.vy;
+            s.vx *= 0.96;
+            s.vy *= 0.96;
+
+            const ratio = 1 - (s.age / s.maxAge);
+            ctx.fillStyle = s.colorPrefix + ratio * 0.8 + ')';
+            ctx.beginPath();
+            ctx.arc(s.x, s.y - scrollY * 0.1, s.size * ratio, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Update and Render 2D Crystals
+        const time = Date.now() * 0.0015;
+        crystals.forEach((c, idx) => {
+            // Hover check proximity
+            const drawX = c.baseX + Math.sin(time + c.phase) * 20 + parallaxX * 1.5;
+            const drawY = c.baseY + Math.cos(time + c.phase) * 20 + parallaxY * 1.5 - scrollY * 0.2;
+
+            const dx = mouseX - drawX;
+            const dy = mouseY - drawY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 180) {
+                // Spin faster when mouse is close
+                c.hoverSpin += (180 - dist) * 0.0006;
+            }
+
+            c.rotation += c.rotSpeed + c.hoverSpin;
+            c.hoverSpin *= 0.92; // damp spin rate
+
+            c.x = drawX;
+            c.y = drawY;
+
+            drawCrystal(ctx, c.x, c.y, c.size, c.sides, c.rotation, c.color);
+        });
     }
 
     animate();
-
-    // Window Resize Handler
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
 })();
