@@ -1,361 +1,218 @@
-// Interactive 2D Canvas Space Background - Upgraded High-Level Visuals (No Three.js)
-(function() {
+// Sage-Green Claymorphism Canvas Background – Floating Clay Drops
+(function () {
     const container = document.querySelector('.galaxy-bg');
     if (!container) return;
 
-    // Remove static spiral container if present
     const spiral = container.querySelector('.spiral-container');
     if (spiral) spiral.remove();
 
-    // Create Canvas
     const canvas = document.createElement('canvas');
-    canvas.style.position = 'absolute';
-    canvas.style.top = '0';
-    canvas.style.left = '0';
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    canvas.style.pointerEvents = 'none';
-    canvas.style.zIndex = '-1';
+    canvas.style.cssText = `position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;`;
     container.appendChild(canvas);
-
     const ctx = canvas.getContext('2d');
 
-    // Resize Handling
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-
+    let W = canvas.width  = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
     window.addEventListener('resize', () => {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-        initStars();
-        initCrystals();
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        initBlobs(); initDust();
     });
 
-    // Color definitions
-    const colors = [
-        'rgba(0, 217, 255, ',  // Cyan
-        'rgba(112, 0, 255, ',  // Purple
-        'rgba(255, 0, 187, '   // Pink
+    const isDark = () => !document.body.classList.contains('light-mode');
+
+    // ── Sage green palette blobs ──
+    const LIGHT_PALETTES = [
+        ['#B1D3B9', '#88BDA4'],  // light sage → mid sage
+        ['#E6F2DD', '#B1D3B9'],  // pale → light sage
+        ['#88BDA4', '#659287'],  // mid sage → dark sage
+        ['#D5EAC8', '#88BDA4'],  // soft green → mid sage
+        ['#C5DFC4', '#9ECEAD'],  // custom green range
+        ['#E0F0D5', '#B8D8BA'],  // very light
     ];
 
-    // Star configuration
-    const starCount = 200;
-    let stars = [];
+    const DARK_PALETTES = [
+        ['#1e3a30', '#142e24'],
+        ['#244038', '#1a3028'],
+        ['#2a4a3e', '#1e3830'],
+        ['#183028', '#102018'],
+        ['#204038', '#162e26'],
+        ['#1c3a30', '#12261e'],
+    ];
 
-    function initStars() {
-        stars = [];
-        for (let i = 0; i < starCount; i++) {
-            const x = Math.random() * width;
-            const y = Math.random() * height;
-            const r = Math.random() * 1.8 + 0.5;
-            const alpha = Math.random() * 0.6 + 0.2;
-            const colorPrefix = colors[Math.floor(Math.random() * colors.length)];
-            
-            stars.push({
-                x: x,
-                y: y,
-                origX: x,
-                origY: y,
-                r: r,
-                alpha: alpha,
-                pulseSpeed: 0.01 + Math.random() * 0.02,
-                pulsePhase: Math.random() * Math.PI * 2,
-                colorPrefix: colorPrefix,
-                driftX: (Math.random() - 0.5) * 0.15,
-                driftY: (Math.random() - 0.5) * 0.15
+    let blobs = [];
+    const BLOB_COUNT = 10;
+    function rand(a, b) { return a + Math.random() * (b - a); }
+
+    function initBlobs() {
+        blobs = [];
+        const pal = isDark() ? DARK_PALETTES : LIGHT_PALETTES;
+        for (let i = 0; i < BLOB_COUNT; i++) {
+            const p = pal[i % pal.length];
+            blobs.push({
+                x: rand(W * 0.05, W * 0.95), y: rand(H * 0.05, H * 0.95),
+                vx: rand(-0.18, 0.18),  vy: rand(-0.16, 0.16),
+                baseR: rand(W * 0.06, W * 0.14), r: 0,
+                phase: Math.random() * Math.PI * 2,
+                phaseSpd: rand(0.004, 0.009),
+                wobbleAmp: rand(0.06, 0.13),
+                c0: p[0], c1: p[1],
+                opacity: isDark() ? rand(0.10, 0.18) : rand(0.25, 0.42),
+                rot: Math.random() * Math.PI * 2,
+                rotSpd: rand(-0.0014, 0.0014),
+                svx: 0, svy: 0,
+            });
+            blobs[i].r = blobs[i].baseR;
+        }
+    }
+
+    let dust = [];
+    const DUST_N = 60;
+    function initDust() {
+        dust = [];
+        for (let i = 0; i < DUST_N; i++) {
+            dust.push({
+                x: Math.random() * W, y: Math.random() * H,
+                r: rand(1.5, 4.5),
+                alpha: isDark() ? rand(0.04, 0.10) : rand(0.08, 0.20),
+                speed: rand(0.10, 0.35), drift: rand(-0.10, 0.10),
+                phase: Math.random() * Math.PI * 2, phaseSpd: rand(0.008, 0.018),
+                col: ['rgba(101,146,135,', 'rgba(136,189,164,', 'rgba(177,211,185,', 'rgba(230,242,221,'][Math.floor(Math.random() * 4)],
             });
         }
     }
 
-    // Spark Particles (Cursor Trail)
-    const sparks = [];
-    const maxSparks = 60;
-
-    function spawnSpark(x, y, colorPrefix) {
-        if (sparks.length >= maxSparks) {
-            sparks.shift();
-        }
-        sparks.push({
-            x: x,
-            y: y,
-            vx: (Math.random() - 0.5) * 1.5,
-            vy: (Math.random() - 0.5) * 1.5,
-            size: Math.random() * 3 + 2,
-            age: 0,
-            maxAge: 30 + Math.random() * 20,
-            colorPrefix: colorPrefix
-        });
-    }
-
-    // Floating 2D Wireframe Crystals
-    let crystals = [];
-    function initCrystals() {
-        crystals = [
-            {
-                baseX: width * 0.15,
-                baseY: height * 0.3,
-                x: width * 0.15,
-                y: height * 0.3,
-                size: 32,
-                sides: 8,
-                rotation: 0,
-                rotSpeed: 0.006,
-                color: '#00d9ff',
-                hoverSpin: 0,
-                phase: 0
-            },
-            {
-                baseX: width * 0.85,
-                baseY: height * 0.7,
-                x: width * 0.85,
-                y: height * 0.7,
-                size: 26,
-                sides: 6,
-                rotation: Math.PI / 4,
-                rotSpeed: -0.008,
-                color: '#7000ff',
-                hoverSpin: 0,
-                phase: Math.PI
-            }
-        ];
-    }
-
-    // Interactive Parameters
-    let mouseX = width / 2;
-    let mouseY = height / 2;
-    let targetMouseX = width / 2;
-    let targetMouseY = height / 2;
-
-    // Click Ripple Parameter
-    let rippleCenter = { x: 0, y: 0 };
-    let rippleRadius = 0;
-    let rippleActive = false;
-    const rippleMaxRadius = 400;
-    const rippleSpeed = 12;
-
-    // Listeners
-    document.addEventListener('mousemove', (e) => {
-        targetMouseX = e.clientX;
-        targetMouseY = e.clientY;
-
-        // Spawn spark cursor trail
-        if (Math.random() > 0.4) {
-            const colorPrefix = Math.random() > 0.5 ? 'rgba(0, 217, 255, ' : 'rgba(255, 0, 187, ';
-            spawnSpark(targetMouseX, targetMouseY, colorPrefix);
-        }
-    });
-
+    let ripples = [];
     document.addEventListener('mousedown', (e) => {
-        rippleCenter.x = e.clientX;
-        rippleCenter.y = e.clientY;
-        rippleRadius = 0;
-        rippleActive = true;
+        ripples.push({
+            x: e.clientX, y: e.clientY, r: 0,
+            maxR: 280 + Math.random() * 200, speed: 7 + Math.random() * 5,
+            col: isDark() ? 'rgba(101,146,135,' : 'rgba(101,146,135,',
+        });
     });
 
-    // Scroll parallax depth factor
-    let scrollY = window.scrollY;
-    let targetScrollY = window.scrollY;
-    window.addEventListener('scroll', () => {
-        targetScrollY = window.scrollY;
-    });
+    let mx = W/2, my = H/2, tmx = W/2, tmy = H/2;
+    let scrollY = 0, tScrollY = 0;
+    document.addEventListener('mousemove', (e) => { tmx = e.clientX; tmy = e.clientY; });
+    window.addEventListener('scroll', () => { tScrollY = window.scrollY; });
 
-    // Draw 2D Gem Crystal Wireframe function
-    function drawCrystal(ctx, x, y, size, sides, rotation, color) {
+    function lighten(hex, a) {
+        const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+        return `rgb(${Math.min(255,r+Math.round(255*a))},${Math.min(255,g+Math.round(255*a))},${Math.min(255,b+Math.round(255*a))})`;
+    }
+    function darken(hex, a) {
+        const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+        return `rgb(${Math.max(0,r-Math.round(255*a))},${Math.max(0,g-Math.round(255*a))},${Math.max(0,b-Math.round(255*a))})`;
+    }
+
+    function drawBlob(b) {
         ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(rotation);
-        
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 1.2;
-        ctx.shadowColor = color;
-        ctx.shadowBlur = 12;
+        ctx.globalAlpha = b.opacity;
+        ctx.translate(b.x, b.y);
+        ctx.rotate(b.rot);
+        const wobble = 1 + Math.sin(b.phase) * b.wobbleAmp;
+        const rx = b.r * wobble, ry = b.r * (2 - wobble);
 
-        // Draw outer polygon outline
+        const grd = ctx.createRadialGradient(-rx*0.3,-ry*0.3,rx*0.05,0,0,rx*1.2);
+        grd.addColorStop(0.0, lighten(b.c0, 0.42));
+        grd.addColorStop(0.45, b.c0);
+        grd.addColorStop(0.85, b.c1);
+        grd.addColorStop(1.0, darken(b.c1, 0.22));
+
         ctx.beginPath();
-        for (let i = 0; i < sides; i++) {
-            const angle = (i * 2 * Math.PI) / sides;
-            const px = size * Math.cos(angle);
-            const py = size * Math.sin(angle);
-            if (i === 0) ctx.moveTo(px, py);
-            else ctx.lineTo(px, py);
+        const pts = 7, jitter = 0.22;
+        for (let i = 0; i < pts; i++) {
+            const a0 = (i/pts)*Math.PI*2, a1 = ((i+1)/pts)*Math.PI*2;
+            const n0 = 1+Math.sin(b.phase+i*1.7)*jitter, n1 = 1+Math.sin(b.phase+(i+1)*1.7)*jitter;
+            const px=Math.cos(a0)*rx*n0, py=Math.sin(a0)*ry*n0;
+            const npx=Math.cos(a1)*rx*n1, npy=Math.sin(a1)*ry*n1;
+            const cp1x=px+Math.cos(a0+Math.PI/2)*rx*0.35, cp1y=py+Math.sin(a0+Math.PI/2)*ry*0.35;
+            const cp2x=npx-Math.cos(a1+Math.PI/2)*rx*0.35, cp2y=npy-Math.sin(a1+Math.PI/2)*ry*0.35;
+            if (i===0) ctx.moveTo(px,py);
+            ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,npx,npy);
         }
         ctx.closePath();
-        ctx.stroke();
+        ctx.fillStyle = grd;
+        ctx.shadowColor = isDark() ? 'rgba(0,0,0,0.35)' : 'rgba(101,146,135,0.22)';
+        ctx.shadowBlur = isDark() ? 28 : 20;
+        ctx.shadowOffsetX = 4; ctx.shadowOffsetY = 7;
+        ctx.fill();
 
-        // Draw inner concentric crystal facets
-        ctx.strokeStyle = color + '44'; // semi-transparent
-        ctx.shadowBlur = 0;
-        ctx.beginPath();
-        const innerSize = size * 0.45;
-        for (let i = 0; i < sides; i++) {
-            const angle = (i * 2 * Math.PI) / sides;
-            const px = innerSize * Math.cos(angle);
-            const py = innerSize * Math.sin(angle);
-            if (i === 0) ctx.moveTo(px, py);
-            else ctx.lineTo(px, py);
-        }
-        ctx.closePath();
-        ctx.stroke();
-
-        // Draw facet connection lines from center to outer vertices
-        ctx.beginPath();
-        for (let i = 0; i < sides; i++) {
-            const angle = (i * 2 * Math.PI) / sides;
-            const outerX = size * Math.cos(angle);
-            const outerY = size * Math.sin(angle);
-            const innerX = innerSize * Math.cos(angle);
-            const innerY = innerSize * Math.sin(angle);
-            
-            ctx.moveTo(outerX, outerY);
-            ctx.lineTo(innerX, innerY);
-            
-            ctx.moveTo(innerX, innerY);
-            ctx.lineTo(0, 0);
-        }
-        ctx.stroke();
-
+        // Specular highlight (top-left)
+        ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+        const hl = ctx.createRadialGradient(-rx*0.38,-ry*0.38,0,-rx*0.2,-ry*0.2,rx*0.55);
+        hl.addColorStop(0, 'rgba(255,255,255,0.55)');
+        hl.addColorStop(1, 'rgba(255,255,255,0.00)');
+        ctx.fillStyle = hl;
+        ctx.fill();
         ctx.restore();
     }
 
-    // Initialize
-    initStars();
-    initCrystals();
+    function drawDust(d) {
+        ctx.save();
+        ctx.globalAlpha = d.alpha * (0.7 + 0.3*Math.sin(d.phase));
+        ctx.beginPath();
+        ctx.arc(d.x, d.y - scrollY*0.06, d.r, 0, Math.PI*2);
+        ctx.fillStyle = d.col + d.alpha + ')';
+        ctx.shadowColor = d.col + '0.5)'; ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.restore();
+    }
 
-    // Main animation loop
+    initBlobs(); initDust();
+    let t = 0;
+
     function animate() {
         requestAnimationFrame(animate);
+        t += 0.012;
+        ctx.clearRect(0, 0, W, H);
 
-        // Clear canvas
-        ctx.clearRect(0, 0, width, height);
+        mx += (tmx-mx)*0.06; my += (tmy-my)*0.06;
+        scrollY += (tScrollY-scrollY)*0.07;
 
-        // Smooth Mouse drift
-        mouseX += (targetMouseX - mouseX) * 0.08;
-        mouseY += (targetMouseY - mouseY) * 0.08;
-        
-        // Smooth Scroll drift
-        scrollY += (targetScrollY - scrollY) * 0.08;
+        blobs.forEach(b => {
+            b.phase += b.phaseSpd; b.rot += b.rotSpd;
+            b.x += b.vx; b.y += b.vy;
+            if (b.x < -b.r*1.5) b.x = W+b.r*1.5;
+            if (b.x > W+b.r*1.5) b.x = -b.r*1.5;
+            if (b.y < -b.r*1.5) b.y = H+b.r*1.5;
+            if (b.y > H+b.r*1.5) b.y = -b.r*1.5;
 
-        // Render & Update Click Ripple
-        if (rippleActive) {
-            rippleRadius += rippleSpeed;
-            if (rippleRadius > rippleMaxRadius) {
-                rippleActive = false;
-            } else {
-                ctx.save();
-                ctx.strokeStyle = 'rgba(0, 217, 255, ' + (1.0 - rippleRadius / rippleMaxRadius) * 0.3 + ')';
-                ctx.lineWidth = 2;
-                ctx.shadowColor = 'rgba(0, 217, 255, 0.4)';
-                ctx.shadowBlur = 10;
-                ctx.beginPath();
-                ctx.arc(rippleCenter.x, rippleCenter.y, rippleRadius, 0, Math.PI * 2);
-                ctx.stroke();
-                ctx.restore();
+            const dx=b.x-mx, dy=b.y-my, dist=Math.sqrt(dx*dx+dy*dy);
+            const repR = b.r*1.4;
+            if (dist < repR && dist > 1) {
+                const f = (repR-dist)/repR*0.010;
+                b.svx += (dx/dist)*f; b.svy += (dy/dist)*f;
             }
-        }
+            b.svx *= 0.90; b.svy *= 0.90;
+            b.x += b.svx; b.y += b.svy;
 
-        // Mouse Parallax factor
-        const parallaxX = (mouseX - width / 2) * 0.035;
-        const parallaxY = (mouseY - height / 2) * 0.035;
-
-        // Update and Render Stars
-        stars.forEach(star => {
-            // Pulse opacity
-            star.pulsePhase += star.pulseSpeed;
-            const currentAlpha = Math.max(0.05, star.alpha + Math.sin(star.pulsePhase) * 0.15);
-
-            // Apply drift animation
-            star.origX += star.driftX;
-            star.origY += star.driftY;
-
-            // Screen wrap around for drift
-            if (star.origX < 0) star.origX = width;
-            if (star.origX > width) star.origX = 0;
-            if (star.origY < 0) star.origY = height;
-            if (star.origY > height) star.origY = 0;
-
-            // Restoring spring physics
-            let targetX = star.origX;
-            let targetY = star.origY;
-
-            // Push stars if clicked ripple is active
-            if (rippleActive) {
-                const dx = star.origX - rippleCenter.x;
-                const dy = star.origY - rippleCenter.y;
-                const d = Math.sqrt(dx * dx + dy * dy);
-
-                if (d > 10 && d < rippleRadius && d > rippleRadius - 80) {
-                    const factor = (1.0 - (rippleRadius - d) / 80);
-                    const pushForce = factor * 45;
-                    star.x += (dx / d) * pushForce;
-                    star.y += (dy / d) * pushForce;
-                }
-            }
-
-            // Interpolate back to original place
-            star.x += (targetX - star.x) * 0.08;
-            star.y += (targetY - star.y) * 0.08;
-
-            // Parallax offset applied dynamically
-            const drawX = star.x + parallaxX * (star.r * 0.6);
-            const drawY = star.y + parallaxY * (star.r * 0.6) - scrollY * (star.r * 0.05);
-
-            // Draw star
-            ctx.fillStyle = star.colorPrefix + currentAlpha + ')';
-            ctx.beginPath();
-            ctx.arc(drawX, drawY, star.r, 0, Math.PI * 2);
-            ctx.fill();
+            drawBlob(b);
         });
 
-        // Update and Render Spark Trail
-        for (let i = sparks.length - 1; i >= 0; i--) {
-            const s = sparks[i];
-            s.age++;
-            if (s.age >= s.maxAge) {
-                sparks.splice(i, 1);
-                continue;
-            }
-
-            s.x += s.vx;
-            s.y += s.vy;
-            s.vx *= 0.96;
-            s.vy *= 0.96;
-
-            const ratio = 1 - (s.age / s.maxAge);
-            ctx.fillStyle = s.colorPrefix + ratio * 0.8 + ')';
-            ctx.beginPath();
-            ctx.arc(s.x, s.y - scrollY * 0.1, s.size * ratio, 0, Math.PI * 2);
-            ctx.fill();
+        for (let i = ripples.length-1; i >= 0; i--) {
+            const rip = ripples[i]; rip.r += rip.speed;
+            const prog = rip.r/rip.maxR;
+            if (prog >= 1) { ripples.splice(i,1); continue; }
+            ctx.save();
+            ctx.beginPath(); ctx.arc(rip.x, rip.y, rip.r, 0, Math.PI*2);
+            ctx.strokeStyle = rip.col + (1-prog)*0.30 + ')';
+            ctx.lineWidth = 2.5;
+            ctx.shadowColor = rip.col + '0.35)'; ctx.shadowBlur = 10;
+            ctx.stroke(); ctx.restore();
         }
 
-        // Update and Render 2D Crystals
-        const time = Date.now() * 0.0015;
-        crystals.forEach((c, idx) => {
-            // Hover check proximity
-            const drawX = c.baseX + Math.sin(time + c.phase) * 20 + parallaxX * 1.5;
-            const drawY = c.baseY + Math.cos(time + c.phase) * 20 + parallaxY * 1.5 - scrollY * 0.2;
-
-            const dx = mouseX - drawX;
-            const dy = mouseY - drawY;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < 180) {
-                // Spin faster when mouse is close
-                c.hoverSpin += (180 - dist) * 0.0006;
-            }
-
-            c.rotation += c.rotSpeed + c.hoverSpin;
-            c.hoverSpin *= 0.92; // damp spin rate
-
-            c.x = drawX;
-            c.y = drawY;
-
-            drawCrystal(ctx, c.x, c.y, c.size, c.sides, c.rotation, c.color);
+        dust.forEach(d => {
+            d.y -= d.speed; d.x += d.drift; d.phase += d.phaseSpd;
+            if (d.y < -d.r*2) d.y = H+d.r*2;
+            if (d.x < -d.r*2) d.x = W+d.r*2;
+            if (d.x > W+d.r*2) d.x = -d.r*2;
+            drawDust(d);
         });
     }
 
     animate();
+
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.addEventListener('click', () => setTimeout(() => { initBlobs(); initDust(); }, 120));
 })();

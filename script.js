@@ -1,145 +1,175 @@
-// Neon Core System
+// ================================================================
+//  CLAY MORPHISM PORTFOLIO – CORE INTERACTION SYSTEM
+// ================================================================
 
-// Initialize PDF.js worker
+// ── PDF.js worker ────────────────────────────────────────────────
 if (typeof pdfjsLib !== 'undefined') {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 }
 
-// DOM Elements
-const cursorDot = document.querySelector('.cursor-dot');
-const cursorRing = document.querySelector('.cursor-ring');
-const mouseGlow = document.querySelector('.mouse-glow');
+// ── DOM References ───────────────────────────────────────────────
+const cursorDot    = document.querySelector('.cursor-dot');
+const cursorRing   = document.querySelector('.cursor-ring');
+const mouseGlow    = document.querySelector('.mouse-glow');
 const magneticElems = document.querySelectorAll('[data-magnetic]');
 const scrollElements = document.querySelectorAll('.scroll-reveal');
-const counters = document.querySelectorAll('.num');
-const headerLinks = document.querySelectorAll('.nav-link');
-const allSections = document.querySelectorAll('section[id]');
+const counters     = document.querySelectorAll('.num');
+const headerLinks  = document.querySelectorAll('.nav-link');
+const allSections  = document.querySelectorAll('section[id]');
 const themeToggleBtn = document.getElementById('theme-toggle');
-const menuToggleBtn = document.getElementById('menu-toggle');
+const menuToggleBtn  = document.getElementById('menu-toggle');
 
-// Theme Toggle System
+// ================================================================
+//  THEME CONFIGURATION – PERMANENT LIGHT MODE
+// ================================================================
 function initThemeToggle() {
-    // Check for saved theme preference or default to dark mode
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.body.classList.toggle('light-mode', savedTheme === 'light');
-    updateThemeIcon(savedTheme === 'light');
-
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', toggleTheme);
-    }
+    document.body.classList.add('light-mode');
+    localStorage.setItem('theme', 'light');
 }
 
-function toggleTheme() {
-    const isLightMode = document.body.classList.toggle('light-mode');
-    const theme = isLightMode ? 'light' : 'dark';
-    localStorage.setItem('theme', theme);
-    updateThemeIcon(isLightMode);
-}
-
-function updateThemeIcon(isLightMode) {
-    if (themeToggleBtn) {
-        const icon = themeToggleBtn.querySelector('i');
-        if (icon) {
-            icon.classList.remove('fa-moon', 'fa-sun');
-            icon.classList.add(isLightMode ? 'fa-moon' : 'fa-sun');
-        }
-    }
-}
-
-// Mobile Menu Toggle
+// ================================================================
+//  MOBILE MENU
+// ================================================================
 function initMobileMenu() {
-    if (menuToggleBtn) {
-        menuToggleBtn.addEventListener('click', toggleMobileMenu);
-    }
+    if (!menuToggleBtn) return;
+    menuToggleBtn.addEventListener('click', () => {
+        const nav = document.querySelector('.top-nav');
+        if (nav) nav.classList.toggle('open');
+    });
 }
 
-function toggleMobileMenu() {
-    const topNav = document.querySelector('.top-nav');
-    if (topNav) {
-        topNav.style.display = topNav.style.display === 'none' ? 'flex' : 'none';
-    }
-}
-
-// Initialize on DOM ready
+// ── Init on DOMContentLoaded ──────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     initMobileMenu();
+    init3DEntry();
 });
 
-// 0. Reveal Text Pre-processing
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initThemeToggle();
+    initMobileMenu();
+}
+
+// ================================================================
+//  REVEAL-TEXT PRE-PROCESSING
+// ================================================================
 document.querySelectorAll('.reveal-text').forEach(el => {
-    // Skip if already has spans (manually defined)
-    if (el.children.length > 0) return;
-    
+    if (el.children.length > 0) return; // already wrapped
     const text = el.innerText;
     el.innerHTML = '';
-    text.split(' ').forEach((word, i) => {
+    text.split(' ').forEach((word, i, arr) => {
         const span = document.createElement('span');
-        span.innerText = word + (i < text.split(' ').length - 1 ? '\u00A0' : '');
+        span.innerText = word + (i < arr.length - 1 ? '\u00A0' : '');
         el.appendChild(span);
     });
 });
 
-// 1. Cyber Cursor & Grid Parallax
+// ================================================================
+//  GOOEY VELOCITY-BASED CURSOR
+// ================================================================
+let prevCX = 0, prevCY = 0;
+let cursorVX = 0, cursorVY = 0;
+let cursorAngle = 0;
+let cursorStretch = 1;
+let rafCursor = null;
+
+function updateCursorDeformation() {
+    const speed = Math.sqrt(cursorVX * cursorVX + cursorVY * cursorVY);
+    const maxStretch = 1.85;
+    const maxSpeed   = 22;
+
+    // Target stretch based on speed
+    const targetStretch = 1 + Math.min(speed / maxSpeed, 1) * (maxStretch - 1);
+    // Target angle based on velocity direction
+    const targetAngle   = Math.atan2(cursorVY, cursorVX) * (180 / Math.PI);
+
+    // Smooth lerp toward targets
+    cursorStretch += (targetStretch - cursorStretch) * 0.14;
+    if (speed > 0.5) {
+        cursorAngle  += (targetAngle  - cursorAngle)  * 0.18;
+    }
+
+    if (cursorDot) {
+        const w = 10 * cursorStretch;
+        const h = 10 / cursorStretch;
+        cursorDot.style.width  = `${w}px`;
+        cursorDot.style.height = `${h}px`;
+        cursorDot.style.transform = `translate(-50%, -50%) rotate(${cursorAngle}deg)`;
+        cursorDot.style.borderRadius = `${50 / cursorStretch}%`;
+    }
+}
+
 document.addEventListener('mousemove', (e) => {
     const x = e.clientX;
     const y = e.clientY;
-    
+
+    // Velocity
+    cursorVX = x - prevCX;
+    cursorVY = y - prevCY;
+    prevCX = x; prevCY = y;
+
+    // Move dot instantly
     if (cursorDot) {
         cursorDot.style.left = `${x}px`;
-        cursorDot.style.top = `${y}px`;
+        cursorDot.style.top  = `${y}px`;
     }
-    
+
+    // Move ring with slight lag
     if (cursorRing) {
-        cursorRing.animate({
-            left: `${x}px`,
-            top: `${y}px`
-        }, { duration: 400, fill: "forwards" });
+        cursorRing.animate(
+            { left: `${x}px`, top: `${y}px` },
+            { duration: 320, fill: 'forwards', easing: 'cubic-bezier(0.23,1,0.32,1)' }
+        );
     }
 
-    if(mouseGlow) {
+    if (mouseGlow) {
         mouseGlow.style.left = `${x}px`;
-        mouseGlow.style.top = `${y}px`;
+        mouseGlow.style.top  = `${y}px`;
     }
 
+    // Magnetic pull on data-magnetic elements
     const mag = e.target.closest('[data-magnetic]');
-    if(mag) {
+    if (mag) {
         const rect = mag.getBoundingClientRect();
-        const mx = e.clientX - rect.left - rect.width / 2;
-        const my = e.clientY - rect.top - rect.height / 2;
-        
-        // Smoother, more responsive magnetic pull
-        mag.style.transition = 'transform 0.1s cubic-bezier(0.23, 1, 0.32, 1)';
-        mag.style.transform = `translate(${mx * 0.4}px, ${my * 0.4}px)`;
+        const mx = e.clientX - rect.left - rect.width  / 2;
+        const my = e.clientY - rect.top  - rect.height / 2;
+        mag.style.transition = 'transform 0.12s cubic-bezier(0.23,1,0.32,1)';
+        mag.style.transform  = `translate(${mx * 0.38}px, ${my * 0.38}px)`;
         if (cursorRing) cursorRing.classList.add('active');
     }
+
+    // Deform cursor shape
+    if (rafCursor) cancelAnimationFrame(rafCursor);
+    rafCursor = requestAnimationFrame(updateCursorDeformation);
 });
 
 document.addEventListener('mouseout', (e) => {
     const mag = e.target.closest('[data-magnetic]');
-    if(mag) {
-        mag.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-        mag.style.transform = 'translate(0, 0)';
+    if (mag) {
+        mag.style.transition = 'transform 0.55s cubic-bezier(0.23,1,0.32,1)';
+        mag.style.transform  = 'translate(0,0)';
         if (cursorRing) cursorRing.classList.remove('active');
     }
 });
 
 document.addEventListener('mousedown', () => {
     if (cursorRing) cursorRing.classList.add('click');
-    if (cursorDot) cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
-});
-document.addEventListener('mouseup', () => {
-    if (cursorRing) cursorRing.classList.remove('click');
-    if (cursorDot) cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+    if (cursorDot) cursorDot.style.transform = `translate(-50%, -50%) scale(1.6)`;
 });
 
-// 1.5 Header Scroll Tracking
+document.addEventListener('mouseup', () => {
+    if (cursorRing) cursorRing.classList.remove('click');
+    if (cursorDot) cursorDot.style.transform = `translate(-50%, -50%) scale(1)`;
+});
+
+// ================================================================
+//  HEADER SCROLL TRACKING & ACTIVE LINK
+// ================================================================
 window.addEventListener('scroll', () => {
     let current = '';
     allSections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (window.pageYOffset >= (sectionTop - 200)) {
+        if (window.pageYOffset >= section.offsetTop - 220) {
             current = section.getAttribute('id');
         }
     });
@@ -155,48 +185,51 @@ window.addEventListener('scroll', () => {
 headerLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         const href = link.getAttribute('href');
-        
-        // If it's a local anchor on the same page
         if (href.startsWith('#')) {
             e.preventDefault();
-            const targetSection = document.querySelector(href);
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        } 
-        // If it's an anchor to index.html from another page
-        else if (href.includes('index.html#')) {
+            const target = document.querySelector(href);
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
+        } else if (href.includes('index.html#')) {
             const anchor = href.split('#')[1];
-            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || !window.location.pathname.includes('.html')) {
+            const isIndex = window.location.pathname.endsWith('index.html')
+                         || window.location.pathname === '/'
+                         || !window.location.pathname.includes('.html');
+            if (isIndex) {
                 e.preventDefault();
-                const targetSection = document.querySelector('#' + anchor);
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
-                }
+                const target = document.querySelector('#' + anchor);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
             }
         }
     });
 });
 
-// 2. System Boot Animation (Unique Scroll Reveal)
-const observer = new IntersectionObserver((entries) => {
+// ================================================================
+//  BUBBLE PUFF-IN SCROLL REVEAL (IntersectionObserver)
+// ================================================================
+const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            if (entry.target.id === 'contact' || entry.target.classList.contains('persona-stats')) {
+            if (entry.target.id === 'contact' ||
+                entry.target.classList.contains('persona-stats')) {
                 initCounters();
             }
         }
     });
-}, { threshold: 0.15 });
+}, { threshold: 0.12 });
 
-scrollElements.forEach(el => observer.observe(el));
+scrollElements.forEach(el => revealObserver.observe(el));
 
-// 2.5 2D Magnetic Shift Effect for Interactive Cards with Glare
+// ================================================================
+//  CARD TILT + GLARE (2D parallax on hover)
+// ================================================================
 function initTilt() {
-    const cards = document.querySelectorAll('.card:not(.contributions-graph), .cred-card, .mini-project, .project-card-premium');
+    const cards = document.querySelectorAll(
+        '.card:not(.contributions-graph), .cred-card, .mini-project, .project-card-premium'
+    );
+
     cards.forEach(card => {
-        // Create glare element dynamically if not present
+        // Inject glare layer
         if (!card.querySelector('.card-glare')) {
             const glare = document.createElement('div');
             glare.className = 'card-glare';
@@ -207,182 +240,175 @@ function initTilt() {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            // 2D translate offset (max shift of 8px)
-            const moveX = (x - centerX) / (rect.width / 16);
-            const moveY = (y - centerY) / (rect.height / 16);
-            
-            const xPercent = (x / rect.width) * 100;
-            const yPercent = (y / rect.height) * 100;
-            card.style.setProperty('--x', `${xPercent}%`);
-            card.style.setProperty('--y', `${yPercent}%`);
-            
+            const cx = rect.width  / 2;
+            const cy = rect.height / 2;
+
+            // Gentle 2D shift (max ±10px)
+            const moveX = (x - cx) / (rect.width  / 20);
+            const moveY = (y - cy) / (rect.height / 20);
+
+            // Glare position
+            card.style.setProperty('--x', `${(x / rect.width)  * 100}%`);
+            card.style.setProperty('--y', `${(y / rect.height) * 100}%`);
+
+            // Only apply fine-grained translate during hover – don't override the hover scale/lift
             card.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.02)`;
         });
-        
+
         card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translate(0, 0) scale(1)';
+            card.style.transform = 'translate(0,0) scale(1)';
         });
     });
 }
+
 initTilt();
 
-// 2.53 Staggered 2D Cascading Entry Loader
+// ================================================================
+//  STAGGERED CARD ENTRY ANIMATION
+// ================================================================
 function init3DEntry() {
-    const elements = document.querySelectorAll('.card:not(.contributions-graph), .project-card-premium, .cred-item');
-    elements.forEach(el => {
-        el.classList.add('animate-3d-entry');
-    });
+    const elements = document.querySelectorAll(
+        '.card:not(.contributions-graph), .project-card-premium, .cred-item'
+    );
+    elements.forEach(el => el.classList.add('animate-3d-entry'));
 
     setTimeout(() => {
         elements.forEach((el, idx) => {
-            setTimeout(() => {
-                el.classList.add('loaded');
-            }, idx * 60);
+            setTimeout(() => el.classList.add('loaded'), idx * 65);
         });
-    }, 150);
+    }, 200);
 }
 
-// 2.55 2D Concentric Tech Icons Orbit
-function init3DSphere() {
+// ================================================================
+//  CONCENTRIC ORBITS – HERO (with clay bobbing)
+// ================================================================
+function initOrbits() {
     const container = document.querySelector('.orbit-container');
     if (!container) return;
     const icons = container.querySelectorAll('.tech-icon');
     if (!icons.length) return;
 
     const orbitsConfig = [
-        { radius: 140, dir: 1, speed: 0.006 },
-        { radius: 210, dir: -1, speed: 0.0045 },
-        { radius: 280, dir: 1, speed: 0.003 }
+        { radius: 135, dir: 1,  speed: 0.0065 },
+        { radius: 205, dir: -1, speed: 0.0048 },
+        { radius: 275, dir: 1,  speed: 0.0032 },
     ];
 
-    const elements = [];
-
+    const items = [];
     icons.forEach((icon, i) => {
-        // Assign to an orbit (0, 1, 2)
         const orbitIdx = i % 3;
-        const config = orbitsConfig[orbitIdx];
-        
-        // Count how many icons are in this specific orbit
+        const config   = orbitsConfig[orbitIdx];
         let iconsInOrbit = 0;
-        icons.forEach((ic, j) => {
-            if (j % 3 === orbitIdx) iconsInOrbit++;
-        });
-        
-        // Determine position index within this orbit
-        const positionIdx = Math.floor(i / 3);
-        const angle = (positionIdx * 2 * Math.PI) / iconsInOrbit;
+        icons.forEach((_, j) => { if (j % 3 === orbitIdx) iconsInOrbit++; });
+        const posIdx = Math.floor(i / 3);
+        const angle  = (posIdx * 2 * Math.PI) / iconsInOrbit;
 
-        elements.push({
+        items.push({
             el: icon,
             radius: config.radius,
-            dir: config.dir,
-            speed: config.speed,
-            angle: angle
+            dir:    config.dir,
+            speed:  config.speed,
+            angle:  angle,
+            bobPhase: Math.random() * Math.PI * 2,
+            bobSpeed: 0.018 + Math.random() * 0.012,
+            bobAmp:   6 + Math.random() * 5,
         });
     });
 
-    function updateOrbits() {
-        elements.forEach(item => {
-            item.angle += item.speed * item.dir;
-            
-            // Calculate 2D position
-            const x = item.radius * Math.cos(item.angle);
-            const y = item.radius * Math.sin(item.angle);
-            
-            // Add a subtle 2D layered orbit depth effect (scale/opacity variation using sine)
-            const depthFactor = Math.sin(item.angle); // -1 to 1
-            const scale = 0.85 + depthFactor * 0.15;
-            const opacity = 0.65 + depthFactor * 0.35;
-            
-            item.el.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
-            item.el.style.opacity = opacity;
-            item.el.style.zIndex = Math.round((depthFactor + 1) * 10).toString();
-        });
-        requestAnimationFrame(updateOrbits);
-    }
-    updateOrbits();
+    function loop() {
+        items.forEach(item => {
+            item.angle    += item.speed * item.dir;
+            item.bobPhase += item.bobSpeed;
 
-    // Hover parallax logic (shifting orbits container slightly based on mouse)
+            const x     = item.radius * Math.cos(item.angle);
+            const rawY  = item.radius * Math.sin(item.angle);
+            // clay bobbing – add vertical oscillation
+            const bob   = Math.sin(item.bobPhase) * item.bobAmp;
+            const y     = rawY + bob;
+
+            // Depth cue via sine of angle
+            const depth   = Math.sin(item.angle);
+            const scale   = 0.82 + depth * 0.18;
+            const opacity = 0.60 + depth * 0.40;
+
+            item.el.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+            item.el.style.opacity   = opacity;
+            item.el.style.zIndex    = Math.round((depth + 1) * 10).toString();
+        });
+        requestAnimationFrame(loop);
+    }
+
+    loop();
+
+    // Container parallax drift with mouse
     document.addEventListener('mousemove', (e) => {
         const rect = container.getBoundingClientRect();
-        const mx = (e.clientX - rect.left - rect.width/2) / (rect.width/2);
-        const my = (e.clientY - rect.top - rect.height/2) / (rect.height/2);
-        
-        // Shift container inside its bounds in 2D
-        container.style.transform = `translate(calc(-50% + ${mx * 15}px), calc(-50% + ${my * 15}px))`;
+        if (!rect.width) return;
+        const normX = (e.clientX - rect.left - rect.width  / 2) / (rect.width  / 2);
+        const normY = (e.clientY - rect.top  - rect.height / 2) / (rect.height / 2);
+        container.style.transform =
+            `translate(calc(-50% + ${normX * 14}px), calc(-50% + ${normY * 14}px))`;
     });
 }
-init3DSphere();
 
-// 2.56 2D Forge Galaxy Proximity Shift Interaction
-function initForge3D() {
-    const forge = document.querySelector('.forge-container');
+initOrbits();
+
+// ================================================================
+//  FORGE TECH GALAXY – MOUSE PARALLAX
+// ================================================================
+function initForge() {
+    const forge  = document.querySelector('.forge-container');
     const galaxy = document.querySelector('.tech-galaxy');
     if (!forge || !galaxy) return;
 
     forge.addEventListener('mousemove', (e) => {
         const rect = forge.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-
-        // Shift the galaxy in 2D based on cursor coordinates (magnetic parallax shift)
-        const shiftX = x / 12;
-        const shiftY = y / 12;
-
-        galaxy.style.transform = `translate(${shiftX}px, ${shiftY}px)`;
+        const x    = (e.clientX - rect.left  - rect.width  / 2) / 12;
+        const y    = (e.clientY - rect.top   - rect.height / 2) / 12;
+        galaxy.style.transform = `translate(${x}px, ${y}px)`;
     });
 
     forge.addEventListener('mouseleave', () => {
-        galaxy.style.transform = `translate(0, 0)`;
+        galaxy.style.transform = 'translate(0,0)';
     });
 }
-initForge3D();
 
-// Run cache and staggering entries on load
-document.addEventListener('DOMContentLoaded', () => {
-    init3DEntry();
-});
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    init3DEntry();
-}
+initForge();
 
-// 2.6 Galactic Parallax Depth & Scroll Parallax
+// ================================================================
+//  SCROLL PARALLAX (builder text + spiral)
+// ================================================================
 window.addEventListener('scroll', () => {
-    const spiral = document.querySelector('.spiral-container');
     const scrolled = window.pageYOffset;
-
+    const spiral   = document.querySelector('.spiral-container');
     if (spiral) {
-        spiral.style.transform = `translate(-50%, -50%) rotate(${scrolled * 0.02}deg) scale(${1 + scrolled * 0.0002})`;
+        spiral.style.transform =
+            `translate(-50%,-50%) rotate(${scrolled * 0.02}deg) scale(${1 + scrolled * 0.0002})`;
     }
-
-    // Scroll Parallax for specific elements (like BUILDER text)
     document.querySelectorAll('[data-scroll-speed]').forEach(el => {
-        const speed = el.getAttribute('data-scroll-speed');
+        const speed = parseFloat(el.getAttribute('data-scroll-speed'));
         el.style.transform = `translateY(${scrolled * speed}px)`;
     });
 });
 
-// 3. Data Parsing (Counters)
+// ================================================================
+//  COUNTERS
+// ================================================================
 let counted = false;
 function initCounters() {
     if (counted) return;
     counted = true;
-    
+
     counters.forEach(counter => {
-        const target = +counter.getAttribute('data-val');
-        const duration = 1500;
+        const target    = +counter.getAttribute('data-val');
+        const duration  = 1600;
         const increment = target / (duration / 20);
-        
         let current = 0;
+
         const timer = setInterval(() => {
             current += increment;
             if (current >= target) {
-                counter.innerText = target;
-                if(target > 20) counter.innerText += '+';
-                if(target === 100) counter.innerText += '%';
+                counter.innerText = target + (target > 20 ? '+' : '') + (target === 100 ? '%' : '');
                 clearInterval(timer);
             } else {
                 counter.innerText = Math.ceil(current);
@@ -391,22 +417,26 @@ function initCounters() {
     });
 }
 
-// 4. GitHub Contributions Mock Grid
+// ================================================================
+//  GITHUB CONTRIBUTION GRID (mock)
+// ================================================================
 const githubGrid = document.querySelector('.github-grid');
 if (githubGrid) {
     for (let i = 0; i < 350; i++) {
         const dot = document.createElement('div');
         dot.className = 'grid-dot';
-        if (Math.random() > 0.8) dot.classList.add('active');
+        if (Math.random() > 0.78) dot.classList.add('active');
         githubGrid.appendChild(dot);
     }
 }
 
-// 5. Certificate Modal Logic (Advanced Detailed Overlay)
-const modal = document.querySelector('#cert-detail-modal');
-const modalImg = modal ? modal.querySelector('.modal-img') : null;
-const closeModal = modal ? modal.querySelector('.close-modal') : null;
-const certBtns = document.querySelectorAll('.view-cert-btn');
+// ================================================================
+//  CERTIFICATE MODAL
+// ================================================================
+const modal      = document.querySelector('#cert-detail-modal');
+const modalImg   = modal ? modal.querySelector('.modal-img')    : null;
+const closeModal = modal ? modal.querySelector('.close-modal')  : null;
+const certBtns   = document.querySelectorAll('.view-cert-btn');
 
 let currentCertIdx = 0;
 const certData = [];
@@ -414,16 +444,18 @@ const certData = [];
 if (modal) {
     certBtns.forEach((btn, idx) => {
         certData.push({
-            img: btn.getAttribute('data-cert-img'),
-            title: btn.getAttribute('data-title'),
+            img:    btn.getAttribute('data-cert-img'),
+            title:  btn.getAttribute('data-title'),
             issuer: btn.getAttribute('data-issuer'),
-            date: btn.getAttribute('data-date'),
-            tags: btn.getAttribute('data-tags'),
-            desc: btn.getAttribute('data-desc'),
+            date:   btn.getAttribute('data-date'),
+            tags:   btn.getAttribute('data-tags'),
+            desc:   btn.getAttribute('data-desc'),
             verify: btn.getAttribute('data-verify'),
-            color: btn.closest('.cred-item') ? btn.closest('.cred-item').style.getPropertyValue('--c') : '#f97316'
+            color:  btn.closest('.cred-item')
+                      ? btn.closest('.cred-item').style.getPropertyValue('--c')
+                      : '#f97316',
         });
-        
+
         btn.addEventListener('click', () => {
             currentCertIdx = idx;
             updateCertModal();
@@ -435,32 +467,32 @@ if (modal) {
     function updateCertModal() {
         const data = certData[currentCertIdx];
         if (!data) return;
-        
+
         modalImg.src = data.img;
-        document.getElementById('modal-title').innerText = data.title;
-        document.getElementById('modal-issuer').innerText = data.issuer;
+        document.getElementById('modal-title').innerText   = data.title;
+        document.getElementById('modal-issuer').innerText  = data.issuer;
         document.getElementById('modal-issuer').style.color = data.color || '#f97316';
-        document.getElementById('modal-date').innerText = data.date;
+        document.getElementById('modal-date').innerText    = data.date;
         document.getElementById('modal-description').innerText = data.desc;
         document.getElementById('modal-verify-code').innerText = data.verify;
-        
+
         const verifyLink = document.getElementById('modal-verify-link');
         if (verifyLink) {
             verifyLink.href = `https://certificates.zahedul.dev/verify/${data.verify}`;
         }
-        
-        const tagsContainer = document.getElementById('modal-tags');
-        tagsContainer.innerHTML = '';
+
+        const tagsEl = document.getElementById('modal-tags');
+        tagsEl.innerHTML = '';
         if (data.tags) {
             data.tags.split(',').forEach(tag => {
                 const span = document.createElement('span');
                 span.innerText = tag.trim();
-                tagsContainer.appendChild(span);
+                tagsEl.appendChild(span);
             });
         }
-        
+
         document.getElementById('current-idx').innerText = currentCertIdx + 1;
-        document.getElementById('total-idx').innerText = certData.length;
+        document.getElementById('total-idx').innerText   = certData.length;
     }
 
     modal.querySelector('.nav-prev').addEventListener('click', (e) => {
@@ -489,42 +521,47 @@ if (modal) {
 
     document.addEventListener('keydown', (e) => {
         if (!modal.classList.contains('active')) return;
-        if (e.key === 'Escape') closeModal.click();
-        if (e.key === 'ArrowLeft') modal.querySelector('.nav-prev').click();
-        if (e.key === 'ArrowRight') modal.querySelector('.nav-next').click();
+        if (e.key === 'Escape')      closeModal.click();
+        if (e.key === 'ArrowLeft')   modal.querySelector('.nav-prev').click();
+        if (e.key === 'ArrowRight')  modal.querySelector('.nav-next').click();
     });
 }
 
-// 7. Document Explorer & File Hub
-const mainFileGrid = document.getElementById('main-file-grid');
-const fileModal = document.querySelector('.file-modal');
-const fileIframe = fileModal ? fileModal.querySelector('.file-iframe') : null;
+// ================================================================
+//  FILE EXPLORER / DOCUMENT HUB
+// ================================================================
+const mainFileGrid  = document.getElementById('main-file-grid');
+const fileModal     = document.querySelector('.file-modal');
+const fileIframe    = fileModal ? fileModal.querySelector('.file-iframe')    : null;
 const closeFileModal = fileModal ? fileModal.querySelector('.close-file-modal') : null;
 
 function openFile(doc) {
     if (!fileModal) return;
     fileModal.classList.add('active');
     if (cursorRing) cursorRing.style.borderColor = 'var(--accent-secondary)';
-    
+
     const titleElem = document.getElementById('active-file-title');
-    if(titleElem) titleElem.innerText = doc.title;
+    if (titleElem) titleElem.innerText = doc.title;
 
     if (doc.type === 'pdf') {
         fileIframe.src = doc.file;
     } else {
         if (window.location.protocol === 'file:') {
-            const htmlContent = `
-                <div style="font-family: 'Inter', sans-serif; padding: 40px; text-align: center; color: #fff; background: #0f172a; height: 100vh;">
-                    <h2 style="color: var(--accent-primary);">Cannot Preview Locally</h2>
-                    <p>Office files require a live server to preview properly using Google Docs Viewer.</p>
-                    <p>To view this file right now, please open <b>${doc.file}</b> directly.</p>
-                    <div style="margin-top: 20px;">
-                        <a href="${doc.file}" download style="padding: 12px 24px; background: var(--accent-secondary); color: #000; text-decoration: none; border-radius: 8px; font-weight: bold;">Download / Open File</a>
+            const html = `
+                <div style="font-family:'Comfortaa',sans-serif;padding:40px;text-align:center;
+                            color:var(--text-main);background:var(--bg-canvas);height:100vh;">
+                    <h2 style="color:var(--accent-primary);margin-bottom:16px;">Cannot Preview Locally</h2>
+                    <p style="color:var(--text-muted);">Office files require a live server.</p>
+                    <p style="margin-top:8px;color:var(--text-muted);">Open <b>${doc.file}</b> directly.</p>
+                    <div style="margin-top:28px;">
+                        <a href="${doc.file}" download
+                           style="padding:14px 28px;background:var(--accent-primary);color:#fff;
+                                  text-decoration:none;border-radius:100px;font-weight:800;">
+                            Download / Open File
+                        </a>
                     </div>
-                </div>
-            `;
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            fileIframe.src = URL.createObjectURL(blob);
+                </div>`;
+            fileIframe.src = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
         } else {
             const publicUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1) + doc.file;
             fileIframe.src = `https://docs.google.com/gview?url=${encodeURIComponent(publicUrl)}&embedded=true`;
@@ -534,56 +571,51 @@ function openFile(doc) {
 
 async function renderPDFThumbnail(url, canvas) {
     try {
-        const loadingTask = pdfjsLib.getDocument(url);
-        const pdf = await loadingTask.promise;
+        const pdf  = await pdfjsLib.getDocument(url).promise;
         const page = await pdf.getPage(1);
-        const viewport = page.getViewport({ scale: 0.4 });
-        const context = canvas.getContext('2d');
-        
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-        
-        const renderContext = {
-            canvasContext: context,
-            viewport: viewport
-        };
-        await page.render(renderContext).promise;
+        const vp   = page.getViewport({ scale: 0.4 });
+        canvas.height = vp.height;
+        canvas.width  = vp.width;
+        await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
         return true;
-    } catch (error) {
-        console.error("Error rendering PDF thumbnail:", error);
+    } catch (err) {
+        console.error('PDF thumbnail error:', err);
         return false;
     }
 }
 
-if(typeof documents !== 'undefined' && mainFileGrid) {
+if (typeof documents !== 'undefined' && mainFileGrid) {
     mainFileGrid.innerHTML = '';
+
     documents.forEach(doc => {
-        let icon = doc.type === 'pdf' ? 'fa-file-pdf' : 'fa-file';
+        const icon = doc.type === 'pdf' ? 'fa-file-pdf' : 'fa-file';
         const card = document.createElement('div');
-        card.className = 'card mini-project'; 
-        const thumbContainerId = `thumb-${Math.random().toString(36).substr(2, 9)}`;
-        
+        card.className = 'card mini-project';
+        const thumbId = `thumb-${Math.random().toString(36).substr(2, 9)}`;
+
         card.innerHTML = `
-            <div style="cursor:pointer; margin-bottom: 20px;">
-                <div id="${thumbContainerId}" class="file-thumb-container" style="height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; overflow: hidden; border-radius: 8px; background: rgba(0,0,0,0.2);">
-                    <i class="fa-solid ${icon}" style="font-size: 2.5rem; color: var(--accent-primary);"></i>
+            <div style="cursor:pointer;margin-bottom:18px;">
+                <div id="${thumbId}" class="file-thumb-container">
+                    <i class="fa-solid ${icon}" style="font-size:2.8rem;color:var(--accent-primary);"></i>
                 </div>
-                <h3 style="font-size: 1rem; color: #fff; margin-bottom: 5px;">${doc.title}</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">${doc.type}_DOCUMENT</p>
+                <h3 style="font-size:0.95rem;color:var(--text-main);margin-bottom:5px;
+                           font-family:var(--font-display);line-height:1.4;">${doc.title}</h3>
+                <p style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;
+                          letter-spacing:1px;font-weight:700;">${doc.type}_DOCUMENT</p>
             </div>
-            <div class="project-actions" style="justify-content: center;">
-                <button class="btn-visit" style="padding: 8px 20px; font-size: 0.75rem; border:none; cursor:pointer; width: 100%;">
+            <div class="project-actions" style="justify-content:center;">
+                <button class="btn-visit"
+                        style="width:100%;justify-content:center;padding:11px 20px;">
                     <i class="fa-solid fa-eye"></i> OPEN_FILE
                 </button>
-            </div>
-        `;
-        
+            </div>`;
+
         if (doc.type === 'pdf') {
-            const canvas = document.createElement('canvas');
-            renderPDFThumbnail(doc.file, canvas).then(success => {
-                if (success) {
-                    const container = card.querySelector(`#${thumbContainerId}`);
-                    if (container) { container.innerHTML = ''; container.appendChild(canvas); }
+            const cvs = document.createElement('canvas');
+            renderPDFThumbnail(doc.file, cvs).then(ok => {
+                if (ok) {
+                    const container = card.querySelector(`#${thumbId}`);
+                    if (container) { container.innerHTML = ''; container.appendChild(cvs); }
                 }
             });
         }
@@ -592,17 +624,23 @@ if(typeof documents !== 'undefined' && mainFileGrid) {
         card.querySelector('.btn-visit').addEventListener('click', () => openFile(doc));
         mainFileGrid.appendChild(card);
     });
+
+    // Re-init tilt for dynamically created file cards
+    setTimeout(initTilt, 400);
 }
 
-if(closeFileModal) {
+if (closeFileModal) {
     closeFileModal.addEventListener('click', () => {
         fileModal.classList.remove('active');
-        fileIframe.src = ''; 
+        fileIframe.src = '';
+        if (cursorRing) cursorRing.style.borderColor = '';
     });
+
     fileModal.addEventListener('click', (e) => {
         if (e.target === fileModal) {
             fileModal.classList.remove('active');
             fileIframe.src = '';
+            if (cursorRing) cursorRing.style.borderColor = '';
         }
     });
 }
