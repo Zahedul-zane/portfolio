@@ -21,23 +21,22 @@
 
     const isDark = () => !document.body.classList.contains('light-mode');
 
-    // ── Sage green palette blobs ──
+    // ── Neomorphic custom color palette blobs ──
     const LIGHT_PALETTES = [
-        ['#B1D3B9', '#88BDA4'],  // light sage → mid sage
-        ['#E6F2DD', '#B1D3B9'],  // pale → light sage
-        ['#88BDA4', '#659287'],  // mid sage → dark sage
-        ['#D5EAC8', '#88BDA4'],  // soft green → mid sage
-        ['#C5DFC4', '#9ECEAD'],  // custom green range
-        ['#E0F0D5', '#B8D8BA'],  // very light
+        ['#B5BAFF', '#9FA1FF'],  // lavender → purple
+        ['#AEE2FF', '#B5BAFF'],  // sky blue → lavender
+        ['#D9F9DF', '#AEE2FF'],  // mint green → sky blue
+        ['#9FA1FF', '#AEE2FF'],  // purple → sky blue
+        ['#B5BAFF', '#D9F9DF'],  // lavender → mint green
+        ['#AEE2FF', '#9FA1FF'],  // sky blue → purple
     ];
 
     const DARK_PALETTES = [
-        ['#1e3a30', '#142e24'],
-        ['#244038', '#1a3028'],
-        ['#2a4a3e', '#1e3830'],
-        ['#183028', '#102018'],
-        ['#204038', '#162e26'],
-        ['#1c3a30', '#12261e'],
+        ['#1b1c30', '#10111e'],  // deep indigo/purple
+        ['#172335', '#0f1724'],  // deep slate blue
+        ['#182e20', '#0e1d14'],  // deep forest green
+        ['#1e1f38', '#121324'],  // deep violet/lavender
+        ['#142a22', '#0a1a14'],  // deep teal/mint
     ];
 
     let blobs = [];
@@ -77,7 +76,7 @@
                 alpha: isDark() ? rand(0.04, 0.10) : rand(0.08, 0.20),
                 speed: rand(0.10, 0.35), drift: rand(-0.10, 0.10),
                 phase: Math.random() * Math.PI * 2, phaseSpd: rand(0.008, 0.018),
-                col: ['rgba(101,146,135,', 'rgba(136,189,164,', 'rgba(177,211,185,', 'rgba(230,242,221,'][Math.floor(Math.random() * 4)],
+                col: ['rgba(159,161,255,', 'rgba(181,186,255,', 'rgba(174,226,255,', 'rgba(217,249,223,'][Math.floor(Math.random() * 4)],
             });
         }
     }
@@ -87,7 +86,7 @@
         ripples.push({
             x: e.clientX, y: e.clientY, r: 0,
             maxR: 280 + Math.random() * 200, speed: 7 + Math.random() * 5,
-            col: isDark() ? 'rgba(101,146,135,' : 'rgba(101,146,135,',
+            col: isDark() ? 'rgba(159,161,255,' : 'rgba(159,161,255,',
         });
     });
 
@@ -133,7 +132,7 @@
         }
         ctx.closePath();
         ctx.fillStyle = grd;
-        ctx.shadowColor = isDark() ? 'rgba(0,0,0,0.35)' : 'rgba(101,146,135,0.22)';
+        ctx.shadowColor = isDark() ? 'rgba(0,0,0,0.35)' : 'rgba(159,161,255,0.22)';
         ctx.shadowBlur = isDark() ? 28 : 20;
         ctx.shadowOffsetX = 4; ctx.shadowOffsetY = 7;
         ctx.fill();

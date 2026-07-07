@@ -13,5 +13,7 @@ const documents = [
     
     { title: "Impact of Colonial Economic Exploitation", file: "File_PDF/Impact of Colonial Economic Exploitation on the Social Collapse of Bengali Society.pdf", type: "pdf" },
     { title: "A Psychological Disorder Analysis of Disney’s Christopher Robin", file: "File_PDF/A Psychological Disorder Analysis of Disney’s Christopher Robin.pdf", type: "pdf" },
-    { title: "Analysis time complexity and handshaking logic with random vertices(TermPaper)", file: "File_PDF/Analysis time complexity and handshaking logic with random vertices(TermPaper).pdf", type: "pdf" }
+    { title: "Analysis time complexity and handshaking logic with random vertices(TermPaper)", file: "File_PDF/Analysis time complexity and handshaking logic with random vertices(TermPaper).pdf", type: "pdf" },
+    { title: "Introduction to Artificial Neural Network", file: "File_PDF/Introduction to Artificial Neural Network.pdf", type: "pdf"},
+    { title: "Analysis of the effect of economic dependency created by the IMF", file: "File_PDF/Analysis of the effect of economic dependency created by the IMF.pdf", type: "pdf"}
 ];
