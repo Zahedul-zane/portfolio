@@ -422,10 +422,27 @@ function initCounters() {
 // ================================================================
 const githubGrid = document.querySelector('.github-grid');
 if (githubGrid) {
+    const namePattern = [
+        " #####   ###   #   # ##### ####  #   # #     ",
+        "     #  #   #  #   # #      #   #  #   # #     ",
+        "    #   #   #  #   # #      #   #  #   # #     ",
+        "   #    ##### ##### ####   #   #  #   # #     ",
+        "  #     #   #  #   # #      #   #  #   # #     ",
+        " #      #   #  #   # #      #   #  #   # #     ",
+        " #####  #   #  #   # ##### ####   ###  #####   "
+    ];
     for (let i = 0; i < 350; i++) {
         const dot = document.createElement('div');
         dot.className = 'grid-dot';
-        if (Math.random() > 0.78) dot.classList.add('active');
+        const row = Math.floor(i / 50);
+        const col = i % 50;
+        if (namePattern[row] && namePattern[row][col] === '#') {
+            dot.classList.add('active');
+            // Vary the contribution intensity (shades of green)
+            const levels = [0.4, 0.65, 0.85, 1.0];
+            const randomLevel = levels[Math.floor(Math.random() * levels.length)];
+            dot.style.opacity = randomLevel;
+        }
         githubGrid.appendChild(dot);
     }
 }
