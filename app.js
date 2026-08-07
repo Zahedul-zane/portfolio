@@ -592,34 +592,50 @@ function initCursor() {
 }
 
 function initEventHandlers() {
-  mobileToggle.addEventListener('click', toggleMobileMenu);
+  const mobileToggle = document.getElementById('mobileToggle');
+  const navLinks = document.querySelectorAll('.nav-link, .logo');
+  const projectFilterButtons = document.querySelectorAll('.project-filter-btn');
+  const certCards = document.querySelectorAll('.cert-card-box, .cert-card');
+  const fileCards = document.querySelectorAll('.file-card');
+
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', toggleMobileMenu);
+  }
 
   navLinks.forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
       const target = link.dataset.target || link.getAttribute('data-target');
-      scrollToSection(target);
+      if (target) {
+        scrollToSection(target);
+      }
     });
   });
 
   projectFilterButtons.forEach((button) => {
     button.addEventListener('click', () => {
       const filter = button.dataset.filter || button.getAttribute('data-filter');
-      setFilter(filter);
+      if (filter) {
+        setFilter(filter);
+      }
     });
   });
 
   certCards.forEach((card) => {
     card.addEventListener('click', () => {
       const certId = card.dataset.certId || card.getAttribute('data-cert-id');
-      openCertModal(certId);
+      if (certId) {
+        openCertModal(certId);
+      }
     });
   });
 
   fileCards.forEach((card) => {
     card.addEventListener('click', () => {
       const fileId = card.dataset.fileId || card.getAttribute('data-file-id');
-      openPdfModal(fileId);
+      if (fileId) {
+        openPdfModal(fileId);
+      }
     });
   });
 
