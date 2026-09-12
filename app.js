@@ -57,6 +57,14 @@ const certificates = {
     img: 'CertificateImage/UNICEF.jpg',
     tags: ['EXCEL', 'PRODUCTIVITY', 'UNICEF'],
     description: 'Successfully completed the course Excel Essentials for Workplace Productivity offered by UNICEF and Passport to Earning Bangladesh.'
+  },
+  8: {
+    title: 'REACT 2026 (National Robotics Competition)',
+    issuer: 'IEEE SEU SB • Southeast University',
+    date: 'SEP 11, 2026',
+    img: 'CertificateImage/REACT2026Certificate.jpeg',
+    tags: ['ROBOTICS', 'IEEE', 'COMPETITION'],
+    description: 'Awarded Certificate of Participation for active participation, enthusiasm, and valuable contribution to REACT 2026 (Research, Engineering, Automation, Computer, Technology) — The 1st National Robotics Competition organized by IEEE SEU Student Branch at Southeast University on 10-11th September 2026.'
   }
 };
 
@@ -72,7 +80,8 @@ const files = {
   9: { title: 'Psychological Disorder Analysis of Christopher Robin', file: 'File_PDF/A Psychological Disorder Analysis of Disney’s Christopher Robin.pdf' },
   10: { title: 'Analysis time complexity with random vertices (Term Paper)', file: 'File_PDF/Analysis time complexity and handshaking logic with random vertices(TermPaper).pdf' },
   11: { title: 'Introduction to Artificial Neural Network Paper', file: 'File_PDF/Introduction to Artificial Neural Network.pdf' },
-  12: { title: 'Economic Dependency Created by the IMF', file: 'File_PDF/Analysis of the effect of economic dependency created by the IMF.pdf' }
+  12: { title: 'Economic Dependency Created by the IMF', file: 'File_PDF/Analysis of the effect of economic dependency created by the IMF.pdf' },
+  13: { title: 'University Portal Management System (CSE302 Project)', file: 'File_PDF/CSE302 Project.pdf' }
 };
 
 function toggleMobileMenu() {
@@ -330,7 +339,7 @@ const techShowcaseData = {
     color: '#10b981',
     desc: 'Relational database schema design, indexing, SQL queries, and academic record systems.',
     projects: [1],
-    files: [7],
+    files: [7, 13],
     certs: [1]
   },
   'DOCKER': {
