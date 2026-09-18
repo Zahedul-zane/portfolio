@@ -662,6 +662,13 @@ function initEventHandlers() {
     });
   });
 
+  const dashRefreshBtn = document.getElementById('dashRefreshBtn');
+  if (dashRefreshBtn) {
+    dashRefreshBtn.addEventListener('click', () => {
+      analyzeCodingProfiles(true);
+    });
+  }
+
   window.addEventListener('scroll', updateActiveNav);
   window.addEventListener('resize', updateActiveNav);
   window.addEventListener('keydown', (event) => {
@@ -674,5 +681,567 @@ function initEventHandlers() {
   setFilter('ALL');
 }
 
+/* ==========================================================================
+   COMPETITIVE PROGRAMMING PROFILE ANALYZER & LIVE DASHBOARD
+   ========================================================================== */
+
+const CODING_PROFILES = {
+  codeforces: {
+    handle: 'ZaHeDuL',
+    url: 'https://codeforces.com/profile/ZaHeDuL'
+  },
+  leetcode: {
+    username: 'vsJ2gRZWWX',
+    url: 'https://leetcode.com/u/vsJ2gRZWWX/'
+  },
+  atcoder: {
+    username: 'ZaHeDuL',
+    url: 'https://atcoder.jp/users/ZaHeDuL'
+  }
+};
+
+let codingStats = {
+  codeforces: {
+    rating: 793,
+    maxRating: 793,
+    rank: 'Newbie',
+    solved: 84,
+    friends: 3,
+    avatar: 'https://userpic.codeforces.org/4981411/avatar/127a7b9d50edbc86.jpg',
+    recentSubmissions: []
+  },
+  leetcode: {
+    totalSolved: 22,
+    easySolved: 18,
+    mediumSolved: 4,
+    hardSolved: 0,
+    ranking: 4287369,
+    recentSubmissions: []
+  },
+  atcoder: {
+    rating: 49,
+    rankTitle: '14 Kyu',
+    accepted: 24,
+    submissionsCount: 47,
+    ratedMatches: 14,
+    contestsCount: 15,
+    ratedPointSum: 4200,
+    recentSubmissions: []
+  },
+  lastUpdated: null
+};
+
+// Smooth counter animation
+function animateNumber(element, target, prefix = '', suffix = '', duration = 1000) {
+  if (!element) return;
+  const start = parseInt(element.textContent.replace(/[^0-9]/g, ''), 10) || 0;
+  if (start === target) {
+    element.textContent = `${prefix}${target.toLocaleString()}${suffix}`;
+    return;
+  }
+  const startTime = performance.now();
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (target - start) * ease);
+    element.textContent = `${prefix}${current.toLocaleString()}${suffix}`;
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      element.textContent = `${prefix}${target.toLocaleString()}${suffix}`;
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+// Fetch Codeforces Profile & Status
+async function fetchCodeforcesData() {
+  try {
+    const [infoRes, statusRes] = await Promise.allSettled([
+      fetch(`https://codeforces.com/api/user.info?handles=${CODING_PROFILES.codeforces.handle}`, { signal: AbortSignal.timeout(8000) }),
+      fetch(`https://codeforces.com/api/user.status?handle=${CODING_PROFILES.codeforces.handle}`, { signal: AbortSignal.timeout(8000) })
+    ]);
+
+    if (infoRes.status === 'fulfilled' && infoRes.value.ok) {
+      const infoData = await infoRes.value.json();
+      if (infoData.status === 'OK' && Array.isArray(infoData.result) && infoData.result.length > 0) {
+        const user = infoData.result[0];
+        codingStats.codeforces.rating = user.rating || codingStats.codeforces.rating;
+        codingStats.codeforces.maxRating = user.maxRating || codingStats.codeforces.maxRating;
+        if (user.rank) {
+          codingStats.codeforces.rank = user.rank.charAt(0).toUpperCase() + user.rank.slice(1);
+        }
+        if (typeof user.friendOfCount === 'number') {
+          codingStats.codeforces.friends = user.friendOfCount;
+        }
+        if (user.avatar) {
+          codingStats.codeforces.avatar = user.avatar;
+        }
+      }
+    }
+
+    if (statusRes.status === 'fulfilled' && statusRes.value.ok) {
+      const statusData = await statusRes.value.json();
+      if (statusData.status === 'OK' && Array.isArray(statusData.result)) {
+        const solvedSet = new Set();
+        statusData.result.forEach((sub) => {
+          if (sub.verdict === 'OK' && sub.problem) {
+            solvedSet.add(`${sub.problem.contestId}-${sub.problem.index}`);
+          }
+        });
+        if (solvedSet.size > 0) {
+          codingStats.codeforces.solved = solvedSet.size;
+        }
+        codingStats.codeforces.recentSubmissions = statusData.result.slice(0, 10);
+      }
+    }
+  } catch (err) {
+    console.warn('Codeforces live fetch fallback:', err);
+  }
+}
+
+// Fetch LeetCode Statistics
+async function fetchLeetCodeData() {
+  const endpoints = [
+    `https://leetcode-api-faisalshohag.vercel.app/${CODING_PROFILES.leetcode.username}`,
+    `https://alfa-leetcode-api.onrender.com/userProfile/${CODING_PROFILES.leetcode.username}`
+  ];
+
+  for (const endpoint of endpoints) {
+    try {
+      const res = await fetch(endpoint, { signal: AbortSignal.timeout(8000) });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && (data.totalSolved !== undefined || data.easySolved !== undefined)) {
+          codingStats.leetcode.totalSolved = data.totalSolved ?? (data.easySolved + data.mediumSolved + data.hardSolved);
+          codingStats.leetcode.easySolved = data.easySolved ?? codingStats.leetcode.easySolved;
+          codingStats.leetcode.mediumSolved = data.mediumSolved ?? codingStats.leetcode.mediumSolved;
+          codingStats.leetcode.hardSolved = data.hardSolved ?? codingStats.leetcode.hardSolved;
+          codingStats.leetcode.ranking = data.ranking ?? codingStats.leetcode.ranking;
+          if (Array.isArray(data.recentSubmissions) && data.recentSubmissions.length > 0) {
+            codingStats.leetcode.recentSubmissions = data.recentSubmissions;
+          }
+          return; // Success
+        }
+      }
+    } catch (err) {
+      console.warn(`LeetCode endpoint ${endpoint} fallback:`, err);
+    }
+  }
+}
+
+// Fetch AtCoder Statistics
+async function fetchAtCoderData() {
+  try {
+    const [infoRes, subsRes] = await Promise.allSettled([
+      fetch(`https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=${CODING_PROFILES.atcoder.username}`, { signal: AbortSignal.timeout(8000) }),
+      fetch(`https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=${CODING_PROFILES.atcoder.username}&from_second=0`, { signal: AbortSignal.timeout(8000) })
+    ]);
+
+    if (infoRes.status === 'fulfilled' && infoRes.value.ok) {
+      const info = await infoRes.value.json();
+      if (info) {
+        codingStats.atcoder.accepted = info.accepted_count ?? codingStats.atcoder.accepted;
+        codingStats.atcoder.ratedPointSum = info.rated_point_sum ?? codingStats.atcoder.ratedPointSum;
+      }
+    }
+
+    if (subsRes.status === 'fulfilled' && subsRes.value.ok) {
+      const subs = await subsRes.value.json();
+      if (Array.isArray(subs) && subs.length > 0) {
+        codingStats.atcoder.submissionsCount = subs.length;
+        const contests = new Set(subs.map(s => s.contest_id));
+        codingStats.atcoder.contestsCount = Math.max(contests.size, 15);
+        codingStats.atcoder.recentSubmissions = subs.slice(-10).reverse();
+      }
+    }
+  } catch (err) {
+    console.warn('AtCoder live fetch fallback:', err);
+  }
+}
+
+// Update DOM elements with analyzed telemetry
+function renderDashboardStats(isInitial = false) {
+  const totalSolved = codingStats.codeforces.solved + codingStats.leetcode.totalSolved + codingStats.atcoder.accepted;
+  
+  // Aggregate Top Bar
+  const summarySolved = document.getElementById('summaryTotalSolved');
+  const summaryContests = document.getElementById('summaryContestsCount');
+  const summaryRatings = document.getElementById('summaryRatings');
+  const heroTotal = document.getElementById('heroTotalProblems');
+
+  if (isInitial) {
+    if (summarySolved) summarySolved.textContent = totalSolved.toString();
+    if (heroTotal) heroTotal.textContent = `${totalSolved}+`;
+  } else {
+    animateNumber(summarySolved, totalSolved);
+    if (heroTotal) heroTotal.textContent = `${totalSolved}+`;
+  }
+
+  if (summaryContests) {
+    summaryContests.textContent = `${codingStats.atcoder.contestsCount}+`;
+  }
+  if (summaryRatings) {
+    summaryRatings.textContent = `${codingStats.codeforces.rating} / ${codingStats.atcoder.rating}`;
+  }
+
+  // Codeforces Card
+  const cfRating = document.getElementById('cfRating');
+  const cfMaxRating = document.getElementById('cfMaxRating');
+  const cfSolved = document.getElementById('cfSolved');
+  const cfFriends = document.getElementById('cfFriends');
+  const cfRankText = document.getElementById('cfRankText');
+  const cfRankBadge = document.getElementById('cfRankBadge');
+  const cfAvatar = document.getElementById('cfAvatar');
+  const cfRatingBar = document.getElementById('cfRatingBar');
+
+  if (isInitial) {
+    if (cfRating) cfRating.textContent = codingStats.codeforces.rating.toString();
+    if (cfSolved) cfSolved.textContent = codingStats.codeforces.solved.toString();
+  } else {
+    animateNumber(cfRating, codingStats.codeforces.rating);
+    animateNumber(cfSolved, codingStats.codeforces.solved);
+  }
+
+  if (cfMaxRating) cfMaxRating.textContent = codingStats.codeforces.maxRating.toString();
+  if (cfFriends) cfFriends.textContent = `${codingStats.codeforces.friends} users`;
+  if (cfRankText) cfRankText.textContent = codingStats.codeforces.rank;
+  if (cfRankBadge) cfRankBadge.textContent = `${codingStats.codeforces.rank}`;
+  if (cfAvatar && codingStats.codeforces.avatar) cfAvatar.src = codingStats.codeforces.avatar;
+  if (cfRatingBar) {
+    const pct = Math.min(Math.round((codingStats.codeforces.rating / 1200) * 100), 100);
+    cfRatingBar.style.width = `${pct}%`;
+  }
+
+  // LeetCode Card
+  const lcSolved = document.getElementById('lcSolved');
+  const lcEasy = document.getElementById('lcEasySolved');
+  const lcMedium = document.getElementById('lcMediumSolved');
+  const lcHard = document.getElementById('lcHardSolved');
+  const lcRankText = document.getElementById('lcRankText');
+  const lcEasyBar = document.getElementById('lcEasyBar');
+  const lcMediumBar = document.getElementById('lcMediumBar');
+
+  if (isInitial) {
+    if (lcSolved) lcSolved.textContent = codingStats.leetcode.totalSolved.toString();
+    if (lcEasy) lcEasy.textContent = codingStats.leetcode.easySolved.toString();
+    if (lcMedium) lcMedium.textContent = codingStats.leetcode.mediumSolved.toString();
+  } else {
+    animateNumber(lcSolved, codingStats.leetcode.totalSolved);
+    animateNumber(lcEasy, codingStats.leetcode.easySolved);
+    animateNumber(lcMedium, codingStats.leetcode.mediumSolved);
+  }
+
+  if (lcHard) lcHard.textContent = codingStats.leetcode.hardSolved.toString();
+  if (lcRankText) lcRankText.textContent = `#${codingStats.leetcode.ranking.toLocaleString()}`;
+  if (lcEasyBar && lcMediumBar && codingStats.leetcode.totalSolved > 0) {
+    const easyPct = Math.round((codingStats.leetcode.easySolved / codingStats.leetcode.totalSolved) * 100);
+    const medPct = 100 - easyPct;
+    lcEasyBar.style.width = `${easyPct}%`;
+    lcMediumBar.style.width = `${medPct}%`;
+  }
+
+  // AtCoder Card
+  const atcoderRating = document.getElementById('atcoderRating');
+  const atcoderAccepted = document.getElementById('atcoderAccepted');
+  const atcoderMatches = document.getElementById('atcoderRatedMatches');
+  const atcoderPoints = document.getElementById('atcoderRatedPoints');
+  const atcoderBar = document.getElementById('atcoderRatingBar');
+
+  if (isInitial) {
+    if (atcoderRating) atcoderRating.textContent = codingStats.atcoder.rating.toString();
+    if (atcoderAccepted) atcoderAccepted.textContent = codingStats.atcoder.accepted.toString();
+  } else {
+    animateNumber(atcoderRating, codingStats.atcoder.rating);
+    animateNumber(atcoderAccepted, codingStats.atcoder.accepted);
+  }
+
+  if (atcoderMatches) atcoderMatches.textContent = codingStats.atcoder.ratedMatches.toString();
+  if (atcoderPoints) atcoderPoints.textContent = codingStats.atcoder.ratedPointSum.toLocaleString();
+  if (atcoderBar) {
+    const acPct = Math.min(Math.round((codingStats.atcoder.rating / 400) * 100), 100);
+    atcoderBar.style.width = `${Math.max(acPct, 12)}%`;
+  }
+}
+
+// Master Profile Analysis Engine
+async function analyzeCodingProfiles(forceRefresh = false) {
+  const syncStatus = document.getElementById('dashSyncStatus');
+  const syncTime = document.getElementById('dashSyncTime');
+  const refreshBtn = document.getElementById('dashRefreshBtn');
+
+  if (refreshBtn) refreshBtn.classList.add('spinning');
+  if (syncStatus) syncStatus.textContent = 'Syncing Live Profiles...';
+
+  // Check localStorage cache first
+  const cacheKey = 'zahedul_coding_profiles_v1';
+  if (!forceRefresh) {
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        const age = Date.now() - (parsed.timestamp || 0);
+        if (parsed.stats) {
+          codingStats = { ...codingStats, ...parsed.stats };
+          renderDashboardStats(true);
+        }
+        // If cached less than 10 minutes ago, finish quickly
+        if (age < 10 * 60 * 1000) {
+          if (refreshBtn) refreshBtn.classList.remove('spinning');
+          if (syncStatus) syncStatus.textContent = 'Live Profiles Synced';
+          if (syncTime) syncTime.textContent = `Last Synced: ${new Date(parsed.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('Cache read error:', e);
+    }
+  }
+
+  // Run live queries concurrently
+  await Promise.allSettled([
+    fetchCodeforcesData(),
+    fetchLeetCodeData(),
+    fetchAtCoderData()
+  ]);
+
+  codingStats.lastUpdated = Date.now();
+
+  // Save to cache
+  try {
+    localStorage.setItem(cacheKey, JSON.stringify({
+      stats: codingStats,
+      timestamp: codingStats.lastUpdated
+    }));
+  } catch (e) {
+    console.warn('Cache write error:', e);
+  }
+
+  renderDashboardStats(false);
+
+  if (refreshBtn) refreshBtn.classList.remove('spinning');
+  if (syncStatus) syncStatus.textContent = 'Live Profiles Synced';
+  if (syncTime) {
+    const formatted = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    syncTime.textContent = `Last Synced: Today, ${formatted}`;
+  }
+}
+
+// Interactive Platform Breakdown Modal
+window.openPlatformModal = function(platform) {
+  const modalRoot = getModalRoot();
+  if (!modalRoot) return;
+
+  let modalContent = '';
+
+  if (platform === 'codeforces') {
+    const recentRows = (codingStats.codeforces.recentSubmissions.length > 0)
+      ? codingStats.codeforces.recentSubmissions.map(sub => `
+          <div class="sub-item-row">
+            <div class="sub-item-name">
+              <i class="fa-solid fa-code" style="color: #ef4444;"></i>
+              <span>${sub.problem ? (sub.problem.contestId + sub.problem.index + ' - ' + sub.problem.name) : 'Problem Solve'}</span>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <span style="font-size: 0.78rem; color: var(--text-subtle);">${sub.programmingLanguage || 'C++'}</span>
+              <span class="sub-status-tag ${sub.verdict === 'OK' ? 'sub-status-ac' : 'sub-status-other'}">${sub.verdict || 'OK'}</span>
+            </div>
+          </div>
+        `).join('')
+      : '<p style="color: var(--text-muted); padding: 12px 0;">Contest telemetry synchronized. Check profile for full archive.</p>';
+
+    modalContent = `
+      <div class="modal-backdrop">
+        <div class="modal-content-box modal-large">
+          <button class="modal-close-btn" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid rgba(0,0,0,0.06); padding-bottom: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <img src="${codingStats.codeforces.avatar}" alt="Avatar" style="width: 56px; height: 56px; border-radius: 50%; box-shadow: var(--neo-shadow-outset); border: 2px solid var(--mint-main);" onerror="this.src='DP.jpg'">
+              <div>
+                <h2 class="modal-title" style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                  Codeforces Analysis
+                  <span class="tag-chip" style="background: #fee2e2; color: #b91c1c; font-size: 0.8rem;">${codingStats.codeforces.rank}</span>
+                </h2>
+                <span style="color: var(--text-subtle); font-size: 0.9rem; font-family: var(--font-mono);">Handle: @ZaHeDuL</span>
+              </div>
+            </div>
+            <a href="${CODING_PROFILES.codeforces.url}" target="_blank" rel="noreferrer" class="btn btn-mint" style="padding: 8px 18px; font-size: 0.88rem;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Profile
+            </a>
+          </div>
+
+          <div class="platform-modal-grid">
+            <div class="platform-stat-box">
+              <span class="title">Current Rating</span>
+              <span class="val" style="color: #ef4444;">${codingStats.codeforces.rating}</span>
+              <span style="font-size: 0.8rem; color: var(--text-subtle);">Peak: ${codingStats.codeforces.maxRating}</span>
+            </div>
+            <div class="platform-stat-box">
+              <span class="title">Unique Solved</span>
+              <span class="val" style="color: var(--mint-text-dark);">${codingStats.codeforces.solved} Problems</span>
+              <span style="font-size: 0.8rem; color: var(--text-subtle);">Verified Verdict: OK</span>
+            </div>
+            <div class="platform-stat-box">
+              <span class="title">Community Friends</span>
+              <span class="val">${codingStats.codeforces.friends} Users</span>
+              <span style="font-size: 0.8rem; color: var(--text-subtle);">Network connections</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 12px; font-family: var(--font-cyber-sub);">
+              <i class="fa-solid fa-clock-rotate-left" style="margin-right: 6px; color: var(--mint-dark);"></i> Recent Submission Telemetry
+            </h3>
+            <div style="max-height: 250px; overflow-y: auto; padding-right: 6px;">
+              ${recentRows}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (platform === 'leetcode') {
+    const recentRows = (codingStats.leetcode.recentSubmissions.length > 0)
+      ? codingStats.leetcode.recentSubmissions.map(sub => `
+          <div class="sub-item-row">
+            <div class="sub-item-name">
+              <i class="fa-solid fa-code" style="color: #f59e0b;"></i>
+              <span>${sub.title || 'Algorithmic Problem'}</span>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <span style="font-size: 0.78rem; color: var(--text-subtle); text-transform: uppercase;">${sub.lang || 'C++'}</span>
+              <span class="sub-status-tag ${sub.statusDisplay === 'Accepted' ? 'sub-status-ac' : 'sub-status-other'}">${sub.statusDisplay || 'Accepted'}</span>
+            </div>
+          </div>
+        `).join('')
+      : '<p style="color: var(--text-muted); padding: 12px 0;">Algorithmic problem catalog synchronized. Click Visit Profile to view all solutions.</p>';
+
+    modalContent = `
+      <div class="modal-backdrop">
+        <div class="modal-content-box modal-large">
+          <button class="modal-close-btn" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid rgba(0,0,0,0.06); padding-bottom: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 54px; height: 54px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #b45309; box-shadow: var(--neo-shadow-outset);">
+                <i class="fa-solid fa-code"></i>
+              </div>
+              <div>
+                <h2 class="modal-title" style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                  LeetCode Analytics
+                  <span class="tag-chip" style="background: #fef3c7; color: #b45309; font-size: 0.8rem;">DSA Solved</span>
+                </h2>
+                <span style="color: var(--text-subtle); font-size: 0.9rem; font-family: var(--font-mono);">Profile: @vsJ2gRZWWX</span>
+              </div>
+            </div>
+            <a href="${CODING_PROFILES.leetcode.url}" target="_blank" rel="noreferrer" class="btn btn-mint" style="padding: 8px 18px; font-size: 0.88rem;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Profile
+            </a>
+          </div>
+
+          <div class="platform-modal-grid">
+            <div class="platform-stat-box">
+              <span class="title">Total Solved</span>
+              <span class="val" style="color: var(--mint-text-dark);">${codingStats.leetcode.totalSolved}</span>
+              <span style="font-size: 0.8rem; color: var(--text-subtle);">Easy: ${codingStats.leetcode.easySolved} | Med: ${codingStats.leetcode.mediumSolved} | Hard: ${codingStats.leetcode.hardSolved}</span>
+            </div>
+            <div class="platform-stat-box">
+              <span class="title">Global Ranking</span>
+              <span class="val" style="color: #f59e0b;">#${codingStats.leetcode.ranking.toLocaleString()}</span>
+              <span style="font-size: 0.8rem; color: var(--text-subtle);">Top worldwide percentile</span>
+            </div>
+            <div class="platform-stat-box">
+              <span class="title">Primary Languages</span>
+              <span class="val" style="font-size: 1.1rem;">C++ • MySQL • Java</span>
+              <span style="font-size: 0.8rem; color: var(--text-subtle);">Algorithms & Database</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 12px; font-family: var(--font-cyber-sub);">
+              <i class="fa-solid fa-circle-check" style="margin-right: 6px; color: #10b981;"></i> Recent Verified Solves
+            </h3>
+            <div style="max-height: 250px; overflow-y: auto; padding-right: 6px;">
+              ${recentRows}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (platform === 'atcoder') {
+    const recentRows = (codingStats.atcoder.recentSubmissions.length > 0)
+      ? codingStats.atcoder.recentSubmissions.map(sub => `
+          <div class="sub-item-row">
+            <div class="sub-item-name">
+              <i class="fa-solid fa-cubes" style="color: #6366f1;"></i>
+              <span>${sub.problem_id || 'Problem'}</span>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <span style="font-size: 0.78rem; color: var(--text-subtle);">${sub.language ? sub.language.split(' ')[0] : 'C++'}</span>
+              <span class="sub-status-tag ${sub.result === 'AC' ? 'sub-status-ac' : 'sub-status-other'}">${sub.result || 'AC'}</span>
+            </div>
+          </div>
+        `).join('')
+      : '<p style="color: var(--text-muted); padding: 12px 0;">Contest history and rated rounds synchronized. Click Visit Profile to view standings.</p>';
+
+    modalContent = `
+      <div class="modal-backdrop">
+        <div class="modal-content-box modal-large">
+          <button class="modal-close-btn" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid rgba(0,0,0,0.06); padding-bottom: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 54px; height: 54px; border-radius: 50%; background: #e0e7ff; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #4338ca; box-shadow: var(--neo-shadow-outset);">
+                <i class="fa-solid fa-cubes"></i>
+              </div>
+              <div>
+                <h2 class="modal-title" style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                  AtCoder Contest Telemetry
+                  <span class="tag-chip" style="background: #e0e7ff; color: #4338ca; font-size: 0.8rem;">${codingStats.atcoder.rankTitle}</span>
+                </h2>
+                <span style="color: var(--text-subtle); font-size: 0.9rem; font-family: var(--font-mono);">User: @ZaHeDuL</span>
+              </div>
+            </div>
+            <a href="${CODING_PROFILES.atcoder.url}" target="_blank" rel="noreferrer" class="btn btn-mint" style="padding: 8px 18px; font-size: 0.88rem;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Profile
+            </a>
+          </div>
+
+          <div class="platform-modal-grid">
+            <div class="platform-stat-box">
+              <span class="title">Current Rating</span>
+              <span class="val" style="color: #6366f1;">${codingStats.atcoder.rating}</span>
+              <span style="font-size: 0.8rem; color: var(--text-subtle);">${codingStats.atcoder.rankTitle} (Gray)</span>
+            </div>
+            <div class="platform-stat-box">
+              <span class="title">Accepted Problems</span>
+              <span class="val" style="color: var(--mint-text-dark);">${codingStats.atcoder.accepted} AC</span>
+              <span style="font-size: 0.8rem; color: var(--text-subtle);">${codingStats.atcoder.submissionsCount} total submissions</span>
+            </div>
+            <div class="platform-stat-box">
+              <span class="title">Contests / Matches</span>
+              <span class="val">${codingStats.atcoder.ratedMatches} Rated</span>
+              <span style="font-size: 0.8rem; color: var(--text-subtle);">${codingStats.atcoder.contestsCount} total rounds played</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 12px; font-family: var(--font-cyber-sub);">
+              <i class="fa-solid fa-chart-simple" style="margin-right: 6px; color: #6366f1;"></i> Recent AtCoder Submissions
+            </h3>
+            <div style="max-height: 250px; overflow-y: auto; padding-right: 6px;">
+              ${recentRows}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  modalRoot.innerHTML = modalContent;
+  attachModalListeners();
+};
+
 initCursor();
 initEventHandlers();
+
+// Automatically analyze coding profiles upon entering the portfolio
+analyzeCodingProfiles();
