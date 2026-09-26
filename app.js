@@ -1,4 +1,4 @@
-const sectionIds = ['hero', 'about', 'expertise', 'projects', 'certificates', 'files', 'dashboards'];
+const sectionIds = ['hero', 'about', 'expertise', 'projects', 'events', 'certificates', 'files', 'dashboards'];
 const getModalRoot = () => document.getElementById('modalRoot');
 
 const certificates = {
@@ -84,6 +84,245 @@ const files = {
   13: { title: 'University Portal Management System (CSE302 Project)', file: 'File_PDF/CSE302 Project.pdf' }
 };
 
+const eventsData = {
+  'react-2026': {
+    title: 'REACT 2026 (1st National Robotics Competition)',
+    organizer: 'IEEE SEU SB • Southeast University',
+    date: 'SEP 10-11, 2026',
+    location: 'Dhaka, Bangladesh',
+    category: 'ROBOTICS',
+    badge: 'NATIONAL ROBOTICS',
+    status: 'Verified Participant & Contender',
+    role: 'Robotics Team Competitor & Embedded Logic',
+    img: 'CertificateImage/REACT2026Certificate.jpeg',
+    certId: 8,
+    summary: 'Contended in REACT 2026 (Research, Engineering, Automation, Computer, Technology), the premier 1st National Robotics Competition organized by IEEE Southeast University Student Branch.',
+    highlights: [
+      'Engineered autonomous robotic control algorithms and high-precision sensor feedback loops.',
+      'Calibrated real-time motor actuation and obstacle mitigation under strict competition course timing.',
+      'Collaborated in multi-disciplinary engineering triage to solve hardware-software interfacing challenges on-site.',
+      'Recognized with official Certificate of Participation from IEEE SEU Student Branch.'
+    ],
+    tags: ['ROBOTICS', 'IEEE', 'EMBEDDED SYSTEMS', 'AUTOMATION', 'HARDWARE']
+  },
+  'ewu-copc-2025': {
+    title: 'Intra-University Programming Contest 2025',
+    organizer: 'EWU CoPC (Competitive Programming Club)',
+    date: 'MAR 28, 2025',
+    location: 'East West University Campus, Dhaka',
+    category: 'CP',
+    badge: 'ALGORITHMIC CONTEST',
+    status: 'Official Contestant & High Finish',
+    role: 'Competitive Programmer',
+    img: 'CertificateImage/Intra-uni-Prog-Contest.jpeg',
+    certId: 2,
+    summary: 'Competed in East West University Intra-University Programming Contest, tackling rigorous algorithmic and mathematical problem sets under strict ACM-ICPC format.',
+    highlights: [
+      'Solved complex algorithmic challenges in C++ involving graph algorithms, dynamic programming, and combinatorics.',
+      'Demonstrated time and space complexity optimization under tight time limits (1.0s / 2.0s per problem).',
+      'Ranked among top university contenders in speed problem-solving and bug-free submission accuracy.',
+      'Awarded official Certificate of Achievement by EWU CoPC.'
+    ],
+    tags: ['ALGORITHMS', 'C++', 'COMPETITIVE PROGRAMMING', 'EWU CoPC', 'DSA']
+  },
+  'finxcel-9': {
+    title: 'FINXCEL 9.0 (Business Analytics Competition)',
+    organizer: 'National Business Analytics Forum',
+    date: 'JAN 24, 2025',
+    location: 'Dhaka, Bangladesh',
+    category: 'ANALYTICS',
+    badge: 'BUSINESS ANALYTICS',
+    status: 'Contest Finalist',
+    role: 'Data Modeler & Analyst',
+    img: 'CertificateImage/FINXCEL9.0Certificate.jpeg',
+    certId: 1,
+    summary: 'Successfully analyzed multi-dimensional business datasets to identify operational bottlenecks, financial growth projections, and data-driven market strategies.',
+    highlights: [
+      'Processed raw financial datasets using advanced spreadsheet formulas, pivot models, and trend regressions.',
+      'Constructed interactive decision dashboards and predictive scenario modeling for executive evaluations.',
+      'Presented data visualizations and business logic before judging panels with quantified metrics.',
+      'Received official Certificate of Recognition for analytical rigor and strategic presentation.'
+    ],
+    tags: ['BUSINESS ANALYTICS', 'EXCEL', 'DATA MODELING', 'FINANCE', 'STRATEGY']
+  },
+  'ctf-cybersec-2025': {
+    title: 'Capture The Flag (CyberSecurity Challenge)',
+    organizer: 'CyberSecurity Contest Syndicate',
+    date: 'NOV 05, 2025',
+    location: 'Virtual Cyber Range',
+    category: 'ANALYTICS',
+    badge: 'CYBERSECURITY CTF',
+    status: 'Verified CTF Competitor',
+    role: 'Offensive & Defensive Security Researcher',
+    img: 'CertificateImage/CaptureTheFlag.jpg',
+    certId: 5,
+    summary: 'Demonstrated tactical penetration testing, vulnerability discovery, cryptography decryption, and forensic packet inspection during intense CTF flag-capturing challenges.',
+    highlights: [
+      'Exploited web security vectors (SQL Injection, Cross-Site Scripting, authentication bypasses) in isolated sandbox labs.',
+      'Decoded multi-layer ciphers, hash collisions, and steganographic data concealed in binary payloads.',
+      'Conducted Wireshark packet captures and memory dump inspection to reverse malware indicators.',
+      'Awarded official Certificate of Completion in CyberSecurity Challenge.'
+    ],
+    tags: ['CYBERSECURITY', 'CTF', 'PENETRATION TESTING', 'CRYPTOGRAPHY', 'NETWORK FORENSICS']
+  },
+  'llm-agent-summit': {
+    title: 'LLM AI Agent Development Summit',
+    organizer: 'DeepLearning.AI',
+    date: 'FEB 15, 2026',
+    location: 'Online Global Symposium',
+    category: 'AI',
+    badge: 'AI AGENTS SUMMIT',
+    status: 'Specialized Engineer',
+    role: 'Autonomous AI Engineer',
+    img: 'CertificateImage/LLM AI AGENT.jpeg',
+    certId: 3,
+    summary: 'Completed intensive specialization and hands-on architecture laboratories focusing on autonomous multi-agent orchestration, iterative reasoning loops, and LangGraph workflow engineering.',
+    highlights: [
+      'Architected autonomous agent loops with dynamic tool invocation, memory buffers, and reflection self-correction.',
+      'Implemented production Retrieval-Augmented Generation (RAG) with hybrid dense-sparse vector indexing.',
+      'Built multi-turn conversational agents with state persistence and external API connectors.',
+      'Awarded official DeepLearning.AI Certificate of Completion.'
+    ],
+    tags: ['AI AGENTS', 'LANGGRAPH', 'RAG', 'LLM', 'PYTHON']
+  },
+  'aws-genai-bootcamp': {
+    title: 'AWS AI Agent Architecture Immersion',
+    organizer: 'Amazon Web Services (AWS)',
+    date: 'DEC 10, 2025',
+    location: 'AWS Cloud Center',
+    category: 'AI',
+    badge: 'CLOUD AI BOOTCAMP',
+    status: 'Certified AI Practitioner',
+    role: 'Cloud AI Engineer',
+    img: 'CertificateImage/AI Agent for beginners.jpg',
+    certId: 4,
+    summary: 'Comprehensive hands-on training orchestrating cloud-native foundation models, serverless AI microservices, and enterprise agent workflows within the AWS cloud ecosystem.',
+    highlights: [
+      'Configured Amazon Bedrock foundation models with fine-tuned temperature and parameter orchestration.',
+      'Deployed serverless agent triggers using AWS Lambda, API Gateway, and Amazon S3 data lakes.',
+      'Secured agentic endpoints with AWS IAM roles, token throttling, and privacy compliance guidelines.',
+      'Awarded official AWS Certificate of Completion.'
+    ],
+    tags: ['AWS', 'BEDROCK', 'CLOUD AI', 'SERVERLESS', 'GENAI']
+  },
+  'club-ewurc': {
+    title: 'East West University Robotics Club (EWURC)',
+    organizer: 'East West University',
+    date: '2023 — Present',
+    location: 'EWU Robotics Lab',
+    category: 'CLUBS',
+    badge: 'OFFICIAL CLUB',
+    status: 'Active Member & Competitor',
+    role: 'Robotics Member & Hardware Integrator',
+    img: 'Membership%20image/EWURC.png',
+    summary: 'Active member of EWURC, collaborating on autonomous robotics projects, microcontroller firmware, sensor integration, and representing EWU in national robotics competitions like REACT 2026.',
+    highlights: [
+      'Collaborated on line-follower, obstacle avoidance, and maze-navigating autonomous robots.',
+      'Participated in university robotics workshops and peer mentoring on embedded systems programming.',
+      'Represented EWU in inter-university competitions with practical engineering prototypes.',
+      'Organized and assisted in annual robotics exhibits and technical demonstrations.'
+    ],
+    tags: ['EWURC', 'ROBOTICS', 'ARDUINO', 'EMBEDDED', 'EWU']
+  },
+  'club-ewucyber': {
+    title: 'East West University Cyber Security Club (EWUCSC)',
+    organizer: 'East West University',
+    date: '2023 — Present',
+    location: 'EWU Cyber Range & Security Lab',
+    category: 'CLUBS',
+    badge: 'OFFICIAL CLUB',
+    status: 'Active Member & Security Contender',
+    role: 'Cyber Security Member & CTF Researcher',
+    img: 'Membership%20image/EWUCSC.jpg',
+    summary: 'Active member of EWU Cyber Security Club (EWUCSC), specializing in defensive security principles, cryptographic analysis, penetration testing drills, and representing EWU in national Capture The Flag (CTF) challenges.',
+    highlights: [
+      'Participated in hands-on vulnerability assessments and web exploitation laboratories (SQLi, XSS, CSRF).',
+      'Trained in cryptographic decryption techniques, cipher cracking, and reverse engineering fundamentals.',
+      'Active team participant in intra- and inter-university Capture The Flag (CTF) cybersecurity contests.',
+      'Attended university cybersecurity seminars, secure coding workshops, and threat modeling sessions.'
+    ],
+    tags: ['EWUCSC', 'CYBERSECURITY', 'CTF', 'ETHICAL HACKING', 'SECURITY LAB']
+  },
+  'club-ewucopc': {
+    title: 'EWU Programming Club (EWU CoPC)',
+    organizer: 'East West University CSE Department',
+    date: '2022 — Present',
+    location: 'EWU CoPC Labs',
+    category: 'CLUBS',
+    badge: 'CP SOCIETY',
+    status: 'Active Contestant & Problem Solver',
+    role: 'Competitive Programmer & Algorithmic Contender',
+    img: 'Membership%20image/EWUCoPC.jpg',
+    summary: 'Core participant in EWU CoPC competitive programming sessions, mock contests, problem analysis seminars, and national contest preparation bootcamps.',
+    highlights: [
+      'Participated in weekly club contest simulations and post-contest problem upsolving.',
+      'Trained in advanced data structures (segment trees, Fenwick, disjoint set union, Trie) and algorithmic paradigms.',
+      'Actively competed in EWU Intra-University Programming Contests and national preliminaries.',
+      'Engaged with senior coaches and peers to optimize competitive contest time management.'
+    ],
+    tags: ['EWU CoPC', 'ALGORITHMS', 'C++', 'CONTESTS', 'PROBLEM SOLVING']
+  },
+  'ewu-nfr-2026': {
+    title: 'EWU National RoboFest 2026 — Domination Is Destiny',
+    organizer: 'EWU Robotics Club (EWURC)',
+    date: 'MAY 17–19, 2026',
+    location: 'East West University Campus, Dhaka',
+    category: 'ROBOTICS',
+    badge: 'NATIONAL ROBOFEST',
+    status: 'Core Organizer & Participant',
+    role: 'Robotics Club Member & Event Organizer',
+    img: 'Membership%20image/EWUNRF.png',
+    summary: 'Served as a core organizer and participant in EWU\'s biggest national robotics mega-event, bringing together universities across Bangladesh. The festival featured 10+ competitions including Drone Racing, Robo Soccer, Line Follower Contest, Fire Fighting Robot, National Hackathon, Capture The Flag, eSports Rivals, Robot Exhibition, Case Solving, and Project Showcase. Supported by ICT Division and Programming Hero.',
+    highlights: [
+      'Organized and managed event logistics for one of Bangladesh\'s largest student-led robotics festivals.',
+      'Participated in robot exhibition showcasing autonomous robotics projects built by the EWU Robotics Club.',
+      'Coordinated participant registration, scheduling, and technical support across 10+ concurrent competitions.',
+      'Networked with robotics engineers, hackathon competitors, and CS professionals from universities nationwide.',
+      'Event supported by ICT Division, Bangladesh Government, Programming Hero, PUSAB, Robodemy, and Zenetic eSports.'
+    ],
+    tags: ['EWURC', 'ROBOTICS', 'HACKATHON', 'DRONE RACING', 'CTF', 'NATIONAL', 'EWU']
+  },
+  'global-study-expo': {
+    title: 'Global Study Expo — International Education Fair',
+    organizer: 'Global Study Expo Bangladesh',
+    date: '2025',
+    location: 'Dhaka, Bangladesh',
+    category: 'SUMMIT',
+    badge: 'INTERNATIONAL EXPO',
+    status: 'Active Attendee & Explorer',
+    role: 'Student Delegate & Academic Scout',
+    img: 'GLOBAL_STUDY_EXPO/1785644353824.jpg',
+    summary: "Attended the Global Study Expo — Bangladesh's premier international education fair bringing together top universities and study-abroad consultants from around the world for student engagement and academic networking.",
+    highlights: [
+      'Engaged with representatives from international universities across Europe, North America, Asia, and Australia.',
+      'Explored scholarship opportunities, admission requirements, and program offerings from leading global institutions.',
+      'Networked with fellow aspiring students and professionals planning overseas academic journeys.',
+      'Gained crucial insights into IELTS/TOEFL preparation, application strategies, and student visa pathways.'
+    ],
+    tags: ['EDUCATION', 'GLOBAL', 'EXPO', 'SCHOLARSHIP', 'INTERNATIONAL']
+  },
+  'seu-robo-soccer': {
+    title: 'SEU Robo Soccer — IEEE REACT 2026',
+    organizer: 'IEEE SEU Student Branch • Southeast University',
+    date: 'SEP 10-11, 2026',
+    location: 'Southeast University Campus, Dhaka',
+    category: 'ROBOTICS',
+    badge: 'ROBO SOCCER',
+    status: 'Official Participant & Competitor',
+    role: 'Robot Engineer & Game Strategist',
+    img: 'CertificateImage/REACT2026Certificate.jpeg',
+    certId: 8,
+    summary: 'Participated in the Robo Soccer competition at REACT 2026 hosted by IEEE SEU Student Branch — engineering and deploying a competitive autonomous robot to navigate and score in a structured soccer arena.',
+    highlights: [
+      'Engineered a custom autonomous robot with RC control for fast maneuvering in the Robo Soccer arena.',
+      'Integrated real-time motor control, chassis optimization, and quick-response servo systems for gameplay.',
+      'Competed under IEEE REACT 2026 regulations — the 1st National Robotics Competition at Southeast University.',
+      'Received official REACT 2026 Participant badge and IEEE SEU Student Branch Certificate.'
+    ],
+    tags: ['ROBOTICS', 'IEEE', 'ROBO SOCCER', 'SEU', 'AUTOMATION']
+  }
+};
+
 function toggleMobileMenu() {
   const mobileToggle = document.getElementById('mobileToggle');
   const mobileNav = document.getElementById('mobileNav');
@@ -158,6 +397,18 @@ function setFilter(filterValue) {
 }
 
 function closeModal() {
+  if (typeof nfrAlbumKeyHandler !== 'undefined' && nfrAlbumKeyHandler) {
+    window.removeEventListener('keydown', nfrAlbumKeyHandler);
+    nfrAlbumKeyHandler = null;
+  }
+  if (typeof gseAlbumKeyHandler !== 'undefined' && gseAlbumKeyHandler) {
+    window.removeEventListener('keydown', gseAlbumKeyHandler);
+    gseAlbumKeyHandler = null;
+  }
+  if (typeof srsAlbumKeyHandler !== 'undefined' && srsAlbumKeyHandler) {
+    window.removeEventListener('keydown', srsAlbumKeyHandler);
+    srsAlbumKeyHandler = null;
+  }
   const modalRoot = document.getElementById('modalRoot');
   if (modalRoot) {
     modalRoot.innerHTML = '';
@@ -215,6 +466,570 @@ function openPdfModal(fileId) {
     </div>
   `;
   attachModalListeners();
+}
+
+function setEventFilter(filterValue) {
+  const eventFilterButtons = document.querySelectorAll('.event-filter-btn');
+  const eventCards = document.querySelectorAll('.event-card');
+  const clubWrapper = document.querySelector('.club-affiliations-wrapper');
+
+  eventFilterButtons.forEach((button) => {
+    const filter = (button.dataset.eventFilter || button.getAttribute('data-event-filter') || '').toUpperCase();
+    if (filter === filterValue.toUpperCase()) {
+      button.classList.add('active');
+      button.classList.remove('btn-outline');
+      button.classList.add('btn-mint');
+    } else {
+      button.classList.remove('active');
+      button.classList.remove('btn-mint');
+      button.classList.add('btn-outline');
+    }
+  });
+
+  const upperFilter = filterValue.toUpperCase();
+  eventCards.forEach((card) => {
+    const category = (card.dataset.category || card.getAttribute('data-category') || '').toUpperCase();
+    const tags = (card.dataset.tags || card.getAttribute('data-tags') || '').toUpperCase().split(',');
+    if (upperFilter === 'ALL' || category === upperFilter || tags.includes(upperFilter)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  if (clubWrapper) {
+    if (upperFilter === 'ALL' || upperFilter === 'CLUBS') {
+      clubWrapper.classList.remove('hidden');
+    } else {
+      clubWrapper.classList.add('hidden');
+    }
+  }
+}
+
+function openEventModal(eventId) {
+  const modalRoot = getModalRoot();
+  if (!modalRoot) return;
+  const event = eventsData[eventId];
+  if (!event) return;
+
+  const tags = event.tags.map((tag) => `<span class="tag-chip" style="background: var(--mint-light); color: var(--mint-text-dark);">${tag}</span>`).join('');
+  const highlightsHtml = (event.highlights || []).map((item) => `
+    <li style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px;">
+      <i class="fa-solid fa-circle-check" style="color: var(--mint-dark); margin-top: 3px; font-size: 0.95rem;"></i>
+      <span style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5;">${item}</span>
+    </li>
+  `).join('');
+
+  const certAction = event.certId ? `
+    <button class="btn btn-mint" onclick="openCertModal(${event.certId})" style="padding: 10px 20px; font-size: 0.88rem;">
+      <i class="fa-solid fa-award"></i> View Verified Certificate
+    </button>
+  ` : '';
+
+  let albumSectionHtml = '';
+  let albumFooterAction = '';
+
+  if (eventId === 'ewu-nfr-2026') {
+    albumSectionHtml = `
+      <div style="margin-top: 16px; background: var(--bg-neo-base); border-radius: 16px; padding: 18px; box-shadow: var(--neo-shadow-inset);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <h4 style="font-size: 0.92rem; color: var(--mint-dark); margin: 0; letter-spacing: 0.06em;">
+            <i class="fa-solid fa-images"></i> EVENT PHOTO ALBUM (5 PHOTOS)
+          </h4>
+          <button class="btn btn-mint" onclick="openNFRGallery(0)" style="padding: 6px 14px; font-size: 0.8rem;">
+            <i class="fa-solid fa-expand"></i> Launch Interactive Album
+          </button>
+        </div>
+        <div class="nfr-gallery" style="margin: 0;">
+          <img src="Membership%20image/EWUNRF.png" alt="Poster" class="nfr-gallery-img" onclick="openNFRGallery(0)" title="Official Poster" onerror="this.src='Membership image/EWUNRF.png'">
+          <img src="EWUNFR_image_event/735704580_1561909951988121_7374546888894981848_n.jpg" alt="Team" class="nfr-gallery-img" onclick="openNFRGallery(1)" title="Organizing Team">
+          <img src="EWUNFR_image_event/735734950_1561909948654788_7705784741682193278_n.jpg" alt="Group" class="nfr-gallery-img" onclick="openNFRGallery(2)" title="Faculty Group">
+          <img src="EWUNFR_image_event/736343157_1561909945321455_3806273439916129780_n.jpg" alt="Arena" class="nfr-gallery-img" onclick="openNFRGallery(3)" title="Robotics Arena">
+          <img src="EWUNFR_image_event/736367935_1561909958654787_765035224686547722_n.jpg" alt="Registration" class="nfr-gallery-img" onclick="openNFRGallery(4)" title="Fest Registration">
+        </div>
+      </div>
+    `;
+    albumFooterAction = `
+      <button class="btn btn-mint" onclick="openNFRGallery(0)" style="padding: 10px 20px; font-size: 0.88rem;">
+        <i class="fa-solid fa-images"></i> Open Photo Album (5 Photos)
+      </button>
+    `;
+  } else if (eventId === 'global-study-expo') {
+    albumSectionHtml = `
+      <div style="margin-top: 16px; background: var(--bg-neo-base); border-radius: 16px; padding: 18px; box-shadow: var(--neo-shadow-inset);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <h4 style="font-size: 0.92rem; color: var(--mint-dark); margin: 0; letter-spacing: 0.06em;">
+            <i class="fa-solid fa-images"></i> EVENT PHOTO ALBUM (3 PHOTOS)
+          </h4>
+          <button class="btn btn-mint" onclick="openGSEGallery(0)" style="padding: 6px 14px; font-size: 0.8rem;">
+            <i class="fa-solid fa-expand"></i> Launch Interactive Album
+          </button>
+        </div>
+        <div class="nfr-gallery" style="margin: 0; grid-template-columns: repeat(3, 1fr);">
+          <img src="GLOBAL_STUDY_EXPO/1785644353824.jpg" alt="Expo Floor" class="nfr-gallery-img" onclick="openGSEGallery(0)" title="Expo Floor">
+          <img src="GLOBAL_STUDY_EXPO/1785644357390.jpg" alt="University Stalls" class="nfr-gallery-img" onclick="openGSEGallery(1)" title="University Stalls">
+          <img src="GLOBAL_STUDY_EXPO/1785644358595.jpg" alt="Networking" class="nfr-gallery-img" onclick="openGSEGallery(2)" title="Student Networking">
+        </div>
+      </div>
+    `;
+    albumFooterAction = `
+      <button class="btn btn-mint" onclick="openGSEGallery(0)" style="padding: 10px 20px; font-size: 0.88rem;">
+        <i class="fa-solid fa-images"></i> Open Photo Album (3 Photos)
+      </button>
+    `;
+  } else if (eventId === 'seu-robo-soccer') {
+    albumSectionHtml = `
+      <div style="margin-top: 16px; background: var(--bg-neo-base); border-radius: 16px; padding: 18px; box-shadow: var(--neo-shadow-inset);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <h4 style="font-size: 0.92rem; color: var(--mint-dark); margin: 0; letter-spacing: 0.06em;">
+            <i class="fa-solid fa-images"></i> EVENT PHOTO ALBUM (4 PHOTOS)
+          </h4>
+          <button class="btn btn-mint" onclick="openSRSGallery(0)" style="padding: 6px 14px; font-size: 0.8rem;">
+            <i class="fa-solid fa-expand"></i> Launch Interactive Album
+          </button>
+        </div>
+        <div class="nfr-gallery" style="margin: 0; grid-template-columns: repeat(4, 1fr);">
+          <img src="CertificateImage/REACT2026Certificate.jpeg" alt="IEEE REACT Certificate & Cover" class="nfr-gallery-img" onclick="openSRSGallery(0)" title="Official Certificate & Cover">
+          <img src="SEU_ROBO_SOCER/1789386712753.jpg" alt="Robo Soccer Event" class="nfr-gallery-img" onclick="openSRSGallery(1)" title="Robo Soccer Event">
+          <img src="SEU_ROBO_SOCER/1789386655258.jpg" alt="Robot & Gear" class="nfr-gallery-img" onclick="openSRSGallery(2)" title="Robot & Gear">
+          <img src="SEU_ROBO_SOCER/1789386668307.jpg" alt="Badge" class="nfr-gallery-img" onclick="openSRSGallery(3)" title="Participant Badge">
+        </div>
+      </div>
+    `;
+    albumFooterAction = `
+      <button class="btn btn-mint" onclick="openSRSGallery(0)" style="padding: 10px 20px; font-size: 0.88rem;">
+        <i class="fa-solid fa-images"></i> Open Photo Album (4 Photos)
+      </button>
+    `;
+  }
+
+  modalRoot.innerHTML = `
+    <div class="modal-backdrop">
+      <div class="modal-content-box modal-large" style="max-width: 860px;">
+        <button class="modal-close-btn" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
+        <div style="display: flex; flex-direction: column; gap: 20px; max-height: 75vh; overflow-y: auto; padding-right: 6px;">
+          <div style="position: relative; border-radius: 18px; overflow: hidden; background: #0f172a; max-height: 260px; display: flex; align-items: center; justify-content: center; box-shadow: var(--neo-shadow-inset);">
+            <img src="${event.img}" alt="${event.title}" style="width: 100%; height: 100%; object-fit: contain; max-height: 260px; background: rgba(0,0,0,0.4);" />
+            <span class="event-badge badge-mint" style="position: absolute; top: 16px; left: 16px;">
+              ${event.badge}
+            </span>
+          </div>
+
+          <div>
+            <div style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-subtle);">
+              <span><i class="fa-regular fa-calendar" style="color: var(--mint-dark);"></i> ${event.date}</span>
+              <span><i class="fa-solid fa-building-columns" style="color: var(--mint-dark);"></i> ${event.organizer}</span>
+              ${event.location ? `<span><i class="fa-solid fa-location-dot" style="color: var(--mint-dark);"></i> ${event.location}</span>` : ''}
+            </div>
+
+            <h2 class="modal-title" style="font-size: 1.45rem; line-height: 1.25; margin-bottom: 10px;">${event.title}</h2>
+            
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px;">
+              <span class="pill-item" style="background: var(--mint-light); color: var(--mint-text-dark); font-size: 0.85rem; padding: 4px 14px;">
+                Role: <strong>${event.role}</strong>
+              </span>
+              <span class="pill-item" style="font-size: 0.85rem; padding: 4px 14px;">
+                Status: <strong>${event.status}</strong>
+              </span>
+            </div>
+
+            <p class="modal-description" style="margin-top: 6px; margin-bottom: 16px; font-size: 0.95rem; line-height: 1.6;">
+              ${event.summary}
+            </p>
+
+            ${albumSectionHtml}
+
+            ${highlightsHtml ? `
+              <div style="margin-top: 14px; background: var(--bg-neo-base); border-radius: 16px; padding: 18px; box-shadow: var(--neo-shadow-inset);">
+                <h4 style="font-size: 0.92rem; color: var(--mint-dark); margin-bottom: 12px; letter-spacing: 0.06em;">
+                  KEY HIGHLIGHTS & TECHNICAL ENGAGEMENT
+                </h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                  ${highlightsHtml}
+                </ul>
+              </div>
+            ` : ''}
+
+            <div style="margin-top: 18px;">
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">${tags}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.06); display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap;">
+          ${albumFooterAction}
+          ${certAction}
+          <button class="btn btn-outline modal-close-action" style="padding: 10px 20px; font-size: 0.88rem;">Close</button>
+        </div>
+      </div>
+    </div>
+  `;
+  attachModalListeners();
+  const closeActionBtn = modalRoot.querySelector('.modal-close-action');
+  if (closeActionBtn) {
+    closeActionBtn.addEventListener('click', closeModal);
+  }
+}
+
+const nfrAlbumPhotos = [
+  {
+    src: 'Membership%20image/EWUNRF.png',
+    title: 'Official Event Poster — EWU National RoboFest 2026',
+    desc: 'The official headline poster for "Domination Is Destiny" — Bangladesh\'s premier national inter-university robotics festival & hackathon organized by EWU Robotics Club.',
+    tag: 'OFFICIAL POSTER'
+  },
+  {
+    src: 'EWUNFR_image_event/735704580_1561909951988121_7374546888894981848_n.jpg',
+    title: 'Robotics Organizing Committee & Executive Leads',
+    desc: 'EWU Robotics Club core executive committee coordinating 10+ competition tracks, schedule operations, and technical logistics across the festival.',
+    tag: 'ORGANIZING TEAM'
+  },
+  {
+    src: 'EWUNFR_image_event/735734950_1561909948654788_7705784741682193278_n.jpg',
+    title: 'Grand Group Photo with University Faculty & Mentors',
+    desc: 'EWU Robotics Club members gathered alongside distinguished department faculty moderators and mentors celebrating festival preparations.',
+    tag: 'FACULTY & TEAM'
+  },
+  {
+    src: 'EWUNFR_image_event/736343157_1561909945321455_3806273439916129780_n.jpg',
+    title: 'Autonomous Robotics Arena & Hardware Exhibition',
+    desc: 'Live robot battle arenas, high-precision line follower tracks, fire fighting bots, and student embedded hardware prototypes on display.',
+    tag: 'ROBOT ARENA & EXPO'
+  },
+  {
+    src: 'EWUNFR_image_event/736367935_1561909958654787_765035224686547722_n.jpg',
+    title: 'National Registration Desk & Fest Operations',
+    desc: 'Welcoming participating university teams and roboticists from across Bangladesh as they register and gear up for 3 intense competition days.',
+    tag: 'REGISTRATION DESK'
+  }
+];
+
+const gseAlbumPhotos = [
+  {
+    src: 'GLOBAL_STUDY_EXPO/1785644353824.jpg',
+    title: 'Global Study Expo — International Education Fair',
+    desc: 'Premier international education fair in Bangladesh bringing together top universities and study-abroad consultants from around the world.',
+    tag: 'EXPO FLOOR'
+  },
+  {
+    src: 'GLOBAL_STUDY_EXPO/1785644357390.jpg',
+    title: 'University Stalls & Academic Booths',
+    desc: 'Representatives from leading global institutions showcasing scholarship programs, admission processes, and international study opportunities.',
+    tag: 'UNIVERSITY STALLS'
+  },
+  {
+    src: 'GLOBAL_STUDY_EXPO/1785644358595.jpg',
+    title: 'Student Networking & Academic Scouting',
+    desc: 'Exploring scholarship pathways, IELTS/TOEFL guidance, and direct consultation with international education advisors.',
+    tag: 'NETWORKING'
+  }
+];
+
+const srsAlbumPhotos = [
+  {
+    src: 'CertificateImage/REACT2026Certificate.jpeg',
+    title: 'IEEE REACT 2026 — Official Event Cover & Certificate',
+    desc: 'Official Certificate of Participation for REACT 2026 (Research, Engineering, Automation, Computer, Technology) — 1st National Robotics Competition organized by IEEE SEU Student Branch.',
+    tag: 'OFFICIAL CERTIFICATE'
+  },
+  {
+    src: 'SEU_ROBO_SOCER/1789386712753.jpg',
+    title: 'REACT 2026 — Robo Soccer Participant',
+    desc: 'Standing tall at Southeast University during the REACT 2026 — 1st National Robotics Competition organized by IEEE SEU Student Branch.',
+    tag: 'AT THE EVENT'
+  },
+  {
+    src: 'SEU_ROBO_SOCER/1789386655258.jpg',
+    title: 'REACT 2026 Robot & Competition Gear',
+    desc: 'The custom-engineered robot, FlySky RC remote controller, and REACT 2026 participant badges and registration materials for the Robo Soccer event.',
+    tag: 'ROBOT & GEAR'
+  },
+  {
+    src: 'SEU_ROBO_SOCER/1789386668307.jpg',
+    title: 'REACT 2026 Participant Certificate Badge',
+    desc: 'Official IEEE SEU REACT 2026 Participant badge — the 1st National Robotics Competition powered by Suzuki Motorbikes at Southeast University.',
+    tag: 'PARTICIPANT BADGE'
+  }
+];
+
+let gseAlbumKeyHandler = null;
+let srsAlbumKeyHandler = null;
+
+function openGSEGallery(index = 0) {
+  const modalRoot = getModalRoot();
+  if (!modalRoot) return;
+  let current = (typeof index === 'number' && index >= 0 && index < gseAlbumPhotos.length) ? index : 0;
+
+  function renderAlbum() {
+    const photo = gseAlbumPhotos[current];
+    const filmstripHtml = gseAlbumPhotos.map((p, i) => `
+      <div class="filmstrip-thumb ${i === current ? 'active' : ''}" data-idx="${i}" title="${p.title}">
+        <img src="${p.src}" alt="${p.title}">
+        <span class="filmstrip-number">${i + 1}</span>
+      </div>
+    `).join('');
+
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop">
+        <div class="modal-content-box nfr-album-modal">
+          <div class="album-modal-header">
+            <div class="album-modal-title-wrap">
+              <i class="fa-solid fa-images" style="color: var(--mint-main); font-size: 1.15rem;"></i>
+              <div>
+                <h3 class="album-modal-title">Global Study Expo &mdash; Photo Album</h3>
+              </div>
+              <span class="album-counter-pill">${current + 1} / ${gseAlbumPhotos.length}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <button class="btn btn-outline" id="gseDeepDiveBtn" style="padding: 6px 14px; font-size: 0.82rem;">
+                <i class="fa-solid fa-circle-info"></i> Event Details
+              </button>
+              <button class="modal-close-btn" aria-label="Close album" style="position: static;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          </div>
+
+          <div class="album-main-viewport">
+            <button class="album-nav-arrow prev" id="gsePrevBtn" aria-label="Previous photo"><i class="fa-solid fa-chevron-left"></i></button>
+            <img src="${photo.src}" alt="${photo.title}" id="gseMainImg" />
+            <button class="album-nav-arrow next" id="gseNextBtn" aria-label="Next photo"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+
+          <div class="album-caption-bar">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px;">
+              <h4 class="album-caption-title">${photo.title}</h4>
+              <span class="tag-chip" style="background: var(--mint-light); color: var(--mint-text-dark); font-size: 0.72rem; flex-shrink: 0;">${photo.tag}</span>
+            </div>
+            <p class="album-caption-desc">${photo.desc}</p>
+          </div>
+
+          <div class="album-filmstrip">
+            ${filmstripHtml}
+          </div>
+        </div>
+      </div>
+    `;
+
+    attachModalListeners();
+
+    const prevBtn = document.getElementById('gsePrevBtn');
+    const nextBtn = document.getElementById('gseNextBtn');
+    const deepDiveBtn = document.getElementById('gseDeepDiveBtn');
+
+    if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); current = (current - 1 + gseAlbumPhotos.length) % gseAlbumPhotos.length; renderAlbum(); });
+    if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); current = (current + 1) % gseAlbumPhotos.length; renderAlbum(); });
+    if (deepDiveBtn) deepDiveBtn.addEventListener('click', (e) => { e.stopPropagation(); if (gseAlbumKeyHandler) { window.removeEventListener('keydown', gseAlbumKeyHandler); gseAlbumKeyHandler = null; } openEventModal('global-study-expo'); });
+
+    const thumbs = modalRoot.querySelectorAll('.filmstrip-thumb');
+    thumbs.forEach((thumb) => { thumb.addEventListener('click', (e) => { e.stopPropagation(); const idx = parseInt(thumb.getAttribute('data-idx'), 10); if (!isNaN(idx)) { current = idx; renderAlbum(); } }); });
+  }
+
+  if (gseAlbumKeyHandler) window.removeEventListener('keydown', gseAlbumKeyHandler);
+  gseAlbumKeyHandler = (e) => {
+    if (e.key === 'ArrowLeft') { current = (current - 1 + gseAlbumPhotos.length) % gseAlbumPhotos.length; renderAlbum(); }
+    else if (e.key === 'ArrowRight') { current = (current + 1) % gseAlbumPhotos.length; renderAlbum(); }
+    else if (e.key === 'Escape') { closeModal(); }
+  };
+  window.addEventListener('keydown', gseAlbumKeyHandler);
+  renderAlbum();
+}
+
+function openSRSGallery(index = 0) {
+  const modalRoot = getModalRoot();
+  if (!modalRoot) return;
+  let current = (typeof index === 'number' && index >= 0 && index < srsAlbumPhotos.length) ? index : 0;
+
+  function renderAlbum() {
+    const photo = srsAlbumPhotos[current];
+    const filmstripHtml = srsAlbumPhotos.map((p, i) => `
+      <div class="filmstrip-thumb ${i === current ? 'active' : ''}" data-idx="${i}" title="${p.title}">
+        <img src="${p.src}" alt="${p.title}">
+        <span class="filmstrip-number">${i + 1}</span>
+      </div>
+    `).join('');
+
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop">
+        <div class="modal-content-box nfr-album-modal">
+          <div class="album-modal-header">
+            <div class="album-modal-title-wrap">
+              <i class="fa-solid fa-images" style="color: var(--mint-main); font-size: 1.15rem;"></i>
+              <div>
+                <h3 class="album-modal-title">SEU Robo Soccer &mdash; Photo Album</h3>
+              </div>
+              <span class="album-counter-pill">${current + 1} / ${srsAlbumPhotos.length}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <button class="btn btn-outline" id="srsDeepDiveBtn" style="padding: 6px 14px; font-size: 0.82rem;">
+                <i class="fa-solid fa-circle-info"></i> Event Details
+              </button>
+              <button class="modal-close-btn" aria-label="Close album" style="position: static;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          </div>
+
+          <div class="album-main-viewport">
+            <button class="album-nav-arrow prev" id="srsPrevBtn" aria-label="Previous photo"><i class="fa-solid fa-chevron-left"></i></button>
+            <img src="${photo.src}" alt="${photo.title}" id="srsMainImg" />
+            <button class="album-nav-arrow next" id="srsNextBtn" aria-label="Next photo"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+
+          <div class="album-caption-bar">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px;">
+              <h4 class="album-caption-title">${photo.title}</h4>
+              <span class="tag-chip" style="background: var(--mint-light); color: var(--mint-text-dark); font-size: 0.72rem; flex-shrink: 0;">${photo.tag}</span>
+            </div>
+            <p class="album-caption-desc">${photo.desc}</p>
+          </div>
+
+          <div class="album-filmstrip">
+            ${filmstripHtml}
+          </div>
+        </div>
+      </div>
+    `;
+
+    attachModalListeners();
+
+    const prevBtn = document.getElementById('srsPrevBtn');
+    const nextBtn = document.getElementById('srsNextBtn');
+    const deepDiveBtn = document.getElementById('srsDeepDiveBtn');
+
+    if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); current = (current - 1 + srsAlbumPhotos.length) % srsAlbumPhotos.length; renderAlbum(); });
+    if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); current = (current + 1) % srsAlbumPhotos.length; renderAlbum(); });
+    if (deepDiveBtn) deepDiveBtn.addEventListener('click', (e) => { e.stopPropagation(); if (srsAlbumKeyHandler) { window.removeEventListener('keydown', srsAlbumKeyHandler); srsAlbumKeyHandler = null; } openEventModal('seu-robo-soccer'); });
+
+    const thumbs = modalRoot.querySelectorAll('.filmstrip-thumb');
+    thumbs.forEach((thumb) => { thumb.addEventListener('click', (e) => { e.stopPropagation(); const idx = parseInt(thumb.getAttribute('data-idx'), 10); if (!isNaN(idx)) { current = idx; renderAlbum(); } }); });
+  }
+
+  if (srsAlbumKeyHandler) window.removeEventListener('keydown', srsAlbumKeyHandler);
+  srsAlbumKeyHandler = (e) => {
+    if (e.key === 'ArrowLeft') { current = (current - 1 + srsAlbumPhotos.length) % srsAlbumPhotos.length; renderAlbum(); }
+    else if (e.key === 'ArrowRight') { current = (current + 1) % srsAlbumPhotos.length; renderAlbum(); }
+    else if (e.key === 'Escape') { closeModal(); }
+  };
+  window.addEventListener('keydown', srsAlbumKeyHandler);
+  renderAlbum();
+}
+
+let nfrAlbumKeyHandler = null;
+
+function openNFRGallery(index = 0) {
+  const modalRoot = getModalRoot();
+  if (!modalRoot) return;
+  let current = (typeof index === 'number' && index >= 0 && index < nfrAlbumPhotos.length) ? index : 0;
+
+  function renderAlbum() {
+    const photo = nfrAlbumPhotos[current];
+    const filmstripHtml = nfrAlbumPhotos.map((p, i) => `
+      <div class="filmstrip-thumb ${i === current ? 'active' : ''}" data-idx="${i}" title="${p.title}">
+        <img src="${p.src}" alt="${p.title}">
+        <span class="filmstrip-number">${i + 1}</span>
+      </div>
+    `).join('');
+
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop">
+        <div class="modal-content-box nfr-album-modal">
+          <div class="album-modal-header">
+            <div class="album-modal-title-wrap">
+              <i class="fa-solid fa-images" style="color: var(--mint-main); font-size: 1.15rem;"></i>
+              <div>
+                <h3 class="album-modal-title">EWU National RoboFest 2026 &mdash; Photo Album</h3>
+              </div>
+              <span class="album-counter-pill">${current + 1} / ${nfrAlbumPhotos.length}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <button class="btn btn-outline" id="albumDeepDiveBtn" style="padding: 6px 14px; font-size: 0.82rem;">
+                <i class="fa-solid fa-circle-info"></i> Event Details
+              </button>
+              <button class="modal-close-btn" aria-label="Close album" style="position: static;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          </div>
+
+          <div class="album-main-viewport">
+            <button class="album-nav-arrow prev" id="albumPrevBtn" aria-label="Previous photo"><i class="fa-solid fa-chevron-left"></i></button>
+            <img src="${photo.src}" alt="${photo.title}" id="albumMainImg" />
+            <button class="album-nav-arrow next" id="albumNextBtn" aria-label="Next photo"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+
+          <div class="album-caption-bar">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px;">
+              <h4 class="album-caption-title">${photo.title}</h4>
+              <span class="tag-chip" style="background: var(--mint-light); color: var(--mint-text-dark); font-size: 0.72rem; flex-shrink: 0;">${photo.tag}</span>
+            </div>
+            <p class="album-caption-desc">${photo.desc}</p>
+          </div>
+
+          <div class="album-filmstrip">
+            ${filmstripHtml}
+          </div>
+        </div>
+      </div>
+    `;
+
+    attachModalListeners();
+
+    const prevBtn = document.getElementById('albumPrevBtn');
+    const nextBtn = document.getElementById('albumNextBtn');
+    const deepDiveBtn = document.getElementById('albumDeepDiveBtn');
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        current = (current - 1 + nfrAlbumPhotos.length) % nfrAlbumPhotos.length;
+        renderAlbum();
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        current = (current + 1) % nfrAlbumPhotos.length;
+        renderAlbum();
+      });
+    }
+
+    if (deepDiveBtn) {
+      deepDiveBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (nfrAlbumKeyHandler) {
+          window.removeEventListener('keydown', nfrAlbumKeyHandler);
+          nfrAlbumKeyHandler = null;
+        }
+        openEventModal('ewu-nfr-2026');
+      });
+    }
+
+    const thumbs = modalRoot.querySelectorAll('.filmstrip-thumb');
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(thumb.getAttribute('data-idx'), 10);
+        if (!isNaN(idx)) {
+          current = idx;
+          renderAlbum();
+        }
+      });
+    });
+  }
+
+  if (nfrAlbumKeyHandler) {
+    window.removeEventListener('keydown', nfrAlbumKeyHandler);
+  }
+  nfrAlbumKeyHandler = (e) => {
+    if (e.key === 'ArrowLeft') {
+      current = (current - 1 + nfrAlbumPhotos.length) % nfrAlbumPhotos.length;
+      renderAlbum();
+    } else if (e.key === 'ArrowRight') {
+      current = (current + 1) % nfrAlbumPhotos.length;
+      renderAlbum();
+    } else if (e.key === 'Escape') {
+      closeModal();
+    }
+  };
+  window.addEventListener('keydown', nfrAlbumKeyHandler);
+
+  renderAlbum();
 }
 
 const projectsData = {
@@ -648,6 +1463,39 @@ function initEventHandlers() {
     });
   });
 
+  const eventFilterButtons = document.querySelectorAll('.event-filter-btn');
+  eventFilterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.eventFilter || button.getAttribute('data-event-filter');
+      if (filter) {
+        setEventFilter(filter);
+      }
+    });
+  });
+
+  const eventCards = document.querySelectorAll('.event-card');
+  eventCards.forEach((card) => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.event-action-btn') || e.target.closest('.nfr-gallery-img')) return;
+      const eventId = card.dataset.eventId || card.getAttribute('data-event-id');
+      if (eventId === 'ewu-nfr-2026') {
+        openNFRGallery(0);
+        return;
+      }
+      if (eventId === 'global-study-expo') {
+        openGSEGallery(0);
+        return;
+      }
+      if (eventId === 'seu-robo-soccer') {
+        openSRSGallery(0);
+        return;
+      }
+      if (eventId) {
+        openEventModal(eventId);
+      }
+    });
+  });
+
   const techCards = document.querySelectorAll('.tech-card');
   techCards.forEach((card) => {
     card.addEventListener('click', () => {
@@ -679,6 +1527,7 @@ function initEventHandlers() {
 
   updateActiveNav();
   setFilter('ALL');
+  setEventFilter('ALL');
 }
 
 /* ==========================================================================
@@ -1243,5 +2092,13 @@ window.openPlatformModal = function(platform) {
 initCursor();
 initEventHandlers();
 
+// Expose modal and gallery functions globally
+window.openNFRGallery = openNFRGallery;
+window.openGSEGallery = openGSEGallery;
+window.openSRSGallery = openSRSGallery;
+window.openEventModal = openEventModal;
+window.closeModal = closeModal;
+
 // Automatically analyze coding profiles upon entering the portfolio
 analyzeCodingProfiles();
+
