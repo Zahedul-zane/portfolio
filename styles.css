@@ -1252,11 +1252,32 @@ section {
 }
 
 .cert-thumb-img {
-  width: 115px;
-  height: 85px;
+  width: 190px;
+  height: 135px;
   border-radius: 16px;
   object-fit: cover;
+  flex-shrink: 0;
   box-shadow: var(--neo-shadow-inset);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.cert-card-box:hover .cert-thumb-img {
+  transform: scale(1.02);
+  box-shadow: 0 4px 16px rgba(6, 182, 212, 0.2);
+}
+
+@media (max-width: 640px) {
+  .cert-card-box {
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px;
+  }
+
+  .cert-thumb-img {
+    width: 100%;
+    height: 190px;
+  }
 }
 
 .cert-info-main {
@@ -1732,6 +1753,28 @@ section {
   height: 85vh;
   display: flex;
   flex-direction: column;
+}
+
+.modal-content-box.modal-cert {
+  max-width: 1020px;
+  padding: 36px;
+}
+
+.cert-modal-grid {
+  display: grid;
+  grid-template-columns: minmax(340px, 1.35fr) minmax(280px, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .modal-content-box.modal-cert {
+    padding: 24px;
+  }
+  .cert-modal-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
 .modal-close-btn {

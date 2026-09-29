@@ -65,6 +65,22 @@ const certificates = {
     img: 'CertificateImage/REACT2026Certificate.jpeg',
     tags: ['ROBOTICS', 'IEEE', 'COMPETITION'],
     description: 'Awarded Certificate of Participation for active participation, enthusiasm, and valuable contribution to REACT 2026 (Research, Engineering, Automation, Computer, Technology) — The 1st National Robotics Competition organized by IEEE SEU Student Branch at Southeast University on 10-11th September 2026.'
+  },
+  9: {
+    title: 'Global Study EXPO 2026 (Event Ambassador)',
+    issuer: 'HBD SERVICES • AUG 06, 2026',
+    date: 'AUG 06, 2026',
+    img: 'CertificateImage/HBD_service.jpeg',
+    tags: ['AMBASSADOR', 'EXPO', 'LEADERSHIP', 'SERVICE'],
+    description: 'Awarded Certificate of Appreciation as an official Event Ambassador for outstanding contribution, student guidance, and logistical support during the Global Study EXPO 2026 organized by HBD Services at The Westin Dhaka.'
+  },
+  10: {
+    title: 'Cybersecurity — ADBI Institute',
+    issuer: 'ADBI INSTITUTE • SEP 29, 2026',
+    date: 'SEP 29, 2026',
+    img: 'CertificateImage/Cybersecurity-ADBI.jpg',
+    tags: ['CYBERSECURITY', 'ADBI', 'SECURITY', 'VERIFIED'],
+    description: 'Successfully completed the specialized Cybersecurity course offered by Asian Development Bank Institute (ADBI), gaining verified competencies in threat landscapes, digital defense architectures, cryptographic foundations, and risk governance.'
   }
 };
 
@@ -283,23 +299,24 @@ const eventsData = {
     tags: ['EWURC', 'ROBOTICS', 'HACKATHON', 'DRONE RACING', 'CTF', 'NATIONAL', 'EWU']
   },
   'global-study-expo': {
-    title: 'Global Study Expo — International Education Fair',
-    organizer: 'Global Study Expo Bangladesh',
-    date: '2025',
-    location: 'Dhaka, Bangladesh',
+    title: 'Global Study Expo 2026 — Event Ambassador',
+    organizer: 'HBD Services • The Westin Dhaka',
+    date: 'JUL 30 • AUG 06, 2026',
+    location: 'The Westin Dhaka, Bangladesh',
     category: 'SUMMIT',
-    badge: 'INTERNATIONAL EXPO',
-    status: 'Active Attendee & Explorer',
-    role: 'Student Delegate & Academic Scout',
+    badge: 'EVENT AMBASSADOR',
+    status: 'Official Event Ambassador & Coordinator',
+    role: 'Event Ambassador & Student Coordinator',
     img: 'GLOBAL_STUDY_EXPO/1785644353824.jpg',
-    summary: "Attended the Global Study Expo — Bangladesh's premier international education fair bringing together top universities and study-abroad consultants from around the world for student engagement and academic networking.",
+    certId: 9,
+    summary: 'Honored as an official Event Ambassador at The Westin Dhaka for Global Study Expo 2026, coordinating crowd flow, guiding aspiring students, facilitating international university stall operations, and consulting with global education delegates.',
     highlights: [
-      'Engaged with representatives from international universities across Europe, North America, Asia, and Australia.',
-      'Explored scholarship opportunities, admission requirements, and program offerings from leading global institutions.',
-      'Networked with fellow aspiring students and professionals planning overseas academic journeys.',
-      'Gained crucial insights into IELTS/TOEFL preparation, application strategies, and student visa pathways.'
+      'Served as official Event Ambassador representing HBD Services at The Westin Dhaka.',
+      'Guided aspiring undergraduate and postgraduate students through international university booths and admission pathways.',
+      'Assisted delegates and representatives from top universities across UK, USA, Canada, Australia, and Europe.',
+      'Awarded official Certificate of Appreciation by HBD Services for exceptional leadership and service.'
     ],
-    tags: ['EDUCATION', 'GLOBAL', 'EXPO', 'SCHOLARSHIP', 'INTERNATIONAL']
+    tags: ['AMBASSADOR', 'EXPO', 'LEADERSHIP', 'INTERNATIONAL', 'GLOBAL', 'SCHOLARSHIP']
   },
   'seu-robo-soccer': {
     title: 'SEU Robo Soccer — IEEE REACT 2026',
@@ -420,21 +437,34 @@ function openCertModal(certId) {
   if (!modalRoot) return;
   const cert = certificates[certId];
   if (!cert) return;
-  const tags = cert.tags.map((tag) => `<span class="tag-chip" style="background: var(--mint-light); color: var(--mint-text-dark);">${tag}</span>`).join('');
+  const tags = cert.tags.map((tag) => `<span class="tag-chip" style="background: var(--mint-light); color: var(--mint-text-dark); font-size: 0.78rem;">${tag}</span>`).join('');
   modalRoot.innerHTML = `
     <div class="modal-backdrop">
-      <div class="modal-content-box">
+      <div class="modal-content-box modal-cert">
         <button class="modal-close-btn" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; align-items: center;">
-          <div>
-            <img src="${cert.img}" alt="${cert.title}" style="width: 100%; border-radius: 16px; border: 1px solid rgba(0,0,0,0.08); box-shadow: var(--neo-shadow-md);" />
+        <div class="cert-modal-grid">
+          <div style="position: relative; border-radius: 18px; overflow: hidden; background: #0f172a; box-shadow: var(--neo-shadow-outset); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; min-height: 280px;">
+            <a href="${cert.img}" target="_blank" rel="noreferrer" title="Click to open full high-resolution image" style="display: block; width: 100%; cursor: zoom-in;">
+              <img src="${cert.img}" alt="${cert.title}" style="width: 100%; height: auto; max-height: 520px; object-fit: contain; display: block; border-radius: 18px;" />
+            </a>
+            <span style="position: absolute; bottom: 12px; right: 12px; background: rgba(15, 23, 42, 0.78); color: #fff; font-size: 0.76rem; padding: 4px 12px; border-radius: 20px; backdrop-filter: blur(6px); pointer-events: none; border: 1px solid rgba(255,255,255,0.15);">
+              <i class="fa-solid fa-magnifying-glass-plus" style="color: var(--mint-main);"></i> Click to Zoom High-Res
+            </span>
           </div>
           <div>
-            <span class="section-label">${cert.date}</span>
-            <h2 class="modal-title">${cert.title}</h2>
-            <span class="cert-issuer-badge">${cert.issuer}</span>
-            <p class="modal-description">${cert.description}</p>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;">${tags}</div>
+            <span class="section-label" style="margin-bottom: 6px; display: inline-block;">${cert.date}</span>
+            <h2 class="modal-title" style="margin-top: 4px; margin-bottom: 8px; font-size: 1.45rem; line-height: 1.3;">${cert.title}</h2>
+            <span class="cert-issuer-badge" style="font-size: 0.95rem; margin-bottom: 12px;">${cert.issuer}</span>
+            <p class="modal-description" style="line-height: 1.65; font-size: 0.94rem; color: var(--text-muted);">${cert.description}</p>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; margin-bottom: 22px;">${tags}</div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <a href="${cert.img}" target="_blank" rel="noreferrer" class="btn btn-mint" style="padding: 9px 18px; font-size: 0.85rem;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> View Full Resolution
+              </a>
+              <a href="${cert.img}" download class="btn btn-outline" style="padding: 9px 18px; font-size: 0.85rem;">
+                <i class="fa-solid fa-download"></i> Download
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -559,22 +589,23 @@ function openEventModal(eventId) {
       <div style="margin-top: 16px; background: var(--bg-neo-base); border-radius: 16px; padding: 18px; box-shadow: var(--neo-shadow-inset);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
           <h4 style="font-size: 0.92rem; color: var(--mint-dark); margin: 0; letter-spacing: 0.06em;">
-            <i class="fa-solid fa-images"></i> EVENT PHOTO ALBUM (3 PHOTOS)
+            <i class="fa-solid fa-images"></i> EVENT PHOTO ALBUM (4 PHOTOS)
           </h4>
           <button class="btn btn-mint" onclick="openGSEGallery(0)" style="padding: 6px 14px; font-size: 0.8rem;">
             <i class="fa-solid fa-expand"></i> Launch Interactive Album
           </button>
         </div>
-        <div class="nfr-gallery" style="margin: 0; grid-template-columns: repeat(3, 1fr);">
+        <div class="nfr-gallery" style="margin: 0; grid-template-columns: repeat(4, 1fr);">
           <img src="GLOBAL_STUDY_EXPO/1785644353824.jpg" alt="Expo Floor" class="nfr-gallery-img" onclick="openGSEGallery(0)" title="Expo Floor">
           <img src="GLOBAL_STUDY_EXPO/1785644357390.jpg" alt="University Stalls" class="nfr-gallery-img" onclick="openGSEGallery(1)" title="University Stalls">
           <img src="GLOBAL_STUDY_EXPO/1785644358595.jpg" alt="Networking" class="nfr-gallery-img" onclick="openGSEGallery(2)" title="Student Networking">
+          <img src="CertificateImage/HBD_service.jpeg" alt="Official Ambassador Certificate" class="nfr-gallery-img" onclick="openGSEGallery(3)" title="Official Ambassador Certificate">
         </div>
       </div>
     `;
     albumFooterAction = `
       <button class="btn btn-mint" onclick="openGSEGallery(0)" style="padding: 10px 20px; font-size: 0.88rem;">
-        <i class="fa-solid fa-images"></i> Open Photo Album (3 Photos)
+        <i class="fa-solid fa-images"></i> Open Photo Album (4 Photos)
       </button>
     `;
   } else if (eventId === 'seu-robo-soccer') {
@@ -707,8 +738,8 @@ const nfrAlbumPhotos = [
 const gseAlbumPhotos = [
   {
     src: 'GLOBAL_STUDY_EXPO/1785644353824.jpg',
-    title: 'Global Study Expo — International Education Fair',
-    desc: 'Premier international education fair in Bangladesh bringing together top universities and study-abroad consultants from around the world.',
+    title: 'Global Study Expo 2026 — International Education Fair',
+    desc: 'Premier international education fair at The Westin Dhaka bringing together top universities and study-abroad consultants from around the world.',
     tag: 'EXPO FLOOR'
   },
   {
@@ -719,9 +750,15 @@ const gseAlbumPhotos = [
   },
   {
     src: 'GLOBAL_STUDY_EXPO/1785644358595.jpg',
-    title: 'Student Networking & Academic Scouting',
-    desc: 'Exploring scholarship pathways, IELTS/TOEFL guidance, and direct consultation with international education advisors.',
+    title: 'Student Networking & Event Coordination',
+    desc: 'Guiding aspiring students, facilitating stall operations, and consulting on international education opportunities.',
     tag: 'NETWORKING'
+  },
+  {
+    src: 'CertificateImage/HBD_service.jpeg',
+    title: 'Global Study EXPO 2026 — Official Ambassador Certificate',
+    desc: 'Official Certificate of Appreciation awarded by HBD Services recognizing dedicated service as Event Ambassador at The Westin Dhaka.',
+    tag: 'OFFICIAL CERTIFICATE'
   }
 ];
 
@@ -1201,6 +1238,15 @@ const techShowcaseData = {
     projects: [3],
     files: [],
     certs: []
+  },
+  'CYBERSECURITY': {
+    title: 'Cybersecurity & Digital Defense',
+    icon: 'fa-solid fa-shield-halved',
+    color: '#06b6d4',
+    desc: 'Offensive and defensive security principles, Capture The Flag (CTF) challenges, vulnerability assessments, cryptographic analysis, and verified ADBI cybersecurity certification.',
+    projects: [],
+    files: [],
+    certs: [5, 10]
   }
 };
 
