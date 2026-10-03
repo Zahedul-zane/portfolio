@@ -26,29 +26,50 @@
     <div class="custom-cursor"></div>
     <div class="custom-cursor-ring"></div>
 
-    <!-- Main Header Nav -->
-    <header class="main-header">
-        <a href="#hero" class="logo" data-target="hero">
-            ZAHED<span>UL</span>.
-        </a>
+    <!-- Floating Vertical Dock Sidebar Navigation with Gooey Squish Highlight -->
+    <aside class="floating-dock-sidebar" id="floatingSidebar" aria-label="Sidebar Navigation">
+        <div class="dock-container">
+            <div class="dock-highlight-pill" id="dockHighlight"></div>
 
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#hero" class="nav-link active" data-target="hero">HOME</a></li>
-                <li><a href="#about" class="nav-link" data-target="about">ABOUT</a></li>
-                <li><a href="#expertise" class="nav-link" data-target="expertise">FORGE</a></li>
-                <li><a href="#projects" class="nav-link" data-target="projects">PROJECTS</a></li>
-                <li><a href="#events" class="nav-link" data-target="events">EVENTS</a></li>
-                <li><a href="#certificates" class="nav-link" data-target="certificates">CERTIFICATES</a></li>
-                <li><a href="#files" class="nav-link" data-target="files">FILES</a></li>
-                <li><a href="#dashboards" class="nav-link" data-target="dashboards">DASHBOARDS</a></li>
-            </ul>
-        </nav>
+            <a href="#hero" class="dock-item active" data-target="hero" aria-label="Home">
+                <i class="fa-solid fa-house"></i>
+                <span class="dock-tooltip">Home</span>
+            </a>
+            <a href="#about" class="dock-item" data-target="about" aria-label="About">
+                <i class="fa-solid fa-user"></i>
+                <span class="dock-tooltip">About</span>
+            </a>
+            <a href="#expertise" class="dock-item" data-target="expertise" aria-label="Forge">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <span class="dock-tooltip">Forge</span>
+            </a>
+            <a href="#projects" class="dock-item" data-target="projects" aria-label="Projects">
+                <i class="fa-solid fa-folder-closed"></i>
+                <span class="dock-tooltip">Projects</span>
+            </a>
+            <a href="#events" class="dock-item" data-target="events" aria-label="Events">
+                <i class="fa-solid fa-trophy"></i>
+                <span class="dock-tooltip">Events</span>
+            </a>
+            <a href="#certificates" class="dock-item" data-target="certificates" aria-label="Certificates">
+                <i class="fa-solid fa-award"></i>
+                <span class="dock-tooltip">Certificates</span>
+            </a>
+            <a href="#files" class="dock-item" data-target="files" aria-label="Files">
+                <i class="fa-solid fa-file-lines"></i>
+                <span class="dock-tooltip">Files</span>
+            </a>
+            <a href="#dashboards" class="dock-item" data-target="dashboards" aria-label="Dashboards">
+                <i class="fa-solid fa-chart-line"></i>
+                <span class="dock-tooltip">Dashboards</span>
+            </a>
+        </div>
+    </aside>
 
-        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-    </header>
+    <!-- Floating Mobile Toggle Button (Visible on Mobile/Tablet) -->
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars"></i>
+    </button>
 
     <!-- Mobile Drawer -->
     <div class="mobile-nav-menu" id="mobileNav">
@@ -201,7 +222,7 @@
                                 <div class="stat-desc">Problems</div>
                             </div>
                             <div class="stat-box">
-                                <div class="stat-number">10+</div>
+                                <div class="stat-number">11+</div>
                                 <div class="stat-desc">Certificates</div>
                             </div>
                         </div>
@@ -629,11 +650,14 @@
                     <div class="clubs-grid">
                         <!-- Club 1: EWU Robotics Club -->
                         <div class="club-card" onclick="openEventModal('club-ewurc')">
-                            <div class="club-logo-wrap">
-                                <img src="Membership%20image/EWURC.png" alt="East West University Robotics Club" class="club-logo-img">
+                            <div class="club-header-cover">
+                                <div class="club-cover-backdrop" style="background-image: url('Membership%20image/EWURC.png');"></div>
+                                <img src="Membership%20image/EWURC.png" alt="East West University Robotics Club" class="club-banner-img">
+                                <span class="event-badge badge-mint">
+                                    <i class="fa-solid fa-robot"></i> ROBOTICS CONTENDER
+                                </span>
                             </div>
                             <div class="club-info">
-                                <span class="club-role-pill"><i class="fa-solid fa-robot"></i> ROBOTICS CONTENDER</span>
                                 <h4 class="club-name">East West University Robotics Club</h4>
                                 <span class="club-meta">EWURC • Hardware & Automation</span>
                                 <p class="club-desc">Collaborating on embedded robotics projects, autonomous systems, and representing EWU in national competitions (REACT 2026).</p>
@@ -642,22 +666,25 @@
                                     <span class="tag-chip">EMBEDDED</span>
                                     <span class="tag-chip">HARDWARE</span>
                                 </div>
-                            </div>
-                            <div class="club-card-footer">
-                                <span class="club-explore-btn">
-                                    <span>Society Overview</span>
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </span>
+                                <div class="club-card-footer">
+                                    <span class="club-explore-btn">
+                                        <span>Society Overview</span>
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Club 2: EWU Cyber Security Club -->
                         <div class="club-card" onclick="openEventModal('club-ewucyber')">
-                            <div class="club-logo-wrap">
-                                <img src="Membership%20image/EWUCSC.jpg" alt="East West University Cyber Security Club" class="club-logo-img">
+                            <div class="club-header-cover">
+                                <div class="club-cover-backdrop" style="background-image: url('Membership%20image/EWUCSC.jpg');"></div>
+                                <img src="Membership%20image/EWUCSC.jpg" alt="East West University Cyber Security Club" class="club-banner-img">
+                                <span class="event-badge badge-cyber">
+                                    <i class="fa-solid fa-shield-halved"></i> CYBER SECURITY RESEARCHER
+                                </span>
                             </div>
                             <div class="club-info">
-                                <span class="club-role-pill"><i class="fa-solid fa-shield-halved"></i> CYBER SECURITY RESEARCHER</span>
                                 <h4 class="club-name">East West University Cyber Security Club</h4>
                                 <span class="club-meta">EWUCSC • Cyber Defense & CTF</span>
                                 <p class="club-desc">Active member engaging in ethical hacking drills, vulnerability assessments, cryptographic analysis, and Capture The Flag (CTF) challenges.</p>
@@ -666,22 +693,25 @@
                                     <span class="tag-chip">CTF</span>
                                     <span class="tag-chip">SECURITY</span>
                                 </div>
-                            </div>
-                            <div class="club-card-footer">
-                                <span class="club-explore-btn">
-                                    <span>Society Overview</span>
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </span>
+                                <div class="club-card-footer">
+                                    <span class="club-explore-btn">
+                                        <span>Society Overview</span>
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Club 3: EWU Programming Club -->
                         <div class="club-card" onclick="openEventModal('club-ewucopc')">
-                            <div class="club-logo-wrap">
-                                <img src="Membership%20image/EWUCoPC.jpg" alt="EWU Programming Club" class="club-logo-img">
+                            <div class="club-header-cover">
+                                <div class="club-cover-backdrop" style="background-image: url('Membership%20image/EWUCoPC.jpg');"></div>
+                                <img src="Membership%20image/EWUCoPC.jpg" alt="EWU Programming Club" class="club-banner-img">
+                                <span class="event-badge badge-blue">
+                                    <i class="fa-solid fa-code"></i> CONTESTANT
+                                </span>
                             </div>
                             <div class="club-info">
-                                <span class="club-role-pill"><i class="fa-solid fa-code"></i> CONTESTANT</span>
                                 <h4 class="club-name">EWU Programming Club</h4>
                                 <span class="club-meta">EWU CoPC • Algorithms & Contests</span>
                                 <p class="club-desc">Rigorous weekly contest simulations, advanced algorithmic upsolving, and ACM-ICPC preparation alongside top university problem solvers.</p>
@@ -690,12 +720,12 @@
                                     <span class="tag-chip">C++</span>
                                     <span class="tag-chip">CONTESTS</span>
                                 </div>
-                            </div>
-                            <div class="club-card-footer">
-                                <span class="club-explore-btn">
-                                    <span>Society Overview</span>
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </span>
+                                <div class="club-card-footer">
+                                    <span class="club-explore-btn">
+                                        <span>Society Overview</span>
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -917,7 +947,27 @@
                         </div>
                     </div>
 
-                    
+                    <!-- Cert 11 EWU National RoboFest 2026 -->
+                    <div class="cert-item">
+                        <div class="cert-dot"></div>
+                        <div class="cert-card-box" data-cert-id="11">
+                            <img src="CertificateImage/ROBOFEST.jpeg" alt="EWU National RoboFest 2026 — Certificate of Appreciation" class="cert-thumb-img">
+                            <div class="cert-info-main">
+                                <span class="cert-issuer-badge">EWU Robotics Club • MAY 19, 2026</span>
+                                <h3 class="cert-title-text">EWU National RoboFest 2026 (Volunteer)</h3>
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
+                                    <span class="tag-chip">ROBOTICS</span>
+                                    <span class="tag-chip">EWURC</span>
+                                    <span class="tag-chip">VOLUNTEER</span>
+                                    <span class="tag-chip">NATIONAL</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; color: var(--mint-text-dark);">
+                                <i class="fa-solid fa-expand" style="font-size: 1.2rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>

@@ -81,8 +81,17 @@ const certificates = {
     img: 'CertificateImage/Cybersecurity-ADBI.jpg',
     tags: ['CYBERSECURITY', 'ADBI', 'SECURITY', 'VERIFIED'],
     description: 'Successfully completed the specialized Cybersecurity course offered by Asian Development Bank Institute (ADBI), gaining verified competencies in threat landscapes, digital defense architectures, cryptographic foundations, and risk governance.'
+  },
+  11: {
+    title: 'EWU National RoboFest 2026 (Volunteer)',
+    issuer: 'EWU Robotics Club',
+    date: 'MAY 19, 2026',
+    img: 'CertificateImage/ROBOFEST.jpeg',
+    tags: ['ROBOTICS', 'EWURC', 'VOLUNTEER', 'NATIONAL'],
+    description: 'Awarded Certificate of Appreciation for outstanding service and dedication as a Volunteer at the EWU National RoboFest 2026, supported by ICT Division and organized by the East West University Robotics Club. Recognized for commitment, enthusiasm, teamwork, and valuable contributions to the successful planning and execution of the national robotics festival.'
   }
 };
+
 
 const files = {
   1: { title: 'Analysis of Time complexity & handshaking logic', file: 'File_PDF/Analysis of Time complexity and handshaking logic.pdf' },
@@ -384,6 +393,89 @@ function updateActiveNav() {
       link.classList.remove('active');
     }
   });
+  syncDockWithSection(current);
+}
+
+let isDockHovered = false;
+let currentDockSection = 'hero';
+
+function syncDockWithSection(sectionId) {
+  currentDockSection = sectionId;
+  if (isDockHovered) return;
+  const dock = document.getElementById('floatingSidebar');
+  if (!dock) return;
+  const targetItem = dock.querySelector(`.dock-item[data-target="${sectionId}"]`);
+  if (targetItem) {
+    dock.querySelectorAll('.dock-item').forEach((item) => item.classList.remove('active'));
+    targetItem.classList.add('active');
+    moveDockHighlight(targetItem);
+  }
+}
+
+function moveDockHighlight(targetItem, instant = false) {
+  const highlight = document.getElementById('dockHighlight');
+  if (!highlight || !targetItem) return;
+
+  const targetTop = targetItem.offsetTop;
+  const currentTop = parseFloat(highlight.style.top) || targetTop;
+  const distance = Math.abs(targetTop - currentTop);
+
+  if (!instant && distance > 5) {
+    const isMovingDown = targetTop > currentTop;
+    highlight.classList.remove('squish-down', 'squish-up');
+    highlight.classList.add(isMovingDown ? 'squish-down' : 'squish-up');
+
+    clearTimeout(highlight._squishTimeout);
+    highlight._squishTimeout = setTimeout(() => {
+      highlight.classList.remove('squish-down', 'squish-up');
+    }, 280);
+  }
+
+  highlight.style.top = targetTop + 'px';
+  highlight.style.opacity = '1';
+}
+
+function initDockSidebar() {
+  const dock = document.getElementById('floatingSidebar');
+  const highlight = document.getElementById('dockHighlight');
+  if (!dock || !highlight) return;
+
+  const items = dock.querySelectorAll('.dock-item');
+  if (!items.length) return;
+
+  setTimeout(() => {
+    const initialActive = dock.querySelector('.dock-item.active') || items[0];
+    moveDockHighlight(initialActive, true);
+  }, 150);
+
+  items.forEach((item) => {
+    item.addEventListener('mouseenter', () => {
+      isDockHovered = true;
+      items.forEach((i) => i.classList.remove('active'));
+      item.classList.add('active');
+      moveDockHighlight(item);
+    });
+
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = item.dataset.target || item.getAttribute('data-target');
+      scrollToSection(targetId);
+      items.forEach((i) => i.classList.remove('active'));
+      item.classList.add('active');
+      currentDockSection = targetId;
+      moveDockHighlight(item);
+    });
+  });
+
+  dock.addEventListener('mouseleave', () => {
+    isDockHovered = false;
+    items.forEach((i) => i.classList.remove('active'));
+    const activeItem = dock.querySelector(`.dock-item[data-target="${currentDockSection}"]`) || items[0];
+    if (activeItem) {
+      activeItem.classList.add('active');
+      moveDockHighlight(activeItem);
+    }
+  });
 }
 
 function setFilter(filterValue) {
@@ -639,9 +731,10 @@ function openEventModal(eventId) {
       <div class="modal-content-box modal-large" style="max-width: 860px;">
         <button class="modal-close-btn" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
         <div style="display: flex; flex-direction: column; gap: 20px; max-height: 75vh; overflow-y: auto; padding-right: 6px;">
-          <div style="position: relative; border-radius: 18px; overflow: hidden; background: #0f172a; max-height: 260px; display: flex; align-items: center; justify-content: center; box-shadow: var(--neo-shadow-inset);">
-            <img src="${event.img}" alt="${event.title}" style="width: 100%; height: 100%; object-fit: contain; max-height: 260px; background: rgba(0,0,0,0.4);" />
-            <span class="event-badge badge-mint" style="position: absolute; top: 16px; left: 16px;">
+          <div style="position: relative; border-radius: 18px; overflow: hidden; background: #0f172a; min-height: 180px; max-height: 260px; display: flex; align-items: center; justify-content: center; box-shadow: var(--neo-shadow-inset);">
+            <div style="position: absolute; inset: -14px; background-image: url('${event.img}'); background-size: cover; background-position: center; filter: blur(16px) brightness(0.65) saturate(140%); transform: scale(1.12); pointer-events: none;"></div>
+            <img src="${event.img}" alt="${event.title}" style="position: relative; z-index: 2; width: 100%; height: 100%; object-fit: contain; max-height: 260px; padding: 6px 12px;" />
+            <span class="event-badge badge-mint" style="position: absolute; top: 16px; left: 16px; z-index: 3;">
               ${event.badge}
             </span>
           </div>
@@ -2137,6 +2230,7 @@ window.openPlatformModal = function(platform) {
 
 initCursor();
 initEventHandlers();
+initDockSidebar();
 
 // Expose modal and gallery functions globally
 window.openNFRGallery = openNFRGallery;
