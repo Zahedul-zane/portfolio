@@ -89,6 +89,15 @@ const certificates = {
     img: 'CertificateImage/ROBOFEST.jpeg',
     tags: ['ROBOTICS', 'EWURC', 'VOLUNTEER', 'NATIONAL'],
     description: 'Awarded Certificate of Appreciation for outstanding service and dedication as a Volunteer at the EWU National RoboFest 2026, supported by ICT Division and organized by the East West University Robotics Club. Recognized for commitment, enthusiasm, teamwork, and valuable contributions to the successful planning and execution of the national robotics festival.'
+  },
+  12: {
+    title: 'EWU Capture The Flag Competition Fall 2026',
+    issuer: 'East West University Cyber Security Club (EWUCSC)',
+    date: 'FALL 2026',
+    img: 'CertificateImage/intra ewu CTF.jpg',
+    photo: 'EWUCSC_INTRA_EWU_CTF_CINTEST/c83384fa-737c-473c-a26c-a912a4ab5d9e.jpg',
+    tags: ['CYBERSECURITY', 'EWUCSC', 'CTF', 'COMPETITION'],
+    description: 'Awarded Certificate of Participation for active participation in the Capture The Flag (CTF) Competition Fall 2026 organized by East West University Cyber Security Club (EWUCSC), East West University. Successfully tackled challenges in network security, web penetration testing, cryptography, and digital forensics.'
   }
 };
 
@@ -110,6 +119,27 @@ const files = {
 };
 
 const eventsData = {
+  'ewucsc-ctf-2026': {
+    title: 'EWUCSC Intra University CTF Contest — Fall 2026',
+    organizer: 'East West University Cyber Security Club (EWUCSC)',
+    date: 'OCT 10, 2026',
+    location: 'East West University Campus, Dhaka',
+    category: 'CYBERSECURITY',
+    badge: 'CYBERSECURITY CTF',
+    status: 'Official Contestant • 500 Points (40th Place)',
+    role: 'CTF Competitor & Security Researcher',
+    img: 'EWUCSC_INTRA_EWU_CTF_CINTEST/c83384fa-737c-473c-a26c-a912a4ab5d9e.jpg',
+    certId: 12,
+    summary: 'Competed in the prestigious EWUCSC Intra University Capture The Flag (CTF) Competition 2026 on October 10, 2026, scoring 500 points and securing 40th place on the official frozen scoreboard. Successfully solved live challenges across AI security, multi-layer hash cracking, steganography (Split QR), and web defense.',
+    highlights: [
+      'Scored 500 points (40th place finish) under competitive live contest pressure.',
+      'Solved "Pixel\'s Notes" AI security challenge (100 pts) and Steganography "Split Qr" challenge (100 pts).',
+      'Cracked and identified multi-layer cryptographic hashes in "Crack the Hash" (150 pts) and "Identify the Hash" (50 pts).',
+      'Investigated captured network packet payloads and reverse-engineered binary concealed data.',
+      'Awarded official Certificate of Participation by East West University Cyber Security Club.'
+    ],
+    tags: ['EWUCSC', 'CYBERSECURITY', 'CTF', '500 PTS', 'AI SECURITY', 'STEGANOGRAPHY', 'HASH CRACKING', 'EWU']
+  },
   'react-2026': {
     title: 'REACT 2026 (1st National Robotics Competition)',
     organizer: 'IEEE SEU SB • Southeast University',
@@ -259,6 +289,7 @@ const eventsData = {
     status: 'Active Member & Security Contender',
     role: 'Cyber Security Member & CTF Researcher',
     img: 'Membership%20image/EWUCSC.jpg',
+    certId: 12,
     summary: 'Active member of EWU Cyber Security Club (EWUCSC), specializing in defensive security principles, cryptographic analysis, penetration testing drills, and representing EWU in national Capture The Flag (CTF) challenges.',
     highlights: [
       'Participated in hands-on vulnerability assessments and web exploitation laboratories (SQLi, XSS, CSRF).',
@@ -518,6 +549,10 @@ function closeModal() {
     window.removeEventListener('keydown', srsAlbumKeyHandler);
     srsAlbumKeyHandler = null;
   }
+  if (typeof ctfAlbumKeyHandler !== 'undefined' && ctfAlbumKeyHandler) {
+    window.removeEventListener('keydown', ctfAlbumKeyHandler);
+    ctfAlbumKeyHandler = null;
+  }
   const modalRoot = document.getElementById('modalRoot');
   if (modalRoot) {
     modalRoot.innerHTML = '';
@@ -556,6 +591,11 @@ function openCertModal(certId) {
               <a href="${cert.img}" download class="btn btn-outline" style="padding: 9px 18px; font-size: 0.85rem;">
                 <i class="fa-solid fa-download"></i> Download
               </a>
+              ${cert.photo ? `
+              <button class="btn btn-outline" onclick="openCTFGallery(0)" style="padding: 9px 18px; font-size: 0.85rem;">
+                <i class="fa-solid fa-images"></i> View Contest Album (4 Photos)
+              </button>
+              ` : ''}
             </div>
           </div>
         </div>
@@ -721,6 +761,54 @@ function openEventModal(eventId) {
     `;
     albumFooterAction = `
       <button class="btn btn-mint" onclick="openSRSGallery(0)" style="padding: 10px 20px; font-size: 0.88rem;">
+        <i class="fa-solid fa-images"></i> Open Photo Album (4 Photos)
+      </button>
+    `;
+  } else if (eventId === 'ewucsc-ctf-2026') {
+    albumSectionHtml = `
+      <div style="margin-top: 16px; background: var(--bg-neo-base); border-radius: 16px; padding: 18px; box-shadow: var(--neo-shadow-inset);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <h4 style="font-size: 0.92rem; color: var(--mint-dark); margin: 0; letter-spacing: 0.06em;">
+            <i class="fa-solid fa-images"></i> EVENT PHOTO ALBUM (4 PHOTOS)
+          </h4>
+          <button class="btn btn-mint" onclick="openCTFGallery(0)" style="padding: 6px 14px; font-size: 0.8rem;">
+            <i class="fa-solid fa-expand"></i> Launch Interactive Album
+          </button>
+        </div>
+        <div class="nfr-gallery" style="margin: 0; grid-template-columns: repeat(4, 1fr);">
+          <img src="EWUCSC_INTRA_EWU_CTF_CINTEST/c83384fa-737c-473c-a26c-a912a4ab5d9e.jpg" alt="EWUCSC Intra University CTF Delegation" class="nfr-gallery-img" onclick="openCTFGallery(0)" title="EWUCSC Intra University CTF Delegation">
+          <img src="EWUCSC_INTRA_EWU_CTF_CINTEST/WhatsApp Image 2026-10-14 at 00.45.09 (1).jpeg" alt="Live Contest Action" class="nfr-gallery-img" onclick="openCTFGallery(1)" title="Live Contest Action — At The Terminal">
+          <img src="EWUCSC_INTRA_EWU_CTF_CINTEST/WhatsApp Image 2026-10-14 at 00.45.09.jpeg" alt="Contest Scoreboard & Solves" class="nfr-gallery-img" onclick="openCTFGallery(2)" title="Contest Scoreboard & Solves (500 pts)">
+          <img src="CertificateImage/intra ewu CTF.jpg" alt="Official CTF Certificate of Participation" class="nfr-gallery-img" onclick="openCTFGallery(3)" title="Official CTF Certificate of Participation">
+        </div>
+      </div>
+    `;
+    albumFooterAction = `
+      <button class="btn btn-mint" onclick="openCTFGallery(0)" style="padding: 10px 20px; font-size: 0.88rem;">
+        <i class="fa-solid fa-images"></i> Open Photo Album (4 Photos)
+      </button>
+    `;
+  } else if (eventId === 'club-ewucyber') {
+    albumSectionHtml = `
+      <div style="margin-top: 16px; background: var(--bg-neo-base); border-radius: 16px; padding: 18px; box-shadow: var(--neo-shadow-inset);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <h4 style="font-size: 0.92rem; color: var(--mint-dark); margin: 0; letter-spacing: 0.06em;">
+            <i class="fa-solid fa-images"></i> EWUCSC CTF PHOTOS & CERTIFICATE (4 PHOTOS)
+          </h4>
+          <button class="btn btn-mint" onclick="openCTFGallery(0)" style="padding: 6px 14px; font-size: 0.8rem;">
+            <i class="fa-solid fa-expand"></i> Launch Interactive Album
+          </button>
+        </div>
+        <div class="nfr-gallery" style="margin: 0; grid-template-columns: repeat(4, 1fr);">
+          <img src="EWUCSC_INTRA_EWU_CTF_CINTEST/c83384fa-737c-473c-a26c-a912a4ab5d9e.jpg" alt="EWUCSC Intra University CTF Delegation" class="nfr-gallery-img" onclick="openCTFGallery(0)" title="EWUCSC Intra University CTF Delegation">
+          <img src="EWUCSC_INTRA_EWU_CTF_CINTEST/WhatsApp Image 2026-10-14 at 00.45.09 (1).jpeg" alt="Live Contest Action" class="nfr-gallery-img" onclick="openCTFGallery(1)" title="Live Contest Action — At The Terminal">
+          <img src="EWUCSC_INTRA_EWU_CTF_CINTEST/WhatsApp Image 2026-10-14 at 00.45.09.jpeg" alt="Contest Scoreboard & Solves" class="nfr-gallery-img" onclick="openCTFGallery(2)" title="Contest Scoreboard & Solves (500 pts)">
+          <img src="CertificateImage/intra ewu CTF.jpg" alt="EWU CTF Certificate" class="nfr-gallery-img" onclick="openCTFGallery(3)" title="Official CTF Certificate">
+        </div>
+      </div>
+    `;
+    albumFooterAction = `
+      <button class="btn btn-mint" onclick="openCTFGallery(0)" style="padding: 10px 20px; font-size: 0.88rem;">
         <i class="fa-solid fa-images"></i> Open Photo Album (4 Photos)
       </button>
     `;
@@ -1041,6 +1129,113 @@ function openSRSGallery(index = 0) {
   renderAlbum();
 }
 
+const ctfAlbumPhotos = [
+  {
+    src: 'EWUCSC_INTRA_EWU_CTF_CINTEST/c83384fa-737c-473c-a26c-a912a4ab5d9e.jpg',
+    title: 'EWUCSC Intra University CTF — Official Delegation',
+    desc: 'Competitors, club executives, and faculty moderators gathered at East West University campus courtyard for the Intra-University Capture The Flag Competition Fall 2026.',
+    tag: 'OFFICIAL DELEGATION'
+  },
+  {
+    src: 'EWUCSC_INTRA_EWU_CTF_CINTEST/WhatsApp Image 2026-10-14 at 00.45.09 (1).jpeg',
+    title: 'Live Competition Action — Tackling CTF Challenges',
+    desc: 'Zahedul Islam competing live at the workstation terminal solving real-time cybersecurity challenges in web exploitation, cryptography, and digital forensics.',
+    tag: 'LIVE COMPETITION'
+  },
+  {
+    src: 'EWUCSC_INTRA_EWU_CTF_CINTEST/WhatsApp Image 2026-10-14 at 00.45.09.jpeg',
+    title: 'Final Scoreboard — 500 Points & 40th Place',
+    desc: 'Official frozen scoreboard highlighting 500 points and 40th place finish with successful solves across AI (Pixel\'s Notes), Hash Cracking (Crack the Hash, Identify the Hash), Steganography (Split Qr), and Web security.',
+    tag: 'SCOREBOARD & SOLVES'
+  },
+  {
+    src: 'CertificateImage/intra ewu CTF.jpg',
+    title: 'Official Certificate of Participation — CTF Fall 2026',
+    desc: 'Verified Certificate of Participation proudly awarded to Zahedul Islam for successful participation in the Capture The Flag Competition Fall 2026 organized by East West University Cyber Security Club (EWUCSC).',
+    tag: 'OFFICIAL CERTIFICATE'
+  }
+];
+
+let ctfAlbumKeyHandler = null;
+
+function openCTFGallery(index = 0) {
+  const modalRoot = getModalRoot();
+  if (!modalRoot) return;
+  let current = (typeof index === 'number' && index >= 0 && index < ctfAlbumPhotos.length) ? index : 0;
+
+  function renderAlbum() {
+    const photo = ctfAlbumPhotos[current];
+    const filmstripHtml = ctfAlbumPhotos.map((p, i) => `
+      <div class="filmstrip-thumb ${i === current ? 'active' : ''}" data-idx="${i}" title="${p.title}">
+        <img src="${p.src}" alt="${p.title}">
+        <span class="filmstrip-number">${i + 1}</span>
+      </div>
+    `).join('');
+
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop">
+        <div class="modal-content-box nfr-album-modal">
+          <div class="album-modal-header">
+            <div class="album-modal-title-wrap">
+              <i class="fa-solid fa-images" style="color: var(--mint-main); font-size: 1.15rem;"></i>
+              <div>
+                <h3 class="album-modal-title">EWUCSC CTF Contest &mdash; Photo Album</h3>
+              </div>
+              <span class="album-counter-pill">${current + 1} / ${ctfAlbumPhotos.length}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <button class="btn btn-outline" id="ctfDeepDiveBtn" style="padding: 6px 14px; font-size: 0.82rem;">
+                <i class="fa-solid fa-circle-info"></i> Event Details
+              </button>
+              <button class="modal-close-btn" aria-label="Close album" style="position: static;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          </div>
+
+          <div class="album-main-viewport">
+            <button class="album-nav-arrow prev" id="ctfPrevBtn" aria-label="Previous photo"><i class="fa-solid fa-chevron-left"></i></button>
+            <img src="${photo.src}" alt="${photo.title}" id="ctfMainImg" />
+            <button class="album-nav-arrow next" id="ctfNextBtn" aria-label="Next photo"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+
+          <div class="album-caption-bar">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px;">
+              <h4 class="album-caption-title">${photo.title}</h4>
+              <span class="tag-chip" style="background: var(--mint-light); color: var(--mint-text-dark); font-size: 0.72rem; flex-shrink: 0;">${photo.tag}</span>
+            </div>
+            <p class="album-caption-desc">${photo.desc}</p>
+          </div>
+
+          <div class="album-filmstrip">
+            ${filmstripHtml}
+          </div>
+        </div>
+      </div>
+    `;
+
+    attachModalListeners();
+
+    const prevBtn = document.getElementById('ctfPrevBtn');
+    const nextBtn = document.getElementById('ctfNextBtn');
+    const deepDiveBtn = document.getElementById('ctfDeepDiveBtn');
+
+    if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); current = (current - 1 + ctfAlbumPhotos.length) % ctfAlbumPhotos.length; renderAlbum(); });
+    if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); current = (current + 1) % ctfAlbumPhotos.length; renderAlbum(); });
+    if (deepDiveBtn) deepDiveBtn.addEventListener('click', (e) => { e.stopPropagation(); if (ctfAlbumKeyHandler) { window.removeEventListener('keydown', ctfAlbumKeyHandler); ctfAlbumKeyHandler = null; } openEventModal('ewucsc-ctf-2026'); });
+
+    const thumbs = modalRoot.querySelectorAll('.filmstrip-thumb');
+    thumbs.forEach((thumb) => { thumb.addEventListener('click', (e) => { e.stopPropagation(); const idx = parseInt(thumb.getAttribute('data-idx'), 10); if (!isNaN(idx)) { current = idx; renderAlbum(); } }); });
+  }
+
+  if (ctfAlbumKeyHandler) window.removeEventListener('keydown', ctfAlbumKeyHandler);
+  ctfAlbumKeyHandler = (e) => {
+    if (e.key === 'ArrowLeft') { current = (current - 1 + ctfAlbumPhotos.length) % ctfAlbumPhotos.length; renderAlbum(); }
+    else if (e.key === 'ArrowRight') { current = (current + 1) % ctfAlbumPhotos.length; renderAlbum(); }
+    else if (e.key === 'Escape') { closeModal(); }
+  };
+  window.addEventListener('keydown', ctfAlbumKeyHandler);
+  renderAlbum();
+}
+
 let nfrAlbumKeyHandler = null;
 
 function openNFRGallery(index = 0) {
@@ -1339,7 +1534,7 @@ const techShowcaseData = {
     desc: 'Offensive and defensive security principles, Capture The Flag (CTF) challenges, vulnerability assessments, cryptographic analysis, and verified ADBI cybersecurity certification.',
     projects: [],
     files: [],
-    certs: [5, 10]
+    certs: [5, 10, 12]
   }
 };
 
@@ -1627,6 +1822,10 @@ function initEventHandlers() {
       }
       if (eventId === 'seu-robo-soccer') {
         openSRSGallery(0);
+        return;
+      }
+      if (eventId === 'ewucsc-ctf-2026') {
+        openCTFGallery(0);
         return;
       }
       if (eventId) {
