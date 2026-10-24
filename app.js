@@ -98,24 +98,136 @@ const certificates = {
     photo: 'EWUCSC_INTRA_EWU_CTF_CINTEST/c83384fa-737c-473c-a26c-a912a4ab5d9e.jpg',
     tags: ['CYBERSECURITY', 'EWUCSC', 'CTF', 'COMPETITION'],
     description: 'Awarded Certificate of Participation for active participation in the Capture The Flag (CTF) Competition Fall 2026 organized by East West University Cyber Security Club (EWUCSC), East West University. Successfully tackled challenges in network security, web penetration testing, cryptography, and digital forensics.'
+  },
+  13: {
+    title: 'SQL (Basic) Skill Certification',
+    issuer: 'HackerRank • OCT 23, 2026',
+    date: 'OCT 23, 2026',
+    img: 'CertificateImage/sql_basic certificate_pages-to-jpg-0001.jpg',
+    tags: ['SQL', 'DATABASE', 'HACKERRANK', 'QUERIES'],
+    description: 'Successfully passed the HackerRank SQL (Basic) skill certification test (Certificate ID: 21D47E6D012C). Verified proficiency in writing structured relational database queries, multi-table joins, WHERE and HAVING clause filtering, aggregations, grouping, and subquery logic.'
   }
 };
 
 
 const files = {
-  1: { title: 'Analysis of Time complexity & handshaking logic', file: 'File_PDF/Analysis of Time complexity and handshaking logic.pdf' },
-  2: { title: 'Insertion Sort Algorithm Presentation', file: 'File_PDF/insertion_sort_algorithm_presentation.pdf' },
-  3: { title: 'Emergence of Bangladesh', file: 'File_PDF/Emergence of Bangladesh.pdf' },
-  4: { title: 'Library Data Structures for Library System', file: 'File_PDF/Library Data Structures for Library System.pdf' },
-  5: { title: 'From Burnout to Belonging (ENGLISH 102)', file: 'File_PDF/From Burnout to Belonging(ENGLISH 102 ).pdf' },
-  6: { title: 'Probability & Variance of Random Variable', file: 'File_PDF/Probability , Expectation of sum and product and variance of random variable (STATISTICS).pdf' },
-  7: { title: 'Student Record Management Paper', file: 'File_PDF/Student Record Management.pdf' },
-  8: { title: 'Impact of Colonial Economic Exploitation', file: 'File_PDF/Impact of Colonial Economic Exploitation on the Social Collapse of Bengali Society.pdf' },
-  9: { title: 'Psychological Disorder Analysis of Christopher Robin', file: 'File_PDF/A Psychological Disorder Analysis of Disney’s Christopher Robin.pdf' },
-  10: { title: 'Analysis time complexity with random vertices (Term Paper)', file: 'File_PDF/Analysis time complexity and handshaking logic with random vertices(TermPaper).pdf' },
-  11: { title: 'Introduction to Artificial Neural Network Paper', file: 'File_PDF/Introduction to Artificial Neural Network.pdf' },
-  12: { title: 'Economic Dependency Created by the IMF', file: 'File_PDF/Analysis of the effect of economic dependency created by the IMF.pdf' },
-  13: { title: 'University Portal Management System (CSE302 Project)', file: 'File_PDF/CSE302 Project.pdf' }
+  1: {
+    title: 'Analysis of Time complexity & handshaking logic',
+    file: 'File_PDF/Analysis of Time complexity and handshaking logic.pdf',
+    cover: 'File_Cover/cover_1.jpg',
+    category: 'ALGO',
+    subject: 'Discrete Mathematics',
+    pages: '13 Slides',
+    description: 'Academic mini-project on computational complexity, asymptotic growth analysis, and handshaking theorem.'
+  },
+  2: {
+    title: 'Insertion Sort Algorithm Presentation',
+    file: 'File_PDF/insertion_sort_algorithm_presentation.pdf',
+    cover: 'File_Cover/cover_2.jpg',
+    category: 'ALGO',
+    subject: 'Algorithms & DSA',
+    pages: '8 Slides',
+    description: 'Comprehensive visual slide deck analyzing step-by-step Insertion Sort mechanics, inner loop shifts, and Big-O efficiency.'
+  },
+  3: {
+    title: 'Emergence of Bangladesh',
+    file: 'File_PDF/Emergence of Bangladesh.pdf',
+    cover: 'File_Cover/cover_3.jpg',
+    category: 'RESEARCH',
+    subject: 'Historical Studies',
+    pages: '14 Slides',
+    description: 'Academic study and presentation documenting the historical timeline, cultural resilience, and Liberation War of Bangladesh.'
+  },
+  4: {
+    title: 'Library Data Structures for Library System',
+    file: 'File_PDF/Library Data Structures for Library System.pdf',
+    cover: 'File_Cover/cover_4.jpg',
+    category: 'ALGO',
+    subject: 'Data Structures',
+    pages: '16 Slides',
+    description: 'System design and algorithmic implementation of linked lists, binary search trees, and queues for library resource management.'
+  },
+  5: {
+    title: 'From Burnout to Belonging (ENGLISH 102)',
+    file: 'File_PDF/From Burnout to Belonging(ENGLISH 102 ).pdf',
+    cover: 'File_Cover/cover_5.jpg',
+    category: 'RESEARCH',
+    subject: 'English 102',
+    pages: '10 Slides',
+    description: 'Academic exploration into undergraduate burnout syndrome, mental wellness, social support frameworks, and community resilience.'
+  },
+  6: {
+    title: 'Probability & Variance of Random Variable',
+    file: 'File_PDF/Probability , Expectation of sum and product and variance of random variable (STATISTICS).pdf',
+    cover: 'File_Cover/cover_6.jpg',
+    category: 'MATH',
+    subject: 'Statistics',
+    pages: '12 Slides',
+    description: 'Mathematical presentation dissecting probability density functions, expected value theorems, and variance derivation of random variables.'
+  },
+  7: {
+    title: 'Student Record Management Paper',
+    file: 'File_PDF/Student Record Management.pdf',
+    cover: 'File_Cover/cover_7.jpg',
+    category: 'AI',
+    subject: 'System Architecture',
+    pages: '14 Slides',
+    description: 'Technical report proposing an automated academic record management system with secure student data retrieval and CRUD operations.'
+  },
+  8: {
+    title: 'Impact of Colonial Economic Exploitation',
+    file: 'File_PDF/Impact of Colonial Economic Exploitation on the Social Collapse of Bengali Society.pdf',
+    cover: 'File_Cover/cover_8.jpg',
+    category: 'RESEARCH',
+    subject: 'Sociology',
+    pages: '10 Pages',
+    description: 'Sociological research paper investigating systemic deindustrialization, fiscal drain, and collapse of indigenous artisan structures under colonial rule.'
+  },
+  9: {
+    title: 'Psychological Disorder Analysis of Christopher Robin',
+    file: 'File_PDF/A Psychological Disorder Analysis of Disney’s Christopher Robin.pdf',
+    cover: 'File_Cover/cover_9.jpg',
+    category: 'RESEARCH',
+    subject: 'Psychology',
+    pages: '9 Pages',
+    description: 'Clinical psychology paper assessing projective fantasy mechanisms, dissociative symptoms, and developmental behaviors in literary narratives.'
+  },
+  10: {
+    title: 'Analysis time complexity with random vertices (Term Paper)',
+    file: 'File_PDF/Analysis time complexity and handshaking logic with random vertices(TermPaper).pdf',
+    cover: 'File_Cover/cover_10.jpg',
+    category: 'ALGO',
+    subject: 'Discrete Mathematics',
+    pages: '3 Pages',
+    description: 'Formal mathematical term paper evaluating graph degree sums, handshaking logic proofs, and time complexities with randomized vertex generation.'
+  },
+  11: {
+    title: 'Introduction to Artificial Neural Network Paper',
+    file: 'File_PDF/Introduction to Artificial Neural Network.pdf',
+    cover: 'File_Cover/cover_11.jpg',
+    category: 'AI',
+    subject: 'Artificial Intelligence',
+    pages: '17 Pages',
+    description: 'Technical research paper on multi-layer perceptrons, non-linear activation functions, gradient descent backpropagation, and deep learning topologies.'
+  },
+  12: {
+    title: 'Economic Dependency Created by the IMF',
+    file: 'File_PDF/Analysis of the effect of economic dependency created by the IMF.pdf',
+    cover: 'File_Cover/cover_12.jpg',
+    category: 'RESEARCH',
+    subject: 'Macroeconomics',
+    pages: 'Document Cover',
+    description: 'Macroeconomic analysis paper evaluating IMF structural adjustment conditions, sovereign debt dependency, and developing nation trade balances.'
+  },
+  13: {
+    title: 'University Portal Management System (CSE302 Project)',
+    file: 'File_PDF/CSE302 Project.pdf',
+    cover: 'File_Cover/cover_13.jpg',
+    category: 'AI',
+    subject: 'Database Systems',
+    pages: '19 Pages',
+    description: 'Comprehensive 19-page database project report covering entity-relationship modeling, relational schema normalization, and SQL implementations.'
+  }
 };
 
 const eventsData = {
@@ -611,23 +723,73 @@ function openPdfModal(fileId) {
   const file = files[fileId];
   if (!file) return;
   const encoded = encodeURI(file.file);
+  const isFile12 = fileId === 12 || fileId === '12';
+
   modalRoot.innerHTML = `
     <div class="modal-backdrop">
       <div class="modal-content-box modal-large">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-right: 40px;">
-          <h3 class="modal-title">${file.title}</h3>
+          <div>
+            <h3 class="modal-title" style="margin-bottom: 4px;">${file.title}</h3>
+            ${file.subject ? `<span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--mint-dark); font-weight: 700;">${file.subject.toUpperCase()} &bull; ${file.pages || 'PDF'}</span>` : ''}
+          </div>
           <button class="modal-close-btn" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <iframe src="${encoded}" title="${file.title}" style="width: 100%; height: 100%; border: none; border-radius: 12px; background: #f8fafc;"></iframe>
-        <div class="modal-footer">
-          <a href="${encoded}" download class="btn btn-mint" style="padding: 8px 18px; font-size: 0.88rem;">
-            <i class="fa-solid fa-download"></i> Download Document
-          </a>
+        ${isFile12 ? `
+        <div style="width: 100%; height: 100%; min-height: 480px; background: radial-gradient(circle at 50% 30%, #1e293b 0%, #0b1329 100%); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center;">
+          <img src="${file.cover}" alt="${file.title}" style="max-height: 420px; width: auto; border-radius: 10px; box-shadow: 0 16px 36px rgba(0,0,0,0.6); margin-bottom: 16px;">
+          <p style="color: #94a3b8; font-size: 0.92rem; max-width: 580px; line-height: 1.5;">
+            <i class="fa-solid fa-circle-info" style="color: var(--mint-main); margin-right: 6px;"></i>
+            Official document cover preview. Full archival draft available upon academic request.
+          </p>
+        </div>
+        ` : `
+        <iframe src="${encoded}" title="${file.title}" style="width: 100%; height: 100%; min-height: 480px; border: none; border-radius: 12px; background: #f8fafc;"></iframe>
+        `}
+        <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <span style="font-size: 0.84rem; color: var(--text-muted); font-family: var(--font-mono);">
+            <i class="fa-solid fa-graduation-cap" style="color: var(--mint-dark);"></i> Academic Publications & Reports &bull; Zahedul Islam
+          </span>
+          <div style="display: flex; gap: 10px;">
+            <a href="${file.cover || 'File_Cover/cover_' + fileId + '.jpg'}" target="_blank" rel="noreferrer" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;">
+              <i class="fa-solid fa-image"></i> View Cover
+            </a>
+            ${!isFile12 ? `
+            <a href="${encoded}" download class="btn btn-mint" style="padding: 8px 18px; font-size: 0.88rem;">
+              <i class="fa-solid fa-download"></i> Download Document
+            </a>
+            ` : ''}
+          </div>
         </div>
       </div>
     </div>
   `;
   attachModalListeners();
+}
+
+function setFileFilter(filterValue) {
+  const fileFilterButtons = document.querySelectorAll('.file-filter-btn');
+  const fileCards = document.querySelectorAll('.file-card');
+
+  fileFilterButtons.forEach((button) => {
+    const filter = (button.dataset.fileFilter || button.getAttribute('data-file-filter') || '').toUpperCase();
+    if (filter === filterValue.toUpperCase()) {
+      button.classList.add('active');
+    } else {
+      button.classList.remove('active');
+    }
+  });
+
+  const upperFilter = filterValue.toUpperCase();
+  fileCards.forEach((card) => {
+    const category = (card.dataset.category || card.getAttribute('data-category') || '').toUpperCase();
+    const tags = (card.dataset.tags || card.getAttribute('data-tags') || '').toUpperCase().split(',');
+    if (upperFilter === 'ALL' || category === upperFilter || tags.includes(upperFilter)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
 }
 
 function setEventFilter(filterValue) {
@@ -1480,7 +1642,7 @@ const techShowcaseData = {
     desc: 'Relational database schema design, indexing, SQL queries, and academic record systems.',
     projects: [1],
     files: [7, 13],
-    certs: [1]
+    certs: [1, 13]
   },
   'DOCKER': {
     title: 'Docker & System Containerization',
@@ -1793,6 +1955,16 @@ function initEventHandlers() {
       const fileId = card.dataset.fileId || card.getAttribute('data-file-id');
       if (fileId) {
         openPdfModal(fileId);
+      }
+    });
+  });
+
+  const fileFilterButtons = document.querySelectorAll('.file-filter-btn');
+  fileFilterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.fileFilter || button.getAttribute('data-file-filter');
+      if (filter) {
+        setFileFilter(filter);
       }
     });
   });

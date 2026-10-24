@@ -222,7 +222,7 @@
                                 <div class="stat-desc">Problems</div>
                             </div>
                             <div class="stat-box">
-                                <div class="stat-number">12+</div>
+                                <div class="stat-number">13+</div>
                                 <div class="stat-desc">Certificates</div>
                             </div>
                         </div>
@@ -276,7 +276,7 @@
                     <div class="tech-card" data-tech="TYPESCRIPT" style="cursor: pointer;" title="Click to view TypeScript projects"><i class="fa-solid fa-t" style="color: #3178c6;"></i><span>TypeScript</span></div>
                     <div class="tech-card" data-tech="REACT" style="cursor: pointer;" title="Click to view React projects & UI work"><i class="fa-brands fa-react" style="color: #06b6d4;"></i><span>React</span></div>
                     <div class="tech-card" data-tech="NODE.JS" style="cursor: pointer;" title="Click to view Node.js backend projects"><i class="fa-brands fa-node-js" style="color: #339933;"></i><span>Node.js</span></div>
-                    <div class="tech-card" data-tech="SQL" style="cursor: pointer;" title="Click to view SQL database projects & documents"><i class="fa-solid fa-database" style="color: #10b981;"></i><span>SQL</span></div>
+                    <div class="tech-card" data-tech="SQL" style="cursor: pointer;" title="Click to view SQL database projects, documents & certificates"><i class="fa-solid fa-database" style="color: #10b981;"></i><span>SQL</span></div>
                     <div class="tech-card" data-tech="DOCKER" style="cursor: pointer;" title="Click to view Docker projects & certificates"><i class="fa-brands fa-docker" style="color: #2496ed;"></i><span>Docker</span></div>
                     <div class="tech-card" data-tech="FASTAPI" style="cursor: pointer;" title="Click to view FastAPI microservices & projects"><i class="fa-solid fa-bolt" style="color: #05998b;"></i><span>FastAPI</span></div>
                     <div class="tech-card" data-tech="DSA" style="cursor: pointer;" title="Click to view DSA projects & PDF documents"><i class="fa-solid fa-diagram-project" style="color: #15803d;"></i><span>DSA</span></div>
@@ -1029,6 +1029,27 @@
                         </div>
                     </div>
 
+                    <!-- Cert 13 HackerRank SQL (Basic) -->
+                    <div class="cert-item">
+                        <div class="cert-dot"></div>
+                        <div class="cert-card-box" data-cert-id="13">
+                            <img src="CertificateImage/sql_basic certificate_pages-to-jpg-0001.jpg" alt="SQL (Basic) Skill Certification — HackerRank" class="cert-thumb-img">
+                            <div class="cert-info-main">
+                                <span class="cert-issuer-badge">HackerRank • OCT 23, 2026</span>
+                                <h3 class="cert-title-text">SQL (Basic) Skill Certification</h3>
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
+                                    <span class="tag-chip">SQL</span>
+                                    <span class="tag-chip">DATABASE</span>
+                                    <span class="tag-chip">HACKERRANK</span>
+                                    <span class="tag-chip">QUERIES</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; color: var(--mint-text-dark);">
+                                <i class="fa-solid fa-expand" style="font-size: 1.2rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -1039,114 +1060,393 @@
                 <span class="section-label">ACADEMIC MODULES & PAPERS</span>
                 <h2 class="section-title">Files & Reports Hub</h2>
                 <p class="section-subtitle">
-                    Access published academic research papers, presentations, and technical documentation.
+                    Access published academic research papers, presentations, system reports, and technical documentation with authentic cover previews.
                 </p>
 
+                <!-- Filter Controls -->
+                <div class="files-filter-bar">
+                    <button class="file-filter-btn active" data-file-filter="ALL">
+                        <i class="fa-solid fa-layer-group"></i> All Publications (13)
+                    </button>
+                    <button class="file-filter-btn" data-file-filter="ALGO">
+                        <i class="fa-solid fa-code"></i> Algorithms & DSA
+                    </button>
+                    <button class="file-filter-btn" data-file-filter="AI">
+                        <i class="fa-solid fa-brain"></i> AI & Systems
+                    </button>
+                    <button class="file-filter-btn" data-file-filter="MATH">
+                        <i class="fa-solid fa-calculator"></i> Math & Stats
+                    </button>
+                    <button class="file-filter-btn" data-file-filter="RESEARCH">
+                        <i class="fa-solid fa-book-open"></i> Research & Essays
+                    </button>
+                </div>
+
                 <div class="files-grid">
-                    <div class="file-card" data-file-id="1">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>Analysis of Time complexity & handshaking logic</h4>
-                            <span>ALGORITHMS • PDF Document</span>
+                    <!-- File 1 -->
+                    <div class="file-card" data-file-id="1" data-category="ALGO" data-tags="ALGORITHMS,MATH,COMPLEXITY,DISCRETE">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_1.jpg" alt="Analysis of Time complexity and handshaking logic Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">ALGORITHMS</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
-                    </div>
-                    <div class="file-card" data-file-id="2">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>Insertion Sort Algorithm Presentation</h4>
-                            <span>ALGORITHMS • PDF Document</span>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">DISCRETE MATHEMATICS</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 13 Slides</span>
+                            </div>
+                            <h4 class="file-card-title">Analysis of Time complexity & handshaking logic</h4>
+                            <p class="file-card-desc">Academic mini-project investigating computational time complexity, asymptotic growth behavior, and handshaking theorem.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(1)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/Analysis%20of%20Time%20complexity%20and%20handshaking%20logic.pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
                     </div>
-                    <div class="file-card" data-file-id="3">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>Emergence of Bangladesh</h4>
-                            <span>HISTORY • PDF Document</span>
+
+                    <!-- File 2 -->
+                    <div class="file-card" data-file-id="2" data-category="ALGO" data-tags="ALGORITHMS,DSA,SORTING,COMPLEXITY">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_2.jpg" alt="Insertion Sort Algorithm Presentation Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">DATA STRUCTURES</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
-                    </div>
-                    <div class="file-card" data-file-id="4">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>Library Data Structures for Library System</h4>
-                            <span>DATA STRUCTURES • PDF Document</span>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">ALGORITHMS & DSA</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 8 Slides</span>
+                            </div>
+                            <h4 class="file-card-title">Insertion Sort Algorithm Presentation</h4>
+                            <p class="file-card-desc">Visual slide deck analyzing step-by-step Insertion Sort mechanics, inner loop shifts, and Big-O efficiency.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(2)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/insertion_sort_algorithm_presentation.pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
                     </div>
-                    <div class="file-card" data-file-id="5">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>From Burnout to Belonging (ENGLISH 102)</h4>
-                            <span>ENGLISH • PDF Document</span>
+
+                    <!-- File 3 -->
+                    <div class="file-card" data-file-id="3" data-category="RESEARCH" data-tags="HISTORY,SOCIETY,LIBERATION,RESEARCH">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_3.jpg" alt="Emergence of Bangladesh Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">HISTORY</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
-                    </div>
-                    <div class="file-card" data-file-id="6">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>Probability & Variance of Random Variable</h4>
-                            <span>STATISTICS • PDF Document</span>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">HISTORICAL STUDIES</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 14 Slides</span>
+                            </div>
+                            <h4 class="file-card-title">Emergence of Bangladesh</h4>
+                            <p class="file-card-desc">Academic study and presentation documenting the historical timeline, cultural resilience, and Liberation War of Bangladesh.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(3)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/Emergence%20of%20Bangladesh.pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
                     </div>
-                    <div class="file-card" data-file-id="7">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>Student Record Management Paper</h4>
-                            <span>SYSTEMS • PDF Document</span>
+
+                    <!-- File 4 -->
+                    <div class="file-card" data-file-id="4" data-category="ALGO" data-tags="DATA STRUCTURES,DSA,C++,ALGORITHMS">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_4.jpg" alt="Library Data Structures for Library System Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">DATA STRUCTURES</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
-                    </div>
-                    <div class="file-card" data-file-id="8">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>Impact of Colonial Economic Exploitation</h4>
-                            <span>SOCIOLOGY • PDF Document</span>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">CSE207: DATA STRUCTURES</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 16 Slides</span>
+                            </div>
+                            <h4 class="file-card-title">Library Data Structures for Library System</h4>
+                            <p class="file-card-desc">System design and algorithmic implementation of linked lists, binary search trees, and queues for library resource management.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(4)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/Library%20Data%20Structures%20for%20Library%20System.pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
                     </div>
-                    <div class="file-card" data-file-id="9">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>Psychological Disorder Analysis of Christopher Robin</h4>
-                            <span>PSYCHOLOGY • PDF Document</span>
+
+                    <!-- File 5 -->
+                    <div class="file-card" data-file-id="5" data-category="RESEARCH" data-tags="ENGLISH,PSYCHOLOGY,COMMUNICATION,ESSAY">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_5.jpg" alt="From Burnout to Belonging Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">COMMUNICATION</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
-                    </div>
-                    <div class="file-card" data-file-id="10">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>Analysis time complexity with random vertices (Term Paper)</h4>
-                            <span>ALGORITHMS • PDF Document</span>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">ENGLISH 102</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 10 Slides</span>
+                            </div>
+                            <h4 class="file-card-title">From Burnout to Belonging (ENGLISH 102)</h4>
+                            <p class="file-card-desc">Academic exploration into undergraduate burnout syndrome, mental wellness, social support frameworks, and community resilience.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(5)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/From%20Burnout%20to%20Belonging(ENGLISH%20102%20).pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
                     </div>
-                    <div class="file-card" data-file-id="11">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>Introduction to Artificial Neural Network Paper</h4>
-                            <span>AI & ML • PDF Document</span>
+
+                    <!-- File 6 -->
+                    <div class="file-card" data-file-id="6" data-category="MATH" data-tags="STATISTICS,MATH,PROBABILITY,VARIANCE">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_6.jpg" alt="Probability & Variance of Random Variable Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">STATISTICS</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
-                    </div>
-                    <div class="file-card" data-file-id="12">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>Economic Dependency Created by the IMF</h4>
-                            <span>ECONOMICS • PDF Document</span>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">STA102: STATISTICS</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 12 Slides</span>
+                            </div>
+                            <h4 class="file-card-title">Probability & Variance of Random Variable</h4>
+                            <p class="file-card-desc">Mathematical presentation dissecting probability density functions, expected value theorems, and variance derivation of random variables.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(6)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/Probability%20,%20Expectation%20of%20sum%20and%20product%20and%20variance%20of%20random%20variable%20(STATISTICS).pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
                     </div>
-                    <div class="file-card" data-file-id="13">
-                        <div class="file-icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="file-details">
-                            <h4>University Portal Management System (CSE302 Project)</h4>
-                            <span>DATABASE SYSTEMS • PDF Document</span>
+
+                    <!-- File 7 -->
+                    <div class="file-card" data-file-id="7" data-category="AI" data-tags="SYSTEMS,DATABASE,SOFTWARE,ARCHITECTURE">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_7.jpg" alt="Student Record Management Paper Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">SYSTEMS</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
                         </div>
-                        <div style="color: var(--mint-text-dark);"><i class="fa-solid fa-eye"></i></div>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">SYSTEM ARCHITECTURE</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 14 Slides</span>
+                            </div>
+                            <h4 class="file-card-title">Student Record Management Paper</h4>
+                            <p class="file-card-desc">Technical report proposing an automated academic record management system with secure student data retrieval and CRUD operations.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(7)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/Student%20Record%20Management.pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- File 8 -->
+                    <div class="file-card" data-file-id="8" data-category="RESEARCH" data-tags="SOCIOLOGY,ECONOMICS,HISTORY,RESEARCH">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_8.jpg" alt="Impact of Colonial Economic Exploitation Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">SOCIOLOGY</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
+                        </div>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">SOC101: SOCIOLOGY</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 10 Pages</span>
+                            </div>
+                            <h4 class="file-card-title">Impact of Colonial Economic Exploitation</h4>
+                            <p class="file-card-desc">Sociological research paper investigating systemic deindustrialization, fiscal drain, and collapse of indigenous artisan structures under colonial rule.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(8)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/Impact%20of%20Colonial%20Economic%20Exploitation%20on%20the%20Social%20Collapse%20of%20Bengali%20Society.pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File 9 -->
+                    <div class="file-card" data-file-id="9" data-category="RESEARCH" data-tags="PSYCHOLOGY,DISORDERS,RESEARCH,ESSAY">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_9.jpg" alt="Psychological Disorder Analysis of Christopher Robin Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">PSYCHOLOGY</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
+                        </div>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">PSY101: PSYCHOLOGY</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 9 Pages</span>
+                            </div>
+                            <h4 class="file-card-title">Psychological Disorder Analysis of Christopher Robin</h4>
+                            <p class="file-card-desc">Clinical psychology paper assessing projective fantasy mechanisms, dissociative symptoms, and developmental behaviors in literary narratives.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(9)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/A%20Psychological%20Disorder%20Analysis%20of%20Disney%E2%80%99s%20Christopher%20Robin.pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File 10 -->
+                    <div class="file-card" data-file-id="10" data-category="ALGO" data-tags="ALGORITHMS,GRAPH THEORY,MATH,COMPLEXITY">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_10.jpg" alt="Analysis time complexity with random vertices Term Paper Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">ALGORITHMS</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
+                        </div>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">DISCRETE MATHEMATICS</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 3 Pages</span>
+                            </div>
+                            <h4 class="file-card-title">Analysis time complexity with random vertices (Term Paper)</h4>
+                            <p class="file-card-desc">Formal mathematical term paper evaluating graph degree sums, handshaking logic proofs, and time complexities with randomized vertex generation.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(10)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/Analysis%20time%20complexity%20and%20handshaking%20logic%20with%20random%20vertices(TermPaper).pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File 11 -->
+                    <div class="file-card" data-file-id="11" data-category="AI" data-tags="AI,DEEP LEARNING,NEURAL NETWORKS,ML">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_11.jpg" alt="Introduction to Artificial Neural Network Paper Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">AI & ML</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
+                        </div>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">ARTIFICIAL INTELLIGENCE</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 17 Pages</span>
+                            </div>
+                            <h4 class="file-card-title">Introduction to Artificial Neural Network Paper</h4>
+                            <p class="file-card-desc">Technical research paper on multi-layer perceptrons, non-linear activation functions, gradient descent backpropagation, and deep learning topologies.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(11)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/Introduction%20to%20Artificial%20Neural%20Network.pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File 12 -->
+                    <div class="file-card" data-file-id="12" data-category="RESEARCH" data-tags="ECONOMICS,POLICY,MACROECONOMICS,RESEARCH">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_12.jpg" alt="Economic Dependency Created by the IMF Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">ECONOMICS</span>
+                            <span class="file-cover-badge-type" style="background: rgba(16, 185, 129, 0.95);"><i class="fa-solid fa-book"></i> REPORT</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Cover</span>
+                            </div>
+                        </div>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">MACROECONOMICS</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> Research Report</span>
+                            </div>
+                            <h4 class="file-card-title">Economic Dependency Created by the IMF</h4>
+                            <p class="file-card-desc">Macroeconomic analysis paper evaluating IMF structural adjustment conditions, sovereign debt dependency, and developing nation trade balances.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(12)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_Cover/cover_12.jpg" target="_blank" class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-image"></i> Cover
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File 13 -->
+                    <div class="file-card" data-file-id="13" data-category="AI" data-tags="DATABASE,SQL,WEB,SYSTEMS">
+                        <div class="file-card-cover-wrap">
+                            <img src="File_Cover/cover_13.jpg" alt="University Portal Management System CSE302 Project Cover" class="file-cover-img" loading="lazy">
+                            <span class="file-cover-badge-category">DATABASE</span>
+                            <span class="file-cover-badge-type"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                            <div class="file-cover-overlay">
+                                <span class="file-cover-quick-view"><i class="fa-solid fa-expand"></i> Preview Document</span>
+                            </div>
+                        </div>
+                        <div class="file-card-body">
+                            <div class="file-card-meta">
+                                <span class="file-subject-tag">CSE302: DATABASE SYSTEMS</span>
+                                <span class="file-page-count"><i class="fa-regular fa-file-lines"></i> 19 Pages</span>
+                            </div>
+                            <h4 class="file-card-title">University Portal Management System (CSE302 Project)</h4>
+                            <p class="file-card-desc">Comprehensive 19-page database project report covering entity-relationship modeling, relational schema normalization, and SQL implementations.</p>
+                            <div class="file-card-footer">
+                                <button class="btn btn-mint file-action-btn" onclick="event.stopPropagation(); openPdfModal(13)">
+                                    <i class="fa-solid fa-eye"></i> Preview
+                                </button>
+                                <a href="File_PDF/CSE302%20Project.pdf" download class="btn btn-outline file-action-btn" onclick="event.stopPropagation()">
+                                    <i class="fa-solid fa-download"></i> PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
