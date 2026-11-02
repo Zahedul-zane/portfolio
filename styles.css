@@ -107,6 +107,13 @@ main {
   animation: rotateCursor 10s linear infinite;
 }
 
+@media (hover: none) or (pointer: coarse) {
+  .custom-cursor,
+  .custom-cursor-ring {
+    display: none !important;
+  }
+}
+
 @keyframes rotateCursor {
   from { transform: translate(-50%, -50%) rotate(0deg); }
   to { transform: translate(-50%, -50%) rotate(360deg); }
@@ -320,9 +327,9 @@ section {
   user-select: none;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1080px) {
   .floating-dock-sidebar {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -502,9 +509,9 @@ section {
   transform: scale(1.05);
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1080px) {
   .mobile-toggle {
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
   }
@@ -513,20 +520,53 @@ section {
 .mobile-nav-menu {
   display: none;
   position: fixed;
-  top: 75px;
-  left: 5%;
-  width: 90%;
-  background: var(--bg-neo-base);
-  box-shadow: var(--neo-shadow-outset-hover);
+  top: 72px;
+  left: 4%;
+  width: 92%;
+  max-width: 420px;
+  right: 4%;
+  margin: 0 auto;
+  background: rgba(230, 238, 232, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
   border-radius: 24px;
-  padding: 24px;
+  padding: 16px 18px;
   flex-direction: column;
-  gap: 12px;
-  z-index: 999;
+  gap: 8px;
+  z-index: 1002;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .mobile-nav-menu.open {
   display: flex;
+}
+
+.mobile-nav-menu .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-family: var(--font-cyber-sub);
+  font-weight: 700;
+  font-size: 0.94rem;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  text-decoration: none;
+  background: var(--bg-neo-base);
+  box-shadow: var(--neo-shadow-outset);
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-menu .nav-link:hover,
+.mobile-nav-menu .nav-link.active {
+  background: var(--mint-main);
+  color: #064e3b;
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.1), 0 4px 12px var(--mint-glow);
+  transform: translateX(4px);
 }
 
 .hero-section {
@@ -3018,29 +3058,523 @@ footer {
   font-size: 0.9rem;
 }
 
-@media (max-width: 992px) {
-  .hero-grid { grid-template-columns: 1fr; text-align: center; }
-  .hero-actions { justify-content: center; }
-  .bento-about, .bento-edu, .bento-stats, .bento-social { grid-column: span 12; }
-  .stats-inner-grid { grid-template-columns: repeat(2, 1fr); }
-  .nav-links { display: none; }
-  .mobile-toggle { display: block; }
-  .hero-dp-card { margin: 0 auto 24px; }
-  .orbit-wrapper { display: none; }
+/* ==========================================================================
+   COMPREHENSIVE RESPONSIVE DESIGN SYSTEM (DESKTOP, LAPTOP, TABLET, MOBILE)
+   ========================================================================== */
+
+/* Universal Responsive Typography & Layout Safety */
+h1, h2, h3, h4, p, span, a {
+  overflow-wrap: break-word;
 }
 
-@media (max-width: 720px) {
-  .main-header { padding: 14px 18px; }
-  .mobile-nav-menu { top: 68px; }
-  .bento-grid { gap: 18px; }
-  .hero-title { font-size: 2.6rem; }
-  .project-footer-row { flex-direction: column; }
-  .project-card { min-height: auto; }
-  .clubs-grid { grid-template-columns: 1fr; }
-  .event-footer-row { flex-direction: column; }
-  .album-main-viewport { min-height: 250px; max-height: 48vh; }
-  .album-nav-arrow { width: 36px; height: 36px; font-size: 1rem; }
-  .album-filmstrip { padding: 8px 12px 12px; gap: 6px; }
-  .filmstrip-thumb { width: 56px; height: 40px; }
+img, svg, video {
+  max-width: 100%;
 }
 
+/* 1. Large Laptops & Standard Desktops (1081px - 1440px) */
+@media (min-width: 1081px) and (max-width: 1440px) {
+  .floating-dock-sidebar {
+    left: 12px;
+  }
+  main {
+    padding-left: 80px;
+  }
+}
+
+/* 2. Tablets & Small Laptops (769px - 1080px) */
+@media (max-width: 1080px) {
+  .floating-dock-sidebar {
+    display: none !important;
+  }
+  .mobile-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  main {
+    padding-left: 0 !important;
+  }
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 32px;
+  }
+  .hero-text-content {
+    margin: 0 auto;
+    max-width: 720px;
+  }
+  .hero-dp-card {
+    margin: 0 auto 20px;
+  }
+  .hero-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-actions {
+    justify-content: center;
+  }
+  .orbit-wrapper {
+    display: none !important;
+  }
+  .hero-visual {
+    display: none !important;
+  }
+  .bento-about,
+  .bento-edu,
+  .bento-stats,
+  .bento-social {
+    grid-column: span 12;
+  }
+  .events-grid {
+    grid-template-columns: 1fr;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .dash-badges-showcase {
+    padding: 24px;
+  }
+  .dash-badges-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  }
+}
+
+/* 3. Mobile Landscape & Tablets (577px - 768px) */
+@media (max-width: 768px) {
+  section {
+    padding: 55px 0;
+  }
+  .hero-section {
+    min-height: auto;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .section-title {
+    font-size: clamp(2rem, 5.5vw, 2.5rem);
+    margin-bottom: 14px;
+  }
+  .section-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  .bento-grid {
+    gap: 16px;
+  }
+  .bento-card {
+    padding: 24px 18px;
+    border-radius: 22px;
+  }
+  .stats-inner-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .stat-box {
+    padding: 14px 10px;
+  }
+  .stat-number {
+    font-size: 1.55rem;
+  }
+  .dashboards-grid {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-card {
+    padding: 22px 18px;
+  }
+  .dash-badges-showcase {
+    padding: 20px 16px;
+  }
+  .dash-badge-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px 16px;
+    gap: 16px;
+  }
+  .dash-badge-visual {
+    width: 115px;
+    height: 130px;
+  }
+  .dash-badge-meta-top,
+  .dash-badge-foot,
+  .dash-badge-tags {
+    justify-content: center;
+  }
+  .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 20px;
+  }
+  .project-footer-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .project-btn {
+    width: 100%;
+  }
+  .project-card {
+    min-height: auto;
+  }
+  .clubs-grid {
+    grid-template-columns: 1fr;
+  }
+  .event-footer-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .timeline-container {
+    max-width: 100%;
+  }
+  .cert-item {
+    padding-left: 45px;
+    margin-bottom: 24px;
+  }
+  .timeline-line {
+    left: 14px;
+  }
+  .cert-dot {
+    left: 5px;
+    top: 22px;
+    width: 18px;
+    height: 18px;
+  }
+  .cert-card-box {
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px;
+  }
+  .cert-thumb-img {
+    width: 100%;
+    height: 190px;
+  }
+  .files-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 20px;
+  }
+  .modal-backdrop {
+    padding: 16px;
+  }
+  .modal-content-box {
+    padding: 24px 18px;
+    max-width: 100%;
+    border-radius: 22px;
+  }
+  .modal-content-box.modal-cert {
+    padding: 22px 16px;
+  }
+  .cert-modal-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .badge-modal-grid {
+    grid-template-columns: 1fr;
+  }
+  .modal-close-btn {
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  .album-main-viewport {
+    min-height: 250px;
+    max-height: 48vh;
+  }
+  .album-nav-arrow {
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+  }
+  .album-filmstrip {
+    padding: 8px 10px 10px;
+    gap: 6px;
+  }
+  .filmstrip-thumb {
+    width: 58px;
+    height: 42px;
+  }
+}
+
+/* 4. Compact Mobile Devices & Phones (<= 576px) */
+@media (max-width: 576px) {
+  .container {
+    padding: 0 16px;
+  }
+  section {
+    padding: 45px 0;
+  }
+  .hero-title {
+    font-size: clamp(1.85rem, 8vw, 2.35rem);
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .hero-subtitle {
+    font-size: 0.96rem;
+    line-height: 1.55;
+    margin-bottom: 22px;
+  }
+  .hero-dp-card {
+    width: 120px;
+    height: 120px;
+    border-radius: 28px;
+    margin-bottom: 18px;
+  }
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 18px;
+    font-size: 0.92rem;
+  }
+  .cyber-label {
+    font-size: 0.76rem;
+    padding: 5px 12px;
+  }
+  .bento-card {
+    padding: 18px 14px;
+    border-radius: 20px;
+  }
+  .bento-bio-name {
+    font-size: 1.35rem;
+  }
+  .bento-bio-text {
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+  .pill-row {
+    gap: 8px;
+  }
+  .pill-item {
+    padding: 6px 12px;
+    font-size: 0.82rem;
+  }
+  .stat-box {
+    padding: 12px 8px;
+    border-radius: 14px;
+  }
+  .stat-number {
+    font-size: 1.4rem;
+  }
+  .stat-desc {
+    font-size: 0.78rem;
+  }
+  .social-mini-grid {
+    grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)) !important;
+    gap: 8px;
+  }
+  .social-card {
+    padding: 12px 6px;
+    font-size: 0.78rem;
+    border-radius: 14px;
+    gap: 4px;
+  }
+  .social-card i {
+    font-size: 1.25rem;
+  }
+  .badges-pure-section {
+    padding: 24px 0 16px;
+  }
+  .badges-pure-wrapper {
+    gap: 16px;
+  }
+  .badge-pure-item {
+    padding: 4px 6px;
+  }
+  .badge-pure-svg {
+    width: 135px;
+    height: 160px;
+  }
+  .dash-header-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .dash-sync-badge {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.82rem;
+    padding: 7px 14px;
+  }
+  .dash-actions-right {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .dashboards-summary-bar {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .summary-metric-card {
+    padding: 14px 16px;
+    border-radius: 16px;
+    gap: 14px;
+  }
+  .summary-metric-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 1.15rem;
+    border-radius: 12px;
+  }
+  .summary-metric-value {
+    font-size: 1.25rem;
+  }
+  .tech-grid {
+    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+    gap: 12px;
+  }
+  .tech-card {
+    padding: 14px 8px;
+    border-radius: 16px;
+  }
+  .tech-card i {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
+  .tech-card span {
+    font-size: 0.8rem;
+  }
+  .project-filter-row {
+    gap: 6px;
+    margin-bottom: 22px;
+  }
+  .project-filter-btn {
+    padding: 6px 13px;
+    font-size: 0.78rem;
+  }
+  .project-header-bg {
+    height: 120px;
+  }
+  .project-body {
+    padding: 18px 14px;
+  }
+  .project-title {
+    font-size: 1.15rem;
+  }
+  .project-desc {
+    font-size: 0.88rem;
+    margin-bottom: 16px;
+  }
+  .event-header-cover {
+    height: 175px;
+  }
+  .event-body {
+    padding: 18px 14px;
+  }
+  .event-title {
+    font-size: 1.15rem;
+  }
+  .event-desc {
+    font-size: 0.88rem;
+  }
+  .club-logo-wrap {
+    height: 160px;
+  }
+  .club-info {
+    padding: 16px 14px;
+  }
+  .cert-item {
+    padding-left: 32px;
+    margin-bottom: 20px;
+  }
+  .timeline-line {
+    left: 7px;
+  }
+  .cert-dot {
+    left: 0px;
+    top: 16px;
+    width: 15px;
+    height: 15px;
+  }
+  .cert-card-box {
+    padding: 14px;
+    border-radius: 16px;
+    gap: 12px;
+  }
+  .cert-thumb-img {
+    height: 165px;
+    border-radius: 12px;
+  }
+  .cert-title-text {
+    font-size: 1.05rem;
+  }
+  .files-filter-bar {
+    gap: 6px;
+    margin-bottom: 22px;
+  }
+  .file-filter-btn {
+    padding: 6px 12px;
+    font-size: 0.78rem;
+  }
+  .file-card-cover-wrap {
+    height: 190px;
+    padding: 10px;
+  }
+  .file-card-body {
+    padding: 16px 14px;
+  }
+  .file-title {
+    font-size: 1rem;
+  }
+  .modal-backdrop {
+    padding: 10px;
+  }
+  .modal-content-box {
+    padding: 20px 14px;
+    border-radius: 18px;
+    max-height: 94vh;
+  }
+  .modal-close-btn {
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    font-size: 0.95rem;
+  }
+  .modal-title {
+    font-size: 1.15rem;
+  }
+  .album-main-viewport {
+    min-height: 200px;
+    max-height: 42vh;
+  }
+  .album-nav-arrow {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  .album-nav-arrow.prev {
+    left: 8px;
+  }
+  .album-nav-arrow.next {
+    right: 8px;
+  }
+  .album-caption-bar {
+    padding: 8px 14px;
+    font-size: 0.78rem;
+  }
+  .nfr-gallery {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  footer {
+    padding: 30px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+/* 5. Ultra-Small Screens (<= 360px) */
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: 1.75rem;
+  }
+  .stats-inner-grid {
+    grid-template-columns: 1fr;
+  }
+  .social-mini-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .tech-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

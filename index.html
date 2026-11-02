@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,6 +35,10 @@
                 <i class="fa-solid fa-house"></i>
                 <span class="dock-tooltip">Home</span>
             </a>
+            <a href="#about" class="dock-item" data-target="about" aria-label="About">
+                <i class="fa-solid fa-user"></i>
+                <span class="dock-tooltip">About</span>
+            </a>
             <a href="#badges" class="dock-item" data-target="badges" aria-label="Badges">
                 <i class="fa-solid fa-shield-halved"></i>
                 <span class="dock-tooltip">Badges</span>
@@ -42,10 +46,6 @@
             <a href="#dashboards" class="dock-item" data-target="dashboards" aria-label="Dashboards">
                 <i class="fa-solid fa-chart-line"></i>
                 <span class="dock-tooltip">Dashboards</span>
-            </a>
-            <a href="#about" class="dock-item" data-target="about" aria-label="About">
-                <i class="fa-solid fa-user"></i>
-                <span class="dock-tooltip">About</span>
             </a>
             <a href="#expertise" class="dock-item" data-target="expertise" aria-label="Forge">
                 <i class="fa-solid fa-screwdriver-wrench"></i>
@@ -78,9 +78,9 @@
     <!-- Mobile Drawer -->
     <div class="mobile-nav-menu" id="mobileNav">
         <a href="#hero" class="nav-link active" data-target="hero">HOME</a>
+        <a href="#about" class="nav-link" data-target="about">ABOUT</a>
         <a href="#badges" class="nav-link" data-target="badges">BADGES</a>
         <a href="#dashboards" class="nav-link" data-target="dashboards">DASHBOARDS</a>
-        <a href="#about" class="nav-link" data-target="about">ABOUT</a>
         <a href="#expertise" class="nav-link" data-target="expertise">FORGE</a>
         <a href="#projects" class="nav-link" data-target="projects">PROJECTS</a>
         <a href="#events" class="nav-link" data-target="events">EVENTS</a>
@@ -162,6 +162,107 @@
             </div>
         </section>
 
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <span class="section-label">ABOUT ME</span>
+                <h2 class="section-title">Persona & Academic Background</h2>
+                <p class="section-subtitle">
+                    Undergraduate student building at the intersection of full-stack engineering, algorithms, and applied machine learning.
+                </p>
+
+                <div class="bento-grid">
+                    <!-- Bio Card -->
+                    <div class="bento-card bento-about">
+                        <span class="bento-tag">BIO</span>
+                        <h3 class="bento-bio-name">Hi, I'm Zahedul Islam</h3>
+                        <p class="bento-bio-text">
+                            I specialize in high-performance web engineering, data structures, and autonomous AI agents. Passionate about solving complex algorithmic problems and crafting sleek, intuitive digital interfaces.
+                        </p>
+                        <div class="pill-row">
+                            <div class="pill-item">
+                                <i class="fa-solid fa-location-dot" style="color: var(--mint-text-dark);"></i>
+                                <span>Dhaka, Bangladesh</span>
+                            </div>
+                            <div class="pill-item">
+                                <i class="fa-solid fa-graduation-cap" style="color: var(--mint-text-dark);"></i>
+                                <span>EWU CSE · 2026</span>
+                            </div>
+                            <div class="pill-item">
+                                <i class="fa-solid fa-code-branch" style="color: var(--mint-text-dark);"></i>
+                                <span>Full-Stack & ML</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Education Card -->
+                    <div class="bento-card bento-edu">
+                        <span class="bento-tag">EDUCATION</span>
+                        <h3 style="font-size: 1.25rem; margin-bottom: 6px;">East West University</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px;">
+                            Bachelor of Science in Computer Science & Engineering
+                        </p>
+                        <div class="pill-row">
+                            <div class="pill-item" style="background: var(--mint-light); color: var(--mint-text-dark);">
+                                <i class="fa-solid fa-calendar-days"></i> 2022 — 2026
+                            </div>
+                            <div class="pill-item">Status: Active Student</div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Card -->
+                    <div class="bento-card bento-stats">
+                        <span class="bento-tag">IMPACT & METRICS</span>
+                        <div class="stats-inner-grid">
+                            <div class="stat-box">
+                                <div class="stat-number mint">7+</div>
+                                <div class="stat-desc">Projects</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number">1+</div>
+                                <div class="stat-desc">GitHub Stars</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number mint" id="heroTotalProblems">130+</div>
+                                <div class="stat-desc">Problems</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number">14+</div>
+                                <div class="stat-desc">Certificates</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Links Card -->
+                    <div class="bento-card bento-social">
+                        <span class="bento-tag">CONNECT & PROFILES</span>
+                        <div class="social-mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));">
+                            <a href="https://github.com/Zahedul-zane" target="_blank" rel="noreferrer" class="social-card" title="GitHub Profile">
+                                <i class="fa-brands fa-github"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="https://linkedin.com/in/zahedul-islam-153165374/" target="_blank" rel="noreferrer" class="social-card" title="LinkedIn Profile">
+                                <i class="fa-brands fa-linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://codeforces.com/profile/ZaHeDuL" target="_blank" rel="noreferrer" class="social-card" title="Codeforces Profile">
+                                <i class="fa-solid fa-chart-simple" style="color: #ef4444;"></i>
+                                <span>Codeforces</span>
+                            </a>
+                            <a href="https://leetcode.com/u/vsJ2gRZWWX/" target="_blank" rel="noreferrer" class="social-card" title="LeetCode Profile">
+                                <i class="fa-solid fa-code" style="color: #f59e0b;"></i>
+                                <span>LeetCode</span>
+                            </a>
+                            <a href="https://atcoder.jp/users/ZaHeDuL" target="_blank" rel="noreferrer" class="social-card" title="AtCoder Profile">
+                                <i class="fa-solid fa-cubes" style="color: #6366f1;"></i>
+                                <span>AtCoder</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Badges Dashboard Section (Top of Web - Only Badges - Transparent) -->
         <section id="badges" class="badges-pure-section">
             <div class="container">
@@ -178,7 +279,8 @@
             </div>
         </section>
 
-<section id="dashboards" class="section" style="background: var(--bg-secondary);">
+        <!-- Dashboards Section -->
+        <section id="dashboards" class="section" style="background: var(--bg-secondary);">
             <div class="container">
                 <span class="section-label">COMPETITIVE PROGRAMMING & LIVE ANALYTICS</span>
                 <h2 class="section-title">Coding Dashboards</h2>
@@ -412,107 +514,6 @@
                             </button>
                             <a href="https://atcoder.jp/users/ZaHeDuL" target="_blank" rel="noreferrer" class="dash-ext-link" title="Open AtCoder Profile">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="section">
-            <div class="container">
-                <span class="section-label">ABOUT ME</span>
-                <h2 class="section-title">Persona & Academic Background</h2>
-                <p class="section-subtitle">
-                    Undergraduate student building at the intersection of full-stack engineering, algorithms, and applied machine learning.
-                </p>
-
-                <div class="bento-grid">
-                    <!-- Bio Card -->
-                    <div class="bento-card bento-about">
-                        <span class="bento-tag">BIO</span>
-                        <h3 class="bento-bio-name">Hi, I'm Zahedul Islam</h3>
-                        <p class="bento-bio-text">
-                            I specialize in high-performance web engineering, data structures, and autonomous AI agents. Passionate about solving complex algorithmic problems and crafting sleek, intuitive digital interfaces.
-                        </p>
-                        <div class="pill-row">
-                            <div class="pill-item">
-                                <i class="fa-solid fa-location-dot" style="color: var(--mint-text-dark);"></i>
-                                <span>Dhaka, Bangladesh</span>
-                            </div>
-                            <div class="pill-item">
-                                <i class="fa-solid fa-graduation-cap" style="color: var(--mint-text-dark);"></i>
-                                <span>EWU CSE · 2026</span>
-                            </div>
-                            <div class="pill-item">
-                                <i class="fa-solid fa-code-branch" style="color: var(--mint-text-dark);"></i>
-                                <span>Full-Stack & ML</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Education Card -->
-                    <div class="bento-card bento-edu">
-                        <span class="bento-tag">EDUCATION</span>
-                        <h3 style="font-size: 1.25rem; margin-bottom: 6px;">East West University</h3>
-                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px;">
-                            Bachelor of Science in Computer Science & Engineering
-                        </p>
-                        <div class="pill-row">
-                            <div class="pill-item" style="background: var(--mint-light); color: var(--mint-text-dark);">
-                                <i class="fa-solid fa-calendar-days"></i> 2022 — 2026
-                            </div>
-                            <div class="pill-item">Status: Active Student</div>
-                        </div>
-                    </div>
-
-                    <!-- Stats Card -->
-                    <div class="bento-card bento-stats">
-                        <span class="bento-tag">IMPACT & METRICS</span>
-                        <div class="stats-inner-grid">
-                            <div class="stat-box">
-                                <div class="stat-number mint">7+</div>
-                                <div class="stat-desc">Projects</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-number">1+</div>
-                                <div class="stat-desc">GitHub Stars</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-number mint" id="heroTotalProblems">130+</div>
-                                <div class="stat-desc">Problems</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-number">13+</div>
-                                <div class="stat-desc">Certificates</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Social Links Card -->
-                    <div class="bento-card bento-social">
-                        <span class="bento-tag">CONNECT & PROFILES</span>
-                        <div class="social-mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));">
-                            <a href="https://github.com/Zahedul-zane" target="_blank" rel="noreferrer" class="social-card" title="GitHub Profile">
-                                <i class="fa-brands fa-github"></i>
-                                <span>GitHub</span>
-                            </a>
-                            <a href="https://linkedin.com/in/zahedul-islam-153165374/" target="_blank" rel="noreferrer" class="social-card" title="LinkedIn Profile">
-                                <i class="fa-brands fa-linkedin"></i>
-                                <span>LinkedIn</span>
-                            </a>
-                            <a href="https://codeforces.com/profile/ZaHeDuL" target="_blank" rel="noreferrer" class="social-card" title="Codeforces Profile">
-                                <i class="fa-solid fa-chart-simple" style="color: #ef4444;"></i>
-                                <span>Codeforces</span>
-                            </a>
-                            <a href="https://leetcode.com/u/vsJ2gRZWWX/" target="_blank" rel="noreferrer" class="social-card" title="LeetCode Profile">
-                                <i class="fa-solid fa-code" style="color: #f59e0b;"></i>
-                                <span>LeetCode</span>
-                            </a>
-                            <a href="https://atcoder.jp/users/ZaHeDuL" target="_blank" rel="noreferrer" class="social-card" title="AtCoder Profile">
-                                <i class="fa-solid fa-cubes" style="color: #6366f1;"></i>
-                                <span>AtCoder</span>
                             </a>
                         </div>
                     </div>
@@ -1304,6 +1305,27 @@
                                     <span class="tag-chip">DATABASE</span>
                                     <span class="tag-chip">HACKERRANK</span>
                                     <span class="tag-chip">QUERIES</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; color: var(--mint-text-dark);">
+                                <i class="fa-solid fa-expand" style="font-size: 1.2rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cert 14 Blackout CTF -->
+                    <div class="cert-item">
+                        <div class="cert-dot"></div>
+                        <div class="cert-card-box" data-cert-id="14">
+                            <img src="CertificateImage/CTF.jpg" alt="Blackout CTF — Certificate of Participation" class="cert-thumb-img">
+                            <div class="cert-info-main">
+                                <span class="cert-issuer-badge">Nexploit Security Operations • NOV 01, 2026</span>
+                                <h3 class="cert-title-text">Blackout CTF (CyberSecurity)</h3>
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
+                                    <span class="tag-chip">CYBERSECURITY</span>
+                                    <span class="tag-chip">NEXPLOIT</span>
+                                    <span class="tag-chip">CTF</span>
+                                    <span class="tag-chip">COMPETITION</span>
                                 </div>
                             </div>
                             <div style="display: flex; align-items: center; color: var(--mint-text-dark);">

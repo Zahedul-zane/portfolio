@@ -1,4 +1,4 @@
-const sectionIds = ['hero', 'badges', 'dashboards', 'about', 'expertise', 'projects', 'events', 'certificates', 'files'];
+const sectionIds = ['hero', 'about', 'badges', 'dashboards', 'expertise', 'projects', 'events', 'certificates', 'files'];
 const getModalRoot = () => document.getElementById('modalRoot');
 
 const certificates = {
@@ -106,6 +106,14 @@ const certificates = {
     img: 'CertificateImage/sql_basic certificate_pages-to-jpg-0001.jpg',
     tags: ['SQL', 'DATABASE', 'HACKERRANK', 'QUERIES'],
     description: 'Successfully passed the HackerRank SQL (Basic) skill certification test (Certificate ID: 21D47E6D012C). Verified proficiency in writing structured relational database queries, multi-table joins, WHERE and HAVING clause filtering, aggregations, grouping, and subquery logic.'
+  },
+  14: {
+    title: 'Blackout CTF — Certificate of Participation',
+    issuer: 'Nexploit Security Operations • NOV 01, 2026',
+    date: 'NOV 01, 2026',
+    img: 'CertificateImage/CTF.jpg',
+    tags: ['CYBERSECURITY', 'NEXPLOIT', 'CTF', 'COMPETITION'],
+    description: 'Awarded Certificate of Participation for actively participating in BLACKOUT CTF organized by Nexploit Security Operations. Showed a strong commitment to learning and executing cybersecurity challenges under live competition conditions (Team: FURY_KNIGHT • Score: 200/2280 • Serial: NX-BLACKOUT-0065).'
   }
 };
 
@@ -1703,7 +1711,7 @@ const techShowcaseData = {
     desc: 'Offensive and defensive security principles, Capture The Flag (CTF) challenges, vulnerability assessments, cryptographic analysis, and verified ADBI cybersecurity certification.',
     projects: [],
     files: [],
-    certs: [5, 10, 12]
+    certs: [5, 10, 12, 14]
   }
 };
 
@@ -1928,6 +1936,21 @@ function initEventHandlers() {
   if (mobileToggle) {
     mobileToggle.addEventListener('click', toggleMobileMenu);
   }
+
+  document.addEventListener('click', (e) => {
+    const mobileNav = document.getElementById('mobileNav');
+    if (mobileNav && mobileNav.classList.contains('open')) {
+      if (!mobileNav.contains(e.target) && !mobileToggle.contains(e.target)) {
+        closeMobileMenu();
+      }
+    }
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeMobileMenu();
+    }
+  });
 
   navLinks.forEach((link) => {
     link.addEventListener('click', (event) => {
